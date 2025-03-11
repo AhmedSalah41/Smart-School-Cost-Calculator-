@@ -11,6 +11,7 @@
             color: #333;
             margin: 0;
             padding: 0;
+            direction: rtl; /* لضبط اتجاه الكتابة من اليمين لليسار */
         }
 
         .container {
@@ -19,11 +20,18 @@
             padding: 20px;
             background-color: white;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
         }
 
         h1 {
             text-align: center;
             color: #2c3e50;
+        }
+
+        .logo {
+            display: block;
+            margin: 0 auto 20px;
+            max-width: 150px; /* يمكنك تعديل هذا بناءً على حجم اللوجو */
         }
 
         .btn {
@@ -36,10 +44,17 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s;
         }
 
         .btn:hover {
             background-color: #2980b9;
+        }
+
+        .btn-container {
+            text-align: center; /* لتوسيط الأزرار تحت اسم المدرسة */
+            margin-top: 20px;
         }
 
         .form-group {
@@ -53,28 +68,48 @@
         .cost-box {
             margin-top: 20px;
             background-color: #ecf0f1;
-            padding: 15px;
-            border-radius: 5px;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            font-size: 18px;
+            color: #2c3e50;
+            text-align: right;
+        }
+
+        #costBeforeDiscount {
+            font-weight: bold;
+            color: #e74c3c;
         }
 
         .hidden {
             display: none;
         }
 
-        #costBeforeDiscount {
-            margin-top: 10px;
-            font-size: 18px;
-            font-weight: bold;
-            color: #e74c3c;
+        input, select {
+            padding: 10px;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .form-group input[type="number"] {
+            max-width: 80px;
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>Smart School</h1>
+    <img src="logo.png" alt="Smart School Logo" class="logo"> <!-- مكان اللوجو -->
+    <h1>مدرسة سمارت</h1>
 
-    <div id="schoolSelection">
+    <div id="schoolSelection" class="btn-container">
         <button class="btn" onclick="selectSchool('arabic')">مصاريف التعليم العربي</button>
         <button class="btn" onclick="selectSchool('foreign')">مصاريف التعليم الأجنبي</button>
     </div>
@@ -125,24 +160,4 @@
     }
 
     function selectStage() {
-        const stage = document.getElementById('educationalStage').value;
-        let costMessage = '';
-        if (stage === 'KG') {
-            costMessage = 'المصاريف قبل الخصم: 30,000 جنيه';
-        } else if (stage === 'GR1_GR3') {
-            costMessage = 'المصاريف قبل الخصم: 33,000 جنيه';
-        } else if (stage === 'GR4_GR6') {
-            costMessage = 'المصاريف قبل الخصم: 33,000 جنيه';
-        } else if (stage === 'GR7_GR9') {
-            costMessage = 'المصاريف قبل الخصم: 35,000 جنيه';
-        } else if (stage === 'GR10_GR12') {
-            costMessage = 'المصاريف قبل الخصم: 40,000 جنيه';
-        }
-
-        document.getElementById('costBeforeDiscount').innerText = costMessage;
-        document.getElementById('costDisplay').classList.remove('hidden');
-    }
-</script>
-
-</body>
-</html>
+        const stage =
