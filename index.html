@@ -212,7 +212,7 @@
     <div id="notes" class="notes hidden">
         <p>ملاحظات هامة:</p>
         <ul>
-            <li>مصاريف الكتب: 3000 جنيه.</li>
+            <li>مصاريف الكتب: 3,000 جنيه.</li>
             <li>يوجد خصومات أخرى للطلاب الفائزين في بطولات رياضية أو دينية.</li>
         </ul>
     </div>
@@ -222,8 +222,9 @@
 <script>
     let baseCost = 0;
     let busCost = 10000; // سعر الباص
-    let booksCost = 3000; // تكلفة الكتب الجديدة
+    let booksCost = 3000; // تكلفة الكتب
     let discount = 0;
+    let stageCost = 0; // تكلفة المرحلة الدراسية
 
     // اختيار نوع المدرسة
     function selectSchool(type) {
@@ -236,13 +237,13 @@
         let childStageHtml = `
             <div class="form-group">
                 <label for="stageSelection">المرحلة الدراسية:</label>
-                <select id="stageSelection" onchange="updateTotalCost()">
-                    <option value="KG_BC">رياض أطفال (B.C)</option>
-                    <option value="KG">رياض أطفال (KG1, KG2)</option>
-                    <option value="GR1_GR3">ابتدائية (من GR1 إلى GR3)</option>
-                    <option value="GR4_GR6">ابتدائية (من GR4 إلى GR6)</option>
-                    <option value="GR7_GR9">إعدادية (من GR7 إلى GR9)</option>
-                    <option value="GR10_GR12">ثانوية (من GR10 إلى GR12)</option>
+                <select id="stageSelection" onchange="updateStageCost()">
+                    <option value="KG_BC">رياض أطفال (B.C) - 23,000 جنيه</option>
+                    <option value="KG">رياض أطفال (KG1, KG2) - 30,000 جنيه</option>
+                    <option value="GR1_GR3">ابتدائية (من GR1 إلى GR3) - 33,000 جنيه</option>
+                    <option value="GR4_GR6">ابتدائية (من GR4 إلى GR6) - 36,000 جنيه</option>
+                    <option value="GR7_GR9">إعدادية (من GR7 إلى GR9) - 39,000 جنيه</option>
+                    <option value="GR10_GR12">ثانوية (من GR10 إلى GR12) - 42,000 جنيه</option>
                 </select>
             </div>
         `;
@@ -252,6 +253,37 @@
         document.getElementById('booksButton').classList.remove('hidden');
         document.getElementById('busQuestion').classList.remove('hidden');
         document.getElementById('discountCriteriaSection').classList.remove('hidden');
+    }
+
+    // تحديث تكلفة المرحلة الدراسية عند اختيار المرحلة
+    function updateStageCost() {
+        let selectedStage = document.getElementById('stageSelection').value;
+
+        // تحديد تكلفة المرحلة بناءً على الاختيار
+        switch (selectedStage) {
+            case 'KG_BC':
+                stageCost = 23000;
+                break;
+            case 'KG':
+                stageCost = 30000;
+                break;
+            case 'GR1_GR3':
+                stageCost = 33000;
+                break;
+            case 'GR4_GR6':
+                stageCost = 36000;
+                break;
+            case 'GR7_GR9':
+                stageCost = 39000;
+                break;
+            case 'GR10_GR12':
+                stageCost = 42000;
+                break;
+            default:
+                stageCost = 0;
+        }
+
+        updateTotalCost(); // تحديث الإجمالي بعد اختيار المرحلة
     }
 
     // إضافة تكلفة الكتب
@@ -334,6 +366,7 @@
         }
 
         total += booksCost;
+        total += stageCost; // إضافة تكلفة المرحلة الدراسية
 
         total -= (total * discount / 100);
 
