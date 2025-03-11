@@ -102,15 +102,14 @@
             max-width: 80px;
         }
 
-        .radio-group {
+        .checkbox-group {
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
             margin-top: 10px;
         }
 
-        .radio-group label {
-            display: inline-block;
-            margin-right: 20px;
+        .checkbox-group label {
+            margin-bottom: 8px;
         }
 
     </style>
@@ -156,18 +155,13 @@
     <!-- الأسئلة الإضافية -->
     <div id="additionalQuestions" class="hidden">
         <div class="form-group">
-            <label>هل للطالب أخوة في المدرسة؟</label>
-            <div class="radio-group">
-                <label><input type="radio" name="siblings" value="yes"> نعم</label>
-                <label><input type="radio" name="siblings" value="no"> لا</label>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label>هل الطالب حاصل على درجة التفوق (100)؟</label>
-            <div class="radio-group">
-                <label><input type="radio" name="topGrade" value="yes"> نعم</label>
-                <label><input type="radio" name="topGrade" value="no"> لا</label>
+            <label>برجاء اختيار ما يتطابق للحصول على الخصم:</label>
+            <div class="checkbox-group">
+                <label><input type="checkbox" name="discountCriteria" value="siblings"> الطالب لديه أخوه في المدرسة</label>
+                <label><input type="checkbox" name="discountCriteria" value="topGrade"> الطالب حاصل على درجة التفوق (100)</label>
+                <label><input type="checkbox" name="discountCriteria" value="excellentGrade"> الطالب حاصل على درجة الإمتياز (90)</label>
+                <label><input type="checkbox" name="discountCriteria" value="cashBefore31May"> سداد المصاريف كاش قبل 31/5</label>
+                <label><input type="checkbox" name="discountCriteria" value="cashBefore31July"> سداد المصاريف كاش قبل 31/7</label>
             </div>
         </div>
     </div>
