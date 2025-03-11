@@ -182,7 +182,6 @@
     <div id="costDisplay" class="hidden">
         <div class="cost-box">
             <div id="costBeforeDiscount"></div>
-            <div id="discountAmount"></div>
             <div id="totalCost"></div>
         </div>
     </div>
@@ -202,6 +201,7 @@
     <!-- إجمالي المبلغ -->
     <div id="totalAmount" class="hidden">
         <div class="cost-box">
+            <div id="discountAmount"></div> <!-- وضع الخصم الكلي هنا -->
             <div id="finalAmount"></div>
         </div>
     </div>
@@ -245,8 +245,6 @@
 
     // اختيار نوع المدرسة
     function selectSchool(type) {
-        // عند اختيار نوع المدرسة (أجنبي أو عربي)، لا يتم تحديد baseCost هنا.
-        // ستحدد التكلفة بناءً على المرحلة التعليمية لاحقًا.
         document.getElementById('schoolSelection').classList.add('hidden');
         document.getElementById('childrenSelection').classList.remove('hidden');
     }
@@ -339,45 +337,33 @@
             return;
         }
         if (isWorkerChildrenSelected) {
-            // إلغاء باقي الخيارات إذا تم اختيار أبناء عاملين
             document.getElementById('discountCriteria').disabled = true;
         } else {
             document.getElementById('discountCriteria').disabled = false;
         }
 
         // تحديث عرض الخصومات المختارة
-        document.getElementById('discountAmount').innerText = `الخصم الكلي هو: ${discount}%`;
-        document.getElementById('selectedOptionsList').innerHTML = selectedDiscounts.map(item => `<li>${item}</li>`).join('');
+        document.getElementById('discountAmount').innerText = `الخصم الكلي هو: ${discount}%`; // نقل الخصم الكلي هنا
+        document.getElementById('selectedOptionsList').innerHTML = selectedDiscounts.map(option => `<li>${option}</li>`).join('');
         document.getElementById('selectedOptions').classList.remove('hidden');
 
-        // تحديث التكلفة الإجمالية
+        // حساب المبلغ النهائي
         updateTotalCost();
     }
 
-    // إعادة تعيين الخصومات
-    function resetDiscounts() {
-        document.getElementById('discountCriteria').value = [];
-        document.getElementById('selectedOptions').classList.add('hidden');
-        updateTotalCost();
-    }
-
-    // حساب التكلفة الإجمالية
+    // تحديث إجمالي المبلغ بعد الخصم
     function updateTotalCost() {
-        let total = baseCost;
+        let finalAmount = baseCost - (baseCost * discount / 100);
+        document.getElementById('finalAmount').innerText = `إجمالي المبلغ بعد الخصم هو: ${finalAmount} جنيه`;
+    }
 
-        // خصم الباص إذا تم تحديده
-        let busSelection = document.getElementById('busSubscription').value;
-        if (busSelection === "yes") {
-            total += busCost; // إضافة تكلفة الباص
-        }
-        
-        // تطبيق الخصم على التكلفة
-        total -= total * (discount / 100); 
-
-        document.getElementById('finalAmount').innerText = `إجمالي المبلغ: ${total} جنيه`;
-        document.getElementById('totalAmount').classList.remove('hidden');
+    function resetDiscounts() {
+        discount = 0;
+        document.getElementById('discountAmount').innerText = '';
+        document.getElementById('selectedOptions').classList.add('hidden');
+        document.getElementById('discountCriteria').selectedIndex = -1;
+        updateTotalCost();
     }
 </script>
-
 </body>
 </html>
