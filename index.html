@@ -10,7 +10,7 @@
             text-align: right;
             margin: 0;
             padding: 0;
-            direction: rtl; /* لجعل النصوص من اليمين لليسار */
+            direction: rtl;
             background-color: #f4f4f4;
         }
 
@@ -228,7 +228,7 @@
     </div>
 
     <!-- ملاحظات -->
-    <div class="notes">
+    <div id="notes" class="notes hidden">
         <p>ملاحظات هامة:</p>
         <ul>
             <li>مصاريف الكتب: 8,000 جنيه.</li>
@@ -364,17 +364,4 @@
         // خصم الباص إذا تم تحديده
         let busSelection = document.getElementById('busSubscription').value;
         if (busSelection === "yes") {
-            total += busCost;
-        }
-
-        // خصم الخصم الإجمالي
-        total -= total * (discount / 100);
-        document.getElementById('totalCost').innerText = `إجمالي التكلفة بعد الخصم: ${total} جنيه`;
-
-        document.getElementById('totalAmount').classList.remove('hidden');
-        document.getElementById('finalAmount').innerText = `إجمالي المبلغ: ${total} جنيه`;
-    }
-</script>
-
-</body>
-</html>
+            total += bus
