@@ -324,45 +324,68 @@
         document.getElementById('notes').classList.remove('hidden');
     }
 
-    // تحديد الخصومات
+    // تحديث عرض الخصومات المطبقة
     function calculateDiscount() {
         let criteria = Array.from(document.getElementById('discountCriteria').selectedOptions)
                             .map(option => option.value);
 
         discount = 0; // إعادة تعيين الخصم
+        let appliedDiscounts = []; // قائمة لحفظ الخصومات المطبقة
 
-        // تطبيق الخصم بناءً على الاختيارات
+        // التحقق من الشروط المتضادة:
+        if (criteria.includes('golden') && criteria.includes('silver')) {
+            alert("لا يمكن اختيار الخصمين: الذهبية والفضية في نفس الوقت.");
+            return;
+        }
+
+        // إذا تم اختيار "أبناء العاملين"، إلغاء جميع الخصومات الأخرى
+        if (criteria.includes('workerChildren')) {
+            discount = 25; // خصم 25% لأبناء العاملين
+            appliedDiscounts.push("أبناء العاملين: 25%");
+            document.getElementById('selectedOptionsList').innerHTML = appliedDiscounts.map(d => `<li>${d}</li>`).join('');
+            document.getElementById('selectedOptions').classList.remove('hidden');
+            updateTotalCost();
+            return;
+        }
+
+        // تطبيق الخصم بناءً على الاختيارات:
         if (criteria.includes('siblings')) {
-            discount += 10;
+            discount += 5;  // خصم 5% إذا كان الطالب لديه أخوة في المدرسة
+            appliedDiscounts.push("الطالب لديه أخوه في المدرسة: 5%");
         }
         if (criteria.includes('topGrade')) {
-            discount += 5;
+            discount += 10; // خصم 10% إذا كان الطالب متفوقًا
+            appliedDiscounts.push("الطالب حاصل على درجة التفوق (100): 10%");
         }
         if (criteria.includes('excellentGrade')) {
-            discount += 3;
+            discount += 5;  // خصم 5% إذا كان الطالب متميزًا
+            appliedDiscounts.push("الطالب حاصل على درجة الإمتياز (90): 5%");
         }
         if (criteria.includes('golden')) {
-            discount += 10;
+            discount += 10; // خصم 10% إذا كان الطالب حصل على الميدالية الذهبية
+            appliedDiscounts.push("حاصل على الذهبية: 10%");
         }
         if (criteria.includes('silver')) {
-            discount += 5;
-        }
-        if (criteria.includes('workerChildren')) {
-            discount += 7;
+            discount += 5;  // خصم 5% إذا كان الطالب حاصل على الميدالية الفضية
+            appliedDiscounts.push("حاصل على الفضية: 5%");
         }
         if (criteria.includes('cashBefore31May')) {
-            discount += 15;
+            discount += 10; // خصم 10% إذا تم سداد المصاريف قبل 31 مايو
+            appliedDiscounts.push("سداد المصاريف قبل 31/5: 10%");
         }
         if (criteria.includes('cashBefore31July')) {
-            discount += 10;
+            discount += 5;  // خصم 5% إذا تم سداد المصاريف قبل 31 يوليو
+            appliedDiscounts.push("سداد المصاريف قبل 31/7: 5%");
         }
 
-        // تحديث القائمة التي تم تحديدها
-        document.getElementById('selectedOptionsList').innerHTML = criteria
-            .map(criteriaItem => `<li>${criteriaItem}</li>`)
-            .join(''); 
+        // التأكد من أن الخصم لا يتجاوز 25%
+        if (discount > 25) {
+            alert("الخصم لا يمكن أن يتجاوز 25%. سيتم تطبيق الخصم الأقصى.");
+            discount = 25;  // تحديد الخصم الأقصى إلى 25%
+        }
 
-        // إظهار الخصومات
+        // عرض الخصومات المطبقة في القائمة
+        document.getElementById('selectedOptionsList').innerHTML = appliedDiscounts.map(d => `<li>${d}</li>`).join('');
         document.getElementById('selectedOptions').classList.remove('hidden');
         updateTotalCost();
     }
