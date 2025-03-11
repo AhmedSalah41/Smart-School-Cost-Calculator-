@@ -114,7 +114,6 @@
             color: #2980b9;
         }
 
-        /* تكبير الأزرار في الجوال */
         @media (max-width: 768px) {
             .btn-container {
                 flex-direction: column;
@@ -132,7 +131,7 @@
 <body>
 
 <div class="container">
-    <img src="Smart.jpg" alt="Smart School Logo" class="logo">
+    <img src="logo.png" alt="Smart School Logo" class="logo">
     <h1>مدرسة سمارت</h1>
 
     <!-- اختيارات نوع التعليم -->
@@ -210,7 +209,7 @@
 
     <!-- عرض الاختيارات التي تم تحديدها للخصم -->
     <div id="selectedOptions" class="selected-options hidden">
-        <p>الاختيارات التي تم تحديدها للخصم:</p>
+        <p>الخصومات التي تم الموافقة عليها:</p>
         <ul id="selectedOptionsList"></ul>
     </div>
 
@@ -288,23 +287,50 @@
                 isSilverSelected = true;
                 discount = 5; // خصم الفضية 5%
                 selectedDiscounts.push("حاصل على الفضية");
+            } else if (option.value === 'cashBefore31May') {
+                is31MaySelected = true;
+                selectedDiscounts.push("سداد المصاريف كاش قبل 31/5");
+            } else if (option.value === 'cashBefore31July') {
+                is31JulySelected = true;
+                selectedDiscounts.push("سداد المصاريف كاش قبل 31/7");
+            } else if (option.value === 'workerChildren') {
+                isWorkerChildrenSelected = true;
+                selectedDiscounts = ["أبناء عاملين"];
+                break; // إذا تم اختيار أبناء عاملين، نبطل باقي الاختيارات
             }
         }
 
-        // إذا تم تحديد خصم الذهبية أو الفضية، لا يمكن اختيار خصم آخر يتعارض معها
+        // التحقق من شروط الخصومات المتعارضة
         if (isGoldenSelected && isSilverSelected) {
             alert("لا يمكن اختيار الخصم الذهبية مع الفضية");
-            document.getElementById('discountCriteria').value = [];
+            resetDiscounts();
             return;
+        }
+        if (is31MaySelected && is31JulySelected) {
+            alert("لا يمكن اختيار سداد المصاريف قبل 31/5 مع سداد المصاريف قبل 31/7");
+            resetDiscounts();
+            return;
+        }
+        if (isWorkerChildrenSelected) {
+            // إلغاء باقي الخيارات إذا تم اختيار أبناء عاملين
+            document.getElementById('discountCriteria').disabled = true;
+        } else {
+            document.getElementById('discountCriteria').disabled = false;
         }
 
         // تحديث عرض الخصومات المختارة
-        let discountMessage = `الخصم الكلي هو: ${discount}%`;
-        document.getElementById('discountAmount').innerText = discountMessage;
+        document.getElementById('discountAmount').innerText = `الخصم الكلي هو: ${discount}%`;
         document.getElementById('selectedOptionsList').innerHTML = selectedDiscounts.map(item => `<li>${item}</li>`).join('');
         document.getElementById('selectedOptions').classList.remove('hidden');
 
         // تحديث التكلفة الإجمالية
+        updateTotalCost();
+    }
+
+    // إعادة تعيين الخصومات
+    function resetDiscounts() {
+        document.getElementById('discountCriteria').value = [];
+        document.getElementById('selectedOptions').classList.add('hidden');
         updateTotalCost();
     }
 
