@@ -187,7 +187,24 @@
         </div>
     </div>
 
-   
+    <!-- سؤال الباص -->
+    <div id="busQuestion" class="hidden">
+        <div class="form-group">
+            <label for="busSubscription">هل ترغب في الاشتراك في الباص؟</label>
+            <select id="busSubscription" onchange="updateTotalCost()">
+                <option value="" disabled selected>اضغط هنا</option>
+                <option value="yes">نعم</option>
+                <option value="no">لا</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- إجمالي المبلغ -->
+    <div id="totalAmount" class="hidden">
+        <div class="cost-box">
+            <div id="finalAmount"></div>
+        </div>
+    </div>
 
     <!-- اختيار ما يتطابق للحصول على الخصم -->
     <div id="discountCriteriaSection" class="form-group hidden">
@@ -220,24 +237,7 @@
     </div>
 
 </div>
- <!-- سؤال الباص -->
-    <div id="busQuestion" class="hidden">
-        <div class="form-group">
-            <label for="busSubscription">هل ترغب في الاشتراك في الباص؟</label>
-            <select id="busSubscription" onchange="updateTotalCost()">
-                <option value="" disabled selected>اضغط هنا</option>
-                <option value="yes">نعم</option>
-                <option value="no">لا</option>
-            </select>
-        </div>
-    </div>
 
-    <!-- إجمالي المبلغ -->
-    <div id="totalAmount" class="hidden">
-        <div class="cost-box">
-            <div id="finalAmount"></div>
-        </div>
-    </div>
 <script>
     let baseCost = 0;
     let busCost = 10000; // سعر الباص
@@ -246,7 +246,7 @@
     // اختيار نوع المدرسة
     function selectSchool(type) {
         if (type === 'foreign') {
-            baseCost = totalCost; // مثال على تكاليف التعليم الأجنبي
+            baseCost = 45000; // مثال على تكاليف التعليم الأجنبي
             document.getElementById('schoolSelection').classList.add('hidden');
             document.getElementById('childrenSelection').classList.remove('hidden');
         } else {
