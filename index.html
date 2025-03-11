@@ -372,28 +372,32 @@
         document.getElementById('selectedOptionsList').innerHTML = selectedDiscounts.map(option => `<li>${option}</li>`).join('');
         document.getElementById('selectedOptions').classList.remove('hidden');
 
+        // عرض الملاحظات بعد اختيار الخصم
+        document.getElementById('notes').classList.remove('hidden'); // عرض الملاحظات المخفية
+
         // حساب المبلغ النهائي
         updateTotalCost();
     }
 
-    // تحديث إجمالي التكلفة
+    // تحديث التكلفة الإجمالية بناءً على الخصم
     function updateTotalCost() {
-        const busSubscription = document.getElementById('busSubscription').value;
-        let totalCost = baseCost - (baseCost * discount / 100);
+        let total = baseCost - (baseCost * (discount / 100));
 
-        if (busSubscription === 'yes') {
-            totalCost += busCost;
+        // إضافة تكلفة الباص إذا تم الاشتراك
+        if (document.getElementById('busSubscription').value === 'yes') {
+            total += busCost;
         }
 
-        document.getElementById('finalAmount').innerText = `الإجمالي: ${totalCost} جنيه`;
+        document.getElementById('finalAmount').innerText = `المبلغ الإجمالي بعد الخصم: ${total} جنيه`;
         document.getElementById('totalAmount').classList.remove('hidden');
     }
 
-    // إعادة تعيين الخصومات
+    // إعادة تعيين الاختيارات
     function resetDiscounts() {
-        document.getElementById('discountCriteria').value = "";
-        document.getElementById('discountAmount').innerText = "";
-        document.getElementById('selectedOptionsList').innerHTML = "";
+        document.getElementById('discountCriteria').value = '';
+        document.getElementById('discountAmount').innerText = '';
+        document.getElementById('selectedOptions').classList.add('hidden');
+        document.getElementById('notes').classList.add('hidden');
         document.getElementById('totalAmount').classList.add('hidden');
     }
 </script>
