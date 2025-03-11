@@ -307,8 +307,12 @@
             totalCost += busCost;
         }
 
+        // تحديث المبلغ الإجمالي بعد الحساب
         document.getElementById('finalAmount').innerText = `المبلغ الإجمالي بعد الخصم: ${totalCost} جنيه`;
         document.getElementById('totalAmount').classList.remove('hidden');
+
+        // عرض الملاحظات
+        document.getElementById('notes').classList.remove('hidden');
     }
 
     // تحديد الخصومات
