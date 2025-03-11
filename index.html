@@ -145,7 +145,7 @@
 <body>
 
 <div class="container">
-    <img src="Smart.jpg" alt="Smart School Logo" class="logo">
+    <img src="logo.png" alt="Smart School Logo" class="logo">
     <h1>مدرسة سمارت</h1>
 
     <!-- اختيارات نوع التعليم -->
@@ -245,8 +245,15 @@
 
     // اختيار نوع المدرسة
     function selectSchool(type) {
-        document.getElementById('schoolSelection').classList.add('hidden');
-        document.getElementById('childrenSelection').classList.remove('hidden');
+        if (type === 'foreign') {
+            baseCost = 45000; // مثال على تكاليف التعليم الأجنبي
+            document.getElementById('schoolSelection').classList.add('hidden');
+            document.getElementById('childrenSelection').classList.remove('hidden');
+        } else {
+            baseCost = 35000; // تكاليف التعليم العربي (مثال)
+            document.getElementById('schoolSelection').classList.add('hidden');
+            document.getElementById('childrenSelection').classList.remove('hidden');
+        }
     }
 
     // إظهار المرحلة التعليمية
@@ -264,22 +271,16 @@
         const stage = document.getElementById('educationalStage').value;
         let costMessage = '';
         if (stage === 'KG_BC') {
-            baseCost = 23000;
             costMessage = 'المصاريف قبل الخصم: 23,000 جنيه';
         } else if (stage === 'KG') {
-            baseCost = 30000;
             costMessage = 'المصاريف قبل الخصم: 30,000 جنيه';
         } else if (stage === 'GR1_GR3') {
-            baseCost = 33000;
             costMessage = 'المصاريف قبل الخصم: 33,000 جنيه';
         } else if (stage === 'GR4_GR6') {
-            baseCost = 36000;
             costMessage = 'المصاريف قبل الخصم: 36,000 جنيه';
         } else if (stage === 'GR7_GR9') {
-            baseCost = 39000;
             costMessage = 'المصاريف قبل الخصم: 39,000 جنيه';
         } else if (stage === 'GR10_GR12') {
-            baseCost = 42000;
             costMessage = 'المصاريف قبل الخصم: 42,000 جنيه';
         }
 
@@ -364,4 +365,14 @@
         // خصم الباص إذا تم تحديده
         let busSelection = document.getElementById('busSubscription').value;
         if (busSelection === "yes") {
-            total += bus
+            total += busCost; 
+        }
+        
+        total -= total * (discount / 100); // تطبيق الخصم
+        document.getElementById('finalAmount').innerText = `إجمالي المبلغ: ${total} جنيه`;
+        document.getElementById('totalAmount').classList.remove('hidden');
+    }
+</script>
+
+</body>
+</html>
