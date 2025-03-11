@@ -31,7 +31,7 @@
         .logo {
             display: block;
             margin: 0 auto 20px;
-            max-width: 150px; /* يمكنك تعديل هذا بناءً على حجم اللوجو */
+            max-width: 150px;
         }
 
         .btn {
@@ -53,7 +53,7 @@
         }
 
         .btn-container {
-            text-align: center; /* لتوسيط الأزرار تحت اسم المدرسة */
+            text-align: center;
             margin-top: 20px;
         }
 
@@ -106,39 +106,31 @@
         }
 
         /* تحسين شكل select */
-        select[multiple] {
-            height: 150px;
+        select {
             background-color: #fff;
             color: #333;
             border: 2px solid #3498db;
             border-radius: 5px;
-            box-sizing: border-box;
             font-size: 16px;
             padding: 10px;
             appearance: none; /* إزالة الشكل الافتراضي */
             -webkit-appearance: none;
             -moz-appearance: none;
+            width: 100%;
+            margin-top: 10px;
         }
 
-        /* عند التركيز على select */
-        select[multiple]:focus {
+        select:focus {
             background-color: #f9f9f9;
             border-color: #2980b9;
         }
 
-        /* تصميم زر الـ select لتغيير اللون ونمط الزر */
-        select[multiple] option {
-            padding: 10px;
+        /* تصميم السهم المخصص */
+        select::-ms-expand {
+            display: none;
         }
 
-        /* تغيير النص الافتراضي في select */
-        select[multiple]::before {
-            content: "اضغط هنا"; /* النص الذي سيظهر قبل الاختيار */
-            color: #999;
-        }
-
-        /* إضافة صورة السهم */
-        select[multiple] {
+        select {
             background-image: url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 width=%2216%22 height=%2216%22%3E%3Cpath d=%22M7 10l5 5 5-5z%22/%3E%3C/svg%3E');
             background-repeat: no-repeat;
             background-position: right 10px center;
@@ -147,21 +139,16 @@
 
         /* تحسين مظهر السليكت على الهواتف */
         @media (max-width: 768px) {
-            select[multiple] {
+            select {
                 font-size: 14px;
-                height: 120px;
                 background-color: #f5f5f5;
+                height: 50px;
                 border-radius: 8px;
             }
 
-            select[multiple] option {
-                padding: 8px;
-            }
-
-            select[multiple]::before {
+            select::before {
                 content: "اضغط هنا";
-                color: #666;
-                padding-left: 10px;
+                color: #999;
             }
         }
 
@@ -170,7 +157,7 @@
 <body>
 
 <div class="container">
-    <img src="Smart.jpg" alt="Smart School Logo" class="logo"> <!-- مكان اللوجو -->
+    <img src="ٍSmart.jpg" alt="Smart School Logo" class="logo">
     <h1>مدرسة سمارت</h1>
 
     <div id="schoolSelection" class="btn-container">
@@ -207,7 +194,6 @@
         </div>
     </div>
 
-    <!-- سؤال الاشتراك في الباص -->
     <div id="busQuestion" class="hidden">
         <div class="form-group">
             <label for="busSubscription">هل ترغب في الاشتراك في الباص؟</label>
@@ -219,14 +205,12 @@
         </div>
     </div>
 
-    <!-- إجمالي المطلوب -->
     <div id="totalAmount" class="hidden">
         <div class="cost-box">
             <div id="finalAmount"></div>
         </div>
     </div>
 
-    <!-- اختيار خصم -->
     <div id="discountCriteriaSection" class="form-group hidden">
         <label for="discountCriteria">برجاء اختيار ما يتطابق للحصول على الخصم:</label>
         <select id="discountCriteria" multiple onchange="calculateDiscount()">
