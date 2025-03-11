@@ -2,7 +2,7 @@
 <html lang="ar">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, content="width=device-width, initial-scale=1.0">
     <title>Smart School</title>
     <style>
         body {
@@ -114,20 +114,6 @@
             color: #2980b9;
         }
 
-        .notes {
-            margin-top: 20px;
-            padding: 15px;
-            background-color: #f9e79f;
-            border-radius: 8px;
-            font-size: 16px;
-            color: #d35400;
-        }
-
-        .notes ul {
-            list-style-type: disc;
-            margin-left: 20px;
-        }
-
         @media (max-width: 768px) {
             .btn-container {
                 flex-direction: column;
@@ -139,7 +125,6 @@
                 margin: 10px 0;
             }
         }
-
     </style>
 </head>
 <body>
@@ -152,14 +137,6 @@
     <div id="schoolSelection" class="btn-container">
         <button class="btn" onclick="selectSchool('arabic')">مصاريف مدرسة سمارت (قسم العربي )</button>
         <button class="btn" onclick="selectSchool('foreign')">مصاريف  مدرسة سمارت (قسم لغات )</button>
-    </div>
-
-    <!-- إدخال عدد الأبناء -->
-    <div id="childrenSelection" class="hidden">
-        <div class="form-group">
-            <label for="childrenCount">الرجاء إدخال عدد الأبناء:</label>
-            <input type="number" id="childrenCount" min="1" max="10" placeholder="عدد الأبناء" oninput="showEducationalStage()">
-        </div>
     </div>
 
     <!-- اختيار المراحل الدراسية للأطفال -->
@@ -216,27 +193,18 @@
         <ul id="selectedOptionsList"></ul>
     </div>
 
-    <!-- ملاحظات -->
-    <div id="notes" class="notes hidden">
-        <p>ملاحظات هامة:</p>
-        <ul>
-            <li>مصاريف الكتب: 30,000 جنيه.</li>
-            <li>يوجد خصومات أخرى للطلاب الفائزين في بطولات رياضية أو دينية.</li>
-        </ul>
-    </div>
-
 </div>
 
 <script>
     let baseCost = 0;
     let busCost = 10000; // سعر الباص
-    let booksCost = 30000; // تكلفة الكتب
+    let booksCost = 3000; // تكلفة الكتب
     let discount = 0;
 
     // اختيار نوع المدرسة
     function selectSchool(type) {
         document.getElementById('schoolSelection').classList.add('hidden');
-        document.getElementById('childrenSelection').classList.remove('hidden');
+        document.getElementById('childrenStages').classList.remove('hidden');
     }
 
     // إظهار الحقول الخاصة بكل طفل بناءً على عدد الأبناء
@@ -344,11 +312,11 @@
 
     // تحديث المبلغ الإجمالي
     function updateTotalCost() {
-        let childrenCount = document.getElementById('childrenCount').value;
+        let childrenCount = document.getElementById('childrenCount') ? document.getElementById('childrenCount').value : 1;
         let totalCost = 0;
 
         for (let i = 0; i < childrenCount; i++) {
-            let childStage = document.getElementById(`child${i+1}Stage`).value;
+            let childStage = document.getElementById(`child${i+1}Stage`) ? document.getElementById(`child${i+1}Stage`).value : 'GR1_GR3';
             let childCost = 0;
 
             if (childStage === 'KG_BC') {
@@ -387,8 +355,6 @@
 
         document.getElementById('busQuestion').classList.remove('hidden');
         document.getElementById('discountCriteriaSection').classList.remove('hidden');
-        document.getElementById('notes').classList.remove('hidden');
-        document.getElementById('booksButton').classList.remove('hidden');
     }
 </script>
 
