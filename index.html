@@ -10,7 +10,7 @@
             text-align: right;
             margin: 0;
             padding: 0;
-            direction: rtl; /* النص من اليمين لليسار */
+            direction: rtl;
             background-color: #f4f4f4;
         }
 
@@ -35,58 +35,81 @@
             color: #3498db;
         }
 
-        /* تحسين شكل الأزرار */
         .btn-container {
             display: flex;
             justify-content: space-evenly;
             margin: 20px 0;
-            flex-wrap: wrap; /* لتمكين الأزرار من التكيف مع الأجهزة الصغيرة */
         }
 
         .btn {
             background-color: #3498db;
             color: #fff;
-            padding: 15px 30px;
+            padding: 12px 30px;
             border: none;
-            border-radius: 10px;
+            border-radius: 5px;
             font-size: 18px;
             cursor: pointer;
-            width: 45%;
-            margin: 10px 0;
-            text-align: center;
+            width: 200px;
         }
 
         .btn:hover {
             background-color: #2980b9;
         }
 
-        .btn:focus {
-            outline: none;
+        .hidden {
+            display: none;
         }
 
-        @media (max-width: 600px) {
-            .btn {
-                width: 80%; /* تقليص عرض الأزرار على الشاشات الصغيرة */
-                font-size: 16px;
-                padding: 12px 20px;
-            }
+        .form-group {
+            margin-bottom: 20px;
         }
 
-        /* تنسيق السليكت */
-        select {
-            padding: 10px;
-            font-size: 16px;
+        label {
+            font-size: 18px;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input, select {
             width: 100%;
-            border-radius: 10px;
-            border: 1px solid #ddd;
-            background-color: #f9f9f9;
-            color: #333;
-        }
-
-        /* تنسيق خيارات السليكت */
-        option {
             padding: 10px;
             font-size: 16px;
+            border: 2px solid #3498db;
+            border-radius: 5px;
+        }
+
+        select {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+        }
+
+        select:focus {
+            background-color: #f9f9f9;
+            border-color: #2980b9;
+        }
+
+        .cost-box {
+            margin: 20px 0;
+            padding: 10px;
+            background-color: #ecf0f1;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .cost-box div {
+            margin: 5px 0;
+        }
+
+        .criteria {
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .selected-options {
+            margin: 20px 0;
+            font-size: 16px;
+            color: #2980b9;
         }
 
     </style>
@@ -103,111 +126,181 @@
         <button class="btn" onclick="selectSchool('foreign')">مصاريف التعليم الأجنبي</button>
     </div>
 
-    <!-- سؤال المرحلة التعليمية -->
-    <div id="educationLevel" style="display:none;">
-        <h2>الرجاء اختيار المرحلة التعليمية</h2>
-        <select id="level" onchange="showFees()">
-            <option value="">اختر المرحلة التعليمية</option>
-            <option value="bc">رياض أطفال (B.C)</option>
-            <option value="kg">رياض أطفال (KG1, KG2)</option>
-            <option value="primary">ابتدائية (GR1 - GR6)</option>
-            <option value="secondary">اعدادية (GR7 - GR9)</option>
-            <option value="highschool">ثانوية (GR10 - GR12)</option>
-        </select>
-
-        <!-- صندوق المصاريف -->
-        <div id="fees" style="display:none;">
-            <h2>المصاريف قبل الخصم</h2>
-            <p id="feesValue"></p>
+    <!-- إدخال عدد الأبناء -->
+    <div id="childrenSelection" class="hidden">
+        <div class="form-group">
+            <label for="childrenCount">الرجاء إدخال عدد الأبناء:</label>
+            <input type="number" id="childrenCount" min="1" max="10" placeholder="عدد الأبناء" oninput="showEducationalStage()">
         </div>
     </div>
 
-    <!-- اختيار الخصم -->
-    <div id="discount" style="display:none;">
-        <h2>الرجاء اختيار ما يتطابق للحصول على الخصم</h2>
-        <select id="discountSelect" onchange="calculateDiscount()">
-            <option value="">اضغط هنا</option>
-            <option value="gold">حاصل على الذهبية</option>
+    <!-- اختيار المرحلة التعليمية -->
+    <div id="educationalStageSelection" class="hidden">
+        <div class="form-group">
+            <label for="educationalStage">المرحلة التعليمية:</label>
+            <select id="educationalStage" onchange="selectStage()">
+                <option value="" disabled selected>اضغط هنا</option>
+                <option value="KG_BC">رياض أطفال (B.C)</option>
+                <option value="KG">رياض أطفال (KG1, KG2)</option>
+                <option value="GR1_GR3">ابتدائية (من GR1 إلى GR3)</option>
+                <option value="GR4_GR6">ابتدائية (من GR4 إلى GR6)</option>
+                <option value="GR7_GR9">إعدادية (من GR7 إلى GR9)</option>
+                <option value="GR10_GR12">ثانوية (من GR10 إلى GR12)</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- عرض المصاريف -->
+    <div id="costDisplay" class="hidden">
+        <div class="cost-box">
+            <div id="costBeforeDiscount"></div>
+            <div id="discountAmount"></div>
+            <div id="totalCost"></div>
+        </div>
+    </div>
+
+    <!-- سؤال الباص -->
+    <div id="busQuestion" class="hidden">
+        <div class="form-group">
+            <label for="busSubscription">هل ترغب في الاشتراك في الباص؟</label>
+            <select id="busSubscription" onchange="updateTotalCost()">
+                <option value="" disabled selected>اضغط هنا</option>
+                <option value="yes">نعم</option>
+                <option value="no">لا</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- إجمالي المبلغ -->
+    <div id="totalAmount" class="hidden">
+        <div class="cost-box">
+            <div id="finalAmount"></div>
+        </div>
+    </div>
+
+    <!-- اختيار ما يتطابق للحصول على الخصم -->
+    <div id="discountCriteriaSection" class="form-group hidden">
+        <label for="discountCriteria">برجاء اختيار ما يتطابق للحصول على الخصم:</label>
+        <select id="discountCriteria" multiple onchange="calculateDiscount()">
+            <option value="siblings">الطالب لديه أخوه في المدرسة</option>
+            <option value="topGrade">الطالب حاصل على درجة التفوق (100)</option>
+            <option value="excellentGrade">الطالب حاصل على درجة الإمتياز (90)</option>
+            <option value="golden">حاصل على الذهبية</option>
             <option value="silver">حاصل على الفضية</option>
-            <option value="workers">أبناء عاملين</option>
-            <option value="before31May">سداد المصاريف كاش قبل 31/5</option>
-            <option value="before31July">سداد المصاريف كاش قبل 31/7</option>
+            <option value="workerChildren">أبناء عاملين</option>
+            <option value="cashBefore31May">سداد المصاريف كاش قبل 31/5</option>
+            <option value="cashBefore31July">سداد المصاريف كاش قبل 31/7</option>
         </select>
     </div>
 
-    <!-- اجمالي المطلوب -->
-    <div id="total" style="display:none;">
-        <h2>الإجمالي المطلوب</h2>
-        <p id="totalValue"></p>
+    <!-- عرض الاختيارات التي تم تحديدها للخصم -->
+    <div id="selectedOptions" class="selected-options hidden">
+        <p>الاختيارات التي تم تحديدها للخصم:</p>
+        <ul id="selectedOptionsList"></ul>
     </div>
+
 </div>
 
 <script>
-    // التعامل مع اختيار نوع التعليم
+    let baseCost = 0;
+    let busCost = 10000; // سعر الباص
+    let discount = 0;
+
+    // اختيار نوع المدرسة
     function selectSchool(type) {
-        alert("تم اختيار " + (type === 'arabic' ? 'التعليم العربي' : 'التعليم الأجنبي'));
-        document.getElementById('educationLevel').style.display = 'block';
+        document.getElementById('schoolSelection').classList.add('hidden');
+        document.getElementById('childrenSelection').classList.remove('hidden');
     }
 
-    // عرض المصاريف بناءً على المرحلة التعليمية
-    function showFees() {
-        const level = document.getElementById('level').value;
-        let fees = 0;
+    // إظهار المرحلة التعليمية
+    function showEducationalStage() {
+        let childrenCount = document.getElementById('childrenCount').value;
+        if (childrenCount > 0) {
+            document.getElementById('educationalStageSelection').classList.remove('hidden');
+        } else {
+            document.getElementById('educationalStageSelection').classList.add('hidden');
+        }
+    }
 
-        switch (level) {
-            case 'bc':
-                fees = 23000;
-                break;
-            case 'kg':
-                fees = 30000;
-                break;
-            case 'primary':
-                fees = 33000;
-                break;
-            case 'secondary':
-                fees = 39000;
-                break;
-            case 'highschool':
-                fees = 42000;
-                break;
-            default:
-                fees = 0;
+    // اختيار المرحلة التعليمية
+    function selectStage() {
+        const stage = document.getElementById('educationalStage').value;
+        let costMessage = '';
+        if (stage === 'KG_BC') {
+            baseCost = 23000;
+            costMessage = 'المصاريف قبل الخصم: 23,000 جنيه';
+        } else if (stage === 'KG') {
+            baseCost = 30000;
+            costMessage = 'المصاريف قبل الخصم: 30,000 جنيه';
+        } else if (stage === 'GR1_GR3') {
+            baseCost = 33000;
+            costMessage = 'المصاريف قبل الخصم: 33,000 جنيه';
+        } else if (stage === 'GR4_GR6') {
+            baseCost = 36000;
+            costMessage = 'المصاريف قبل الخصم: 36,000 جنيه';
+        } else if (stage === 'GR7_GR9') {
+            baseCost = 39000;
+            costMessage = 'المصاريف قبل الخصم: 39,000 جنيه';
+        } else if (stage === 'GR10_GR12') {
+            baseCost = 42000;
+            costMessage = 'المصاريف قبل الخصم: 42,000 جنيه';
         }
 
-        document.getElementById('fees').style.display = fees > 0 ? 'block' : 'none';
-        document.getElementById('feesValue').textContent = "المصاريف قبل الخصم: " + fees + " جنيه";
-        document.getElementById('discount').style.display = 'block';
+        document.getElementById('costBeforeDiscount').innerText = costMessage;
+        document.getElementById('costDisplay').classList.remove('hidden');
+        document.getElementById('busQuestion').classList.remove('hidden');
+    }
+
+    // تحديث الإجمالي بناءً على الاختيارات
+    function updateTotalCost() {
+        let totalCost = baseCost;
+
+        // إضافة تكلفة الباص إذا تم اختياره
+        if (document.getElementById('busSubscription').value === 'yes') {
+            totalCost += busCost;
+        }
+
+        // عرض المبلغ الإجمالي
+        document.getElementById('finalAmount').innerText = `إجمالي المبلغ: ${totalCost.toLocaleString()} جنيه`;
+        document.getElementById('totalAmount').classList.remove('hidden');
     }
 
     // حساب الخصم بناءً على الاختيارات
     function calculateDiscount() {
-        const selectedDiscount = document.getElementById('discountSelect').value;
-        let discount = 0;
-        let discountMessage = '';
+        const selectedOptions = document.getElementById('discountCriteria').selectedOptions;
+        let selectedList = [];
+        discount = 0;
 
-        if (selectedDiscount === 'gold') {
-            discount = 10;
-            discountMessage = 'خصم الذهبية: 10%';
-        } else if (selectedDiscount === 'silver') {
-            discount = 5;
-            discountMessage = 'خصم الفضية: 5%';
-        } else if (selectedDiscount === 'workers') {
-            discount = 25;
-            discountMessage = 'خصم أبناء العاملين: 25%';
-        } else if (selectedDiscount === 'before31May') {
-            discount = 5;
-            discountMessage = 'خصم الدفع قبل 31/5: 5%';
-        } else if (selectedDiscount === 'before31July') {
-            discount = 5;
-            discountMessage = 'خصم الدفع قبل 31/7: 5%';
+        // إضافة الخصومات بناءً على الخيارات المحددة
+        for (let option of selectedOptions) {
+            selectedList.push(option.text);
+            if (option.value === "siblings") {
+                discount += 3000;
+            } else if (option.value === "topGrade") {
+                discount += 5000;
+            } else if (option.value === "excellentGrade") {
+                discount += 4000;
+            } else if (option.value === "golden") {
+                discount += 10000;
+            } else if (option.value === "silver") {
+                discount += 7000;
+            } else if (option.value === "workerChildren") {
+                discount += 5000;
+            } else if (option.value === "cashBefore31May") {
+                discount += 3000;
+            } else if (option.value === "cashBefore31July") {
+                discount += 2000;
+            }
         }
 
-        const fees = parseInt(document.getElementById('feesValue').textContent.replace(/[^\d]/g, ''));
-        const totalAfterDiscount = fees - (fees * discount / 100);
-        const totalMessage = 'الإجمالي المطلوب: ' + totalAfterDiscount + " جنيه" + " (" + discountMessage + ")";
+        // تحديث المبلغ النهائي بعد الخصم
+        let totalAfterDiscount = baseCost + (document.getElementById('busSubscription').value === 'yes' ? busCost : 0) - discount;
+        document.getElementById('discountAmount').innerText = `الخصم: -${discount.toLocaleString()} جنيه`;
+        document.getElementById('totalCost').innerText = `المبلغ بعد الخصم: ${totalAfterDiscount.toLocaleString()} جنيه`;
 
-        document.getElementById('total').style.display = 'block';
-        document.getElementById('totalValue').textContent = totalMessage;
+        // عرض الاختيارات المحددة للخصم
+        document.getElementById('selectedOptionsList').innerHTML = selectedList.map(option => `<li>${option}</li>`).join('');
+        document.getElementById('selectedOptions').classList.remove('hidden');
     }
 </script>
 
