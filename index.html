@@ -102,14 +102,9 @@
             max-width: 80px;
         }
 
-        .checkbox-group {
-            display: flex;
-            flex-direction: column;
-            margin-top: 10px;
-        }
-
-        .checkbox-group label {
-            margin-bottom: 8px;
+        /* Style for multi-select dropdown */
+        select[multiple] {
+            height: 150px;
         }
 
     </style>
@@ -155,14 +150,14 @@
     <!-- الأسئلة الإضافية -->
     <div id="additionalQuestions" class="hidden">
         <div class="form-group">
-            <label>برجاء اختيار ما يتطابق للحصول على الخصم:</label>
-            <div class="checkbox-group">
-                <label><input type="checkbox" name="discountCriteria" value="siblings"> الطالب لديه أخوه في المدرسة</label>
-                <label><input type="checkbox" name="discountCriteria" value="topGrade"> الطالب حاصل على درجة التفوق (100)</label>
-                <label><input type="checkbox" name="discountCriteria" value="excellentGrade"> الطالب حاصل على درجة الإمتياز (90)</label>
-                <label><input type="checkbox" name="discountCriteria" value="cashBefore31May"> سداد المصاريف كاش قبل 31/5</label>
-                <label><input type="checkbox" name="discountCriteria" value="cashBefore31July"> سداد المصاريف كاش قبل 31/7</label>
-            </div>
+            <label for="discountCriteria">برجاء اختيار ما يتطابق للحصول على الخصم:</label>
+            <select id="discountCriteria" multiple>
+                <option value="siblings">الطالب لديه أخوه في المدرسة</option>
+                <option value="topGrade">الطالب حاصل على درجة التفوق (100)</option>
+                <option value="excellentGrade">الطالب حاصل على درجة الإمتياز (90)</option>
+                <option value="cashBefore31May">سداد المصاريف كاش قبل 31/5</option>
+                <option value="cashBefore31July">سداد المصاريف كاش قبل 31/7</option>
+            </select>
         </div>
     </div>
 
