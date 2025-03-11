@@ -150,8 +150,8 @@
 
     <!-- اختيارات نوع التعليم -->
     <div id="schoolSelection" class="btn-container">
-        <button class="btn" onclick="selectSchool('arabic')">مصاريف القسم العربي</button>
-        <button class="btn" onclick="selectSchool('foreign')">مصاريف القسم الأجنبي</button>
+        <button class="btn" onclick="selectSchool('arabic')">مصاريف مدرسة سمارت (قسم العربي )</button>
+        <button class="btn" onclick="selectSchool('foreign')">مصاريف  مدرسة سمارت (قسم لغات )</button>
     </div>
 
     <!-- إدخال عدد الأبناء -->
@@ -313,11 +313,11 @@
                 selectedDiscounts.push("حاصل على الفضية");
             } else if (option.value === 'cashBefore31May') {
                 is31MaySelected = true;
-                discount += 5; // خصم 5% للسداد قبل 31 مايو
+                discount += 10; // خصم 5% للسداد قبل 31 مايو
                 selectedDiscounts.push("سداد المصاريف كاش قبل 31/5");
             } else if (option.value === 'cashBefore31July') {
                 is31JulySelected = true;
-                discount += 3; // خصم 3% للسداد قبل 31 يوليو
+                discount += 5; // خصم 3% للسداد قبل 31 يوليو
                 selectedDiscounts.push("سداد المصاريف كاش قبل 31/7");
             } else if (option.value === 'workerChildren') {
                 isWorkerChildrenSelected = true;
@@ -325,7 +325,7 @@
                 selectedDiscounts = ["أبناء عاملين"];
                 break; // إذا تم اختيار أبناء عاملين، نبطل باقي الاختيارات
             } else if (option.value === 'siblings') {
-                discount += 10; // خصم 10% إذا كان الطالب لديه إخوة
+                discount += 5; // خصم 10% إذا كان الطالب لديه إخوة
                 selectedDiscounts.push("الطالب لديه أخوه في المدرسة");
             } else if (option.value === 'topGrade') {
                 isTopGradeSelected = true;
