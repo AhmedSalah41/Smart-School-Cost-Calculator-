@@ -2,7 +2,7 @@
 <html lang="ar">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart School</title>
     <style>
         body {
@@ -205,6 +205,15 @@
     function selectSchool(type) {
         document.getElementById('schoolSelection').classList.add('hidden');
         document.getElementById('childrenStages').classList.remove('hidden');
+
+        // تحديث المراحل الدراسية
+        let stagesHtml = `
+            <div class="form-group">
+                <label for="childrenCount">عدد الأبناء:</label>
+                <input type="number" id="childrenCount" min="1" value="1" onchange="showEducationalStage()">
+            </div>
+        `;
+        document.getElementById('childrenStages').innerHTML = stagesHtml;
     }
 
     // إظهار الحقول الخاصة بكل طفل بناءً على عدد الأبناء
