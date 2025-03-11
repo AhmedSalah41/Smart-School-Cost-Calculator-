@@ -346,32 +346,37 @@
             return;
         }
 
+        // التأكد من أن الخصم لا يتجاوز 25%
+        if (discount > 25) {
+            discount = 25; // تحديد الحد الأقصى للخصم إلى 25%
+        }
+
         // تحديث عرض الخصومات المختارة
-        document.getElementById('discountAmount').innerText = `الخصم الكلي هو: ${discount}%`; // نقل الخصم الكلي هنا
-        document.getElementById('selectedOptionsList').innerHTML = selectedDiscounts.map(option => `<li>${option}</li>`).join(''); 
+        document.getElementById('discountAmount').innerText = `الخصم الكلي هو: ${discount}%`;
+        document.getElementById('selectedOptionsList').innerHTML = selectedDiscounts.map(option => `<li>${option}</li>`).join('');
         document.getElementById('selectedOptions').classList.remove('hidden');
 
         // حساب المبلغ النهائي
         updateTotalCost();
     }
 
-    // تحديث إجمالي المبلغ بعد الخصم
+    // تحديث المبلغ الإجمالي بعد الخصم
     function updateTotalCost() {
-        let totalCost = baseCost - (baseCost * discount / 100);
+        let finalCost = baseCost - (baseCost * discount / 100);
         if (document.getElementById('busSubscription').value === 'yes') {
-            totalCost += busCost;
+            finalCost += busCost;
         }
-        document.getElementById('finalAmount').innerText = `المبلغ الإجمالي بعد الخصم: ${totalCost.toFixed(2)} جنيه`;
+        document.getElementById('finalAmount').innerText = `المبلغ النهائي: ${finalCost} جنيه`;
         document.getElementById('totalAmount').classList.remove('hidden');
     }
 
-    // إعادة تعيين الخصم
+    // إعادة تعيين الخصومات
     function resetDiscounts() {
-        discount = 0;
-        document.getElementById('selectedOptionsList').innerHTML = '';
+        document.getElementById('discountCriteria').selectedIndex = -1;
         document.getElementById('discountAmount').innerText = '';
-        document.getElementById('selectedOptions').classList.add('hidden');
-        document.getElementById('totalAmount').classList.add('hidden');
+        document.getElementById('selectedOptionsList').innerHTML = '';
+        discount = 0;
+        updateTotalCost();
     }
 </script>
 
