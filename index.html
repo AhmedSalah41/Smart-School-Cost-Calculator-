@@ -190,6 +190,11 @@
         <div id="finalAmount"></div>
     </div>
 
+    <!-- إضافة سعر الكتب -->
+    <div id="booksButton" class="form-group hidden">
+        <button class="btn" onclick="addBooksCost()">إضافة سعر الكتب</button>
+    </div>
+
     <!-- اختيار ما يتطابق للحصول على الخصم -->
     <div id="discountCriteriaSection" class="form-group hidden">
         <label for="discountCriteria">برجاء اختيار ما يتطابق للحصول على الخصم:</label>
@@ -215,7 +220,7 @@
     <div id="notes" class="notes hidden">
         <p>ملاحظات هامة:</p>
         <ul>
-            <li>مصاريف الكتب: 8,000 جنيه.</li>
+            <li>مصاريف الكتب: 30,000 جنيه.</li>
             <li>يوجد خصومات أخرى للطلاب الفائزين في بطولات رياضية أو دينية.</li>
         </ul>
     </div>
@@ -225,6 +230,7 @@
 <script>
     let baseCost = 0;
     let busCost = 10000; // سعر الباص
+    let booksCost = 30000; // سعر الكتب
     let discount = 0;
 
     // اختيار نوع المدرسة
@@ -307,6 +313,9 @@
             totalCost += busCost * childrenCount;
         }
 
+        // إضافة تكلفة الكتب
+        totalCost += booksCost;
+
         // تحديث المبلغ الإجمالي بعد الحساب
         document.getElementById('finalAmount').innerText = `المبلغ الإجمالي بعد الخصم: ${totalCost} جنيه`;
         document.getElementById('totalAmount').classList.remove('hidden');
@@ -322,6 +331,11 @@
 
         // عرض الملاحظات
         document.getElementById('notes').classList.remove('hidden');
+    }
+
+    // إضافة سعر الكتب إلى التكلفة الإجمالية
+    function addBooksCost() {
+        updateTotalCost();
     }
 
     // تحديث عرض الخصومات المطبقة
