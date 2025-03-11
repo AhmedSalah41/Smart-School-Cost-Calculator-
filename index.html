@@ -356,7 +356,7 @@
         }
 
         // التأكد من أنه لا يمكن اختيار أي خصم مع أبناء العاملين
-        if (isWorkerChildrenSelected) {
+        if (isWorkerChildrenSelected && selectedOptions.length > 1) {
             alert("لا يمكن اختيار أي خصم آخر مع أبناء العاملين");
             resetDiscounts();
             return;
@@ -376,26 +376,25 @@
         updateTotalCost();
     }
 
-    // حساب المبلغ النهائي بعد الخصم
+    // تحديث إجمالي التكلفة
     function updateTotalCost() {
         const busSubscription = document.getElementById('busSubscription').value;
-        let totalCost = baseCost;
+        let totalCost = baseCost - (baseCost * discount / 100);
 
         if (busSubscription === 'yes') {
             totalCost += busCost;
         }
 
-        totalCost -= (totalCost * discount) / 100;
-        document.getElementById('finalAmount').innerText = `المبلغ النهائي: ${totalCost.toFixed(2)} جنيه`;
+        document.getElementById('finalAmount').innerText = `الإجمالي: ${totalCost} جنيه`;
         document.getElementById('totalAmount').classList.remove('hidden');
     }
 
     // إعادة تعيين الخصومات
     function resetDiscounts() {
-        document.getElementById('discountCriteria').selectedIndex = -1;
-        document.getElementById('selectedOptions').classList.add('hidden');
-        document.getElementById('discountAmount').innerText = '';
-        discount = 0;
+        document.getElementById('discountCriteria').value = "";
+        document.getElementById('discountAmount').innerText = "";
+        document.getElementById('selectedOptionsList').innerHTML = "";
+        document.getElementById('totalAmount').classList.add('hidden');
     }
 </script>
 
