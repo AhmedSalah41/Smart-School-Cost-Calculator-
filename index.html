@@ -311,6 +311,15 @@
         document.getElementById('finalAmount').innerText = `المبلغ الإجمالي بعد الخصم: ${totalCost} جنيه`;
         document.getElementById('totalAmount').classList.remove('hidden');
 
+        // حساب التكلفة قبل الخصم
+        document.getElementById('costBeforeDiscount').innerText = `المبلغ قبل الخصم: ${totalCost} جنيه`;
+        document.getElementById('discountAmount').innerText = `الخصم: ${discount}%`;
+
+        // إظهار أقسام الباص والخصم والملاحظات
+        document.getElementById('busQuestion').classList.remove('hidden');
+        document.getElementById('discountCriteriaSection').classList.remove('hidden');
+        document.getElementById('totalAmount').classList.remove('hidden');
+
         // عرض الملاحظات
         document.getElementById('notes').classList.remove('hidden');
     }
