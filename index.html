@@ -245,15 +245,10 @@
 
     // اختيار نوع المدرسة
     function selectSchool(type) {
-        if (type === 'foreign') {
-            baseCost = 45000; // مثال على تكاليف التعليم الأجنبي
-            document.getElementById('schoolSelection').classList.add('hidden');
-            document.getElementById('childrenSelection').classList.remove('hidden');
-        } else {
-            baseCost = 35000; // تكاليف التعليم العربي (مثال)
-            document.getElementById('schoolSelection').classList.add('hidden');
-            document.getElementById('childrenSelection').classList.remove('hidden');
-        }
+        // عند اختيار نوع المدرسة (أجنبي أو عربي)، لا يتم تحديد baseCost هنا.
+        // ستحدد التكلفة بناءً على المرحلة التعليمية لاحقًا.
+        document.getElementById('schoolSelection').classList.add('hidden');
+        document.getElementById('childrenSelection').classList.remove('hidden');
     }
 
     // إظهار المرحلة التعليمية
@@ -270,17 +265,25 @@
     function selectStage() {
         const stage = document.getElementById('educationalStage').value;
         let costMessage = '';
+        
+        // تحديد المصاريف بناءً على المرحلة المختارة
         if (stage === 'KG_BC') {
+            baseCost = 23000; // مصاريف رياض أطفال (B.C)
             costMessage = 'المصاريف قبل الخصم: 23,000 جنيه';
         } else if (stage === 'KG') {
+            baseCost = 30000; // مصاريف رياض أطفال (KG1, KG2)
             costMessage = 'المصاريف قبل الخصم: 30,000 جنيه';
         } else if (stage === 'GR1_GR3') {
+            baseCost = 33000; // مصاريف المرحلة الابتدائية (من GR1 إلى GR3)
             costMessage = 'المصاريف قبل الخصم: 33,000 جنيه';
         } else if (stage === 'GR4_GR6') {
+            baseCost = 36000; // مصاريف المرحلة الابتدائية (من GR4 إلى GR6)
             costMessage = 'المصاريف قبل الخصم: 36,000 جنيه';
         } else if (stage === 'GR7_GR9') {
+            baseCost = 39000; // مصاريف المرحلة الإعدادية (من GR7 إلى GR9)
             costMessage = 'المصاريف قبل الخصم: 39,000 جنيه';
         } else if (stage === 'GR10_GR12') {
+            baseCost = 42000; // مصاريف المرحلة الثانوية (من GR10 إلى GR12)
             costMessage = 'المصاريف قبل الخصم: 42,000 جنيه';
         }
 
@@ -365,10 +368,12 @@
         // خصم الباص إذا تم تحديده
         let busSelection = document.getElementById('busSubscription').value;
         if (busSelection === "yes") {
-            total += busCost; 
+            total += busCost; // إضافة تكلفة الباص
         }
         
-        total -= total * (discount / 100); // تطبيق الخصم
+        // تطبيق الخصم على التكلفة
+        total -= total * (discount / 100); 
+
         document.getElementById('finalAmount').innerText = `إجمالي المبلغ: ${total} جنيه`;
         document.getElementById('totalAmount').classList.remove('hidden');
     }
