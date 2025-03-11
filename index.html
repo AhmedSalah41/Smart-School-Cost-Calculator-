@@ -162,21 +162,8 @@
         </div>
     </div>
 
-    <!-- اختيار المرحلة التعليمية -->
-    <div id="educationalStageSelection" class="hidden">
-        <div class="form-group">
-            <label for="educationalStage">المرحلة التعليمية:</label>
-            <select id="educationalStage" onchange="selectStage()">
-                <option value="" disabled selected>اضغط هنا</option>
-                <option value="KG_BC">رياض أطفال (B.C)</option>
-                <option value="KG">رياض أطفال (KG1, KG2)</option>
-                <option value="GR1_GR3">ابتدائية (من GR1 إلى GR3)</option>
-                <option value="GR4_GR6">ابتدائية (من GR4 إلى GR6)</option>
-                <option value="GR7_GR9">إعدادية (من GR7 إلى GR9)</option>
-                <option value="GR10_GR12">ثانوية (من GR10 إلى GR12)</option>
-            </select>
-        </div>
-    </div>
+    <!-- اختيار المراحل الدراسية للأطفال -->
+    <div id="childrenStages" class="hidden"></div>
 
     <!-- عرض المصاريف -->
     <div id="costDisplay" class="hidden">
@@ -246,159 +233,124 @@
         document.getElementById('childrenSelection').classList.remove('hidden');
     }
 
-    // إظهار المرحلة التعليمية
+    // إظهار الحقول الخاصة بكل طفل بناءً على عدد الأبناء
     function showEducationalStage() {
         let childrenCount = document.getElementById('childrenCount').value;
+
+        // إخفاء الحقول السابقة
+        document.getElementById('childrenStages').innerHTML = '';
+
+        // إظهار الحقول الخاصة بكل طفل
         if (childrenCount > 0) {
-            document.getElementById('educationalStageSelection').classList.remove('hidden');
-        } else {
-            document.getElementById('educationalStageSelection').classList.add('hidden');
-        }
-    }
-
-    // اختيار المرحلة التعليمية
-    function selectStage() {
-        const stage = document.getElementById('educationalStage').value;
-        let costMessage = '';
-        
-        // تحديد المصاريف بناءً على المرحلة المختارة
-        if (stage === 'KG_BC') {
-            baseCost = 23000; // مصاريف رياض أطفال (B.C)
-            costMessage = 'المصاريف قبل الخصم: 23,000 جنيه';
-        } else if (stage === 'KG') {
-            baseCost = 30000; // مصاريف رياض أطفال (KG1, KG2)
-            costMessage = 'المصاريف قبل الخصم: 30,000 جنيه';
-        } else if (stage === 'GR1_GR3') {
-            baseCost = 33000; // مصاريف المرحلة الابتدائية (من GR1 إلى GR3)
-            costMessage = 'المصاريف قبل الخصم: 33,000 جنيه';
-        } else if (stage === 'GR4_GR6') {
-            baseCost = 36000; // مصاريف المرحلة الابتدائية (من GR4 إلى GR6)
-            costMessage = 'المصاريف قبل الخصم: 36,000 جنيه';
-        } else if (stage === 'GR7_GR9') {
-            baseCost = 39000; // مصاريف المرحلة الإعدادية (من GR7 إلى GR9)
-            costMessage = 'المصاريف قبل الخصم: 39,000 جنيه';
-        } else if (stage === 'GR10_GR12') {
-            baseCost = 42000; // مصاريف المرحلة الثانوية (من GR10 إلى GR12)
-            costMessage = 'المصاريف قبل الخصم: 42,000 جنيه';
-        }
-
-        document.getElementById('costBeforeDiscount').innerText = costMessage;
-        document.getElementById('costDisplay').classList.remove('hidden');
-        document.getElementById('busQuestion').classList.remove('hidden');
-        document.getElementById('discountCriteriaSection').classList.remove('hidden');
-    }
-
-    // حساب الخصم بناءً على الاختيارات
-    function calculateDiscount() {
-        const selectedOptions = document.getElementById('discountCriteria').selectedOptions;
-        discount = 0;
-        let selectedDiscounts = [];
-        let isWorkerChildrenSelected = false;
-        let isGoldenSelected = false;
-        let isSilverSelected = false;
-        let is31MaySelected = false;
-        let is31JulySelected = false;
-        let isTopGradeSelected = false;
-        let isExcellentGradeSelected = false;
-
-        // إلغاء الخصومات المتعارضة
-        for (let option of selectedOptions) {
-            if (option.value === 'golden') {
-                isGoldenSelected = true;
-                discount += 10; // خصم الذهبية 10%
-                selectedDiscounts.push("حاصل على الذهبية");
-            } else if (option.value === 'silver') {
-                isSilverSelected = true;
-                discount += 5; // خصم الفضية 5%
-                selectedDiscounts.push("حاصل على الفضية");
-            } else if (option.value === 'cashBefore31May') {
-                is31MaySelected = true;
-                discount += 10; // خصم 5% للسداد قبل 31 مايو
-                selectedDiscounts.push("سداد المصاريف كاش قبل 31/5");
-            } else if (option.value === 'cashBefore31July') {
-                is31JulySelected = true;
-                discount += 5; // خصم 3% للسداد قبل 31 يوليو
-                selectedDiscounts.push("سداد المصاريف كاش قبل 31/7");
-            } else if (option.value === 'workerChildren') {
-                isWorkerChildrenSelected = true;
-                discount += 25; // خصم 25% لأبناء العاملين
-                selectedDiscounts = ["أبناء عاملين"];
-                break; // إذا تم اختيار أبناء عاملين، نبطل باقي الاختيارات
-            } else if (option.value === 'siblings') {
-                discount += 5; // خصم 10% إذا كان الطالب لديه إخوة
-                selectedDiscounts.push("الطالب لديه أخوه في المدرسة");
-            } else if (option.value === 'topGrade') {
-                isTopGradeSelected = true;
-                discount += 10; // خصم 10% إذا كان الطالب حاصل على درجة التفوق
-                selectedDiscounts.push("الطالب حاصل على درجة التفوق (100)");
-            } else if (option.value === 'excellentGrade') {
-                isExcellentGradeSelected = true;
-                discount += 5; // خصم 5% إذا كان الطالب حاصل على درجة الإمتياز
-                selectedDiscounts.push("الطالب حاصل على درجة الإمتياز (90)");
+            for (let i = 0; i < childrenCount; i++) {
+                let childStageHtml = `
+                    <div class="form-group">
+                        <label for="child${i+1}Stage">المرحلة الدراسية للطفل ${i+1}:</label>
+                        <select id="child${i+1}Stage">
+                            <option value="KG_BC">رياض أطفال (B.C)</option>
+                            <option value="KG">رياض أطفال (KG1, KG2)</option>
+                            <option value="GR1_GR3">ابتدائية (من GR1 إلى GR3)</option>
+                            <option value="GR4_GR6">ابتدائية (من GR4 إلى GR6)</option>
+                            <option value="GR7_GR9">إعدادية (من GR7 إلى GR9)</option>
+                            <option value="GR10_GR12">ثانوية (من GR10 إلى GR12)</option>
+                        </select>
+                    </div>
+                `;
+                document.getElementById('childrenStages').innerHTML += childStageHtml;
             }
+            document.getElementById('childrenStages').classList.remove('hidden');
+        } else {
+            document.getElementById('childrenStages').classList.add('hidden');
         }
-
-        // التحقق من شروط الخصومات المتعارضة
-        if (isGoldenSelected && isSilverSelected) {
-            alert("لا يمكن اختيار الخصم الذهبية مع الفضية");
-            resetDiscounts();
-            return;
-        }
-        if (is31MaySelected && is31JulySelected) {
-            alert("لا يمكن اختيار سداد المصاريف قبل 31/5 مع سداد المصاريف قبل 31/7");
-            resetDiscounts();
-            return;
-        }
-        if (isTopGradeSelected && isExcellentGradeSelected) {
-            alert("لا يمكن اختيار التفوق مع الإمتياز");
-            resetDiscounts();
-            return;
-        }
-
-        // التأكد من أنه لا يمكن اختيار أي خصم مع أبناء العاملين
-        if (isWorkerChildrenSelected && selectedOptions.length > 1) {
-            alert("لا يمكن اختيار أي خصم آخر مع أبناء العاملين");
-            resetDiscounts();
-            return;
-        }
-
-        // التأكد من أن الخصم لا يتجاوز 25%
-        if (discount > 25) {
-            discount = 25; // تحديد الحد الأقصى للخصم إلى 25%
-        }
-
-        // تحديث عرض الخصومات المختارة
-        document.getElementById('discountAmount').innerText = `الخصم الكلي هو: ${discount}%`;
-        document.getElementById('selectedOptionsList').innerHTML = selectedDiscounts.map(option => `<li>${option}</li>`).join('');
-        document.getElementById('selectedOptions').classList.remove('hidden');
-
-        // عرض الملاحظات بعد اختيار الخصم
-        document.getElementById('notes').classList.remove('hidden'); // عرض الملاحظات المخفية
-
-        // حساب المبلغ النهائي
-        updateTotalCost();
     }
 
-    // تحديث التكلفة الإجمالية بناءً على الخصم
+    // حساب المصاريف بناءً على مراحل الأطفال
     function updateTotalCost() {
-        let total = baseCost - (baseCost * (discount / 100));
+        let childrenCount = document.getElementById('childrenCount').value;
+        let totalCost = 0;
+
+        // حساب المصاريف بناءً على المرحلة الدراسية لكل طفل
+        for (let i = 0; i < childrenCount; i++) {
+            let childStage = document.getElementById(`child${i+1}Stage`).value;
+            let childCost = 0;
+
+            // تحديد المصاريف بناءً على مرحلة الطفل
+            if (childStage === 'KG_BC') {
+                childCost = 23000;
+            } else if (childStage === 'KG') {
+                childCost = 30000;
+            } else if (childStage === 'GR1_GR3') {
+                childCost = 33000;
+            } else if (childStage === 'GR4_GR6') {
+                childCost = 36000;
+            } else if (childStage === 'GR7_GR9') {
+                childCost = 39000;
+            } else if (childStage === 'GR10_GR12') {
+                childCost = 42000;
+            }
+
+            // إضافة المصاريف الخاصة بالطفل للمجموع الكلي
+            totalCost += childCost;
+        }
+
+        // إضافة خصم بناءً على عدد الأبناء
+        if (childrenCount > 1) {
+            totalCost *= 0.9; // خصم 10% إذا كان هناك أكثر من طفل
+        }
+
+        // إضافة خصم آخر إذا تم اختياره
+        totalCost -= totalCost * (discount / 100);
 
         // إضافة تكلفة الباص إذا تم الاشتراك
         if (document.getElementById('busSubscription').value === 'yes') {
-            total += busCost;
+            totalCost += busCost;
         }
 
-        document.getElementById('finalAmount').innerText = `المبلغ الإجمالي بعد الخصم: ${total} جنيه`;
+        document.getElementById('finalAmount').innerText = `المبلغ الإجمالي بعد الخصم: ${totalCost} جنيه`;
         document.getElementById('totalAmount').classList.remove('hidden');
     }
 
-    // إعادة تعيين الاختيارات
-    function resetDiscounts() {
-        document.getElementById('discountCriteria').value = '';
-        document.getElementById('discountAmount').innerText = '';
-        document.getElementById('selectedOptions').classList.add('hidden');
-        document.getElementById('notes').classList.add('hidden');
-        document.getElementById('totalAmount').classList.add('hidden');
+    // تحديد الخصومات
+    function calculateDiscount() {
+        let criteria = Array.from(document.getElementById('discountCriteria').selectedOptions)
+                            .map(option => option.value);
+
+        discount = 0; // إعادة تعيين الخصم
+
+        // تطبيق الخصم بناءً على الاختيارات
+        if (criteria.includes('siblings')) {
+            discount += 10;
+        }
+        if (criteria.includes('topGrade')) {
+            discount += 5;
+        }
+        if (criteria.includes('excellentGrade')) {
+            discount += 3;
+        }
+        if (criteria.includes('golden')) {
+            discount += 10;
+        }
+        if (criteria.includes('silver')) {
+            discount += 5;
+        }
+        if (criteria.includes('workerChildren')) {
+            discount += 7;
+        }
+        if (criteria.includes('cashBefore31May')) {
+            discount += 15;
+        }
+        if (criteria.includes('cashBefore31July')) {
+            discount += 10;
+        }
+
+        // تحديث القائمة التي تم تحديدها
+        document.getElementById('selectedOptionsList').innerHTML = criteria
+            .map(criteriaItem => `<li>${criteriaItem}</li>`)
+            .join('');
+
+        // إظهار الخصومات
+        document.getElementById('selectedOptions').classList.remove('hidden');
+        updateTotalCost();
     }
 </script>
 
