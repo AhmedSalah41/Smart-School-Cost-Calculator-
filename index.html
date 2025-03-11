@@ -154,15 +154,7 @@
         <button class="btn" onclick="selectSchool('foreign')">مصاريف  مدرسة سمارت (قسم لغات )</button>
     </div>
 
-    <!-- إدخال عدد الأبناء -->
-    <div id="childrenSelection" class="hidden">
-        <div class="form-group">
-            <label for="childrenCount">الرجاء إدخال عدد الأبناء:</label>
-            <input type="number" id="childrenCount" min="1" max="10" placeholder="عدد الأبناء" oninput="showEducationalStage()">
-        </div>
-    </div>
-
-    <!-- اختيار المراحل الدراسية للأطفال -->
+    <!-- اختيار المرحلة الدراسية -->
     <div id="childrenStages" class="hidden"></div>
 
     <!-- عرض المصاريف -->
@@ -236,34 +228,26 @@
     // اختيار نوع المدرسة
     function selectSchool(type) {
         document.getElementById('schoolSelection').classList.add('hidden');
-        document.getElementById('childrenSelection').classList.remove('hidden');
+        showEducationalStage();
     }
 
-    // إظهار الحقول الخاصة بكل طفل بناءً على عدد الأبناء
+    // إظهار الحقول الخاصة بالمرحلة الدراسية
     function showEducationalStage() {
-        let childrenCount = document.getElementById('childrenCount').value;
-
-        document.getElementById('childrenStages').innerHTML = '';
-
-        if (childrenCount > 0) {
-            for (let i = 0; i < childrenCount; i++) {
-                let childStageHtml = `
-                    <div class="form-group">
-                        <label for="child${i+1}Stage">المرحلة الدراسية للطفل ${i+1}:</label>
-                        <select id="child${i+1}Stage" onchange="updateTotalCost()">
-                            <option value="KG_BC">رياض أطفال (B.C)</option>
-                            <option value="KG">رياض أطفال (KG1, KG2)</option>
-                            <option value="GR1_GR3">ابتدائية (من GR1 إلى GR3)</option>
-                            <option value="GR4_GR6">ابتدائية (من GR4 إلى GR6)</option>
-                            <option value="GR7_GR9">إعدادية (من GR7 إلى GR9)</option>
-                            <option value="GR10_GR12">ثانوية (من GR10 إلى GR12)</option>
-                        </select>
-                    </div>
-                `;
-                document.getElementById('childrenStages').innerHTML += childStageHtml;
-            }
-            document.getElementById('childrenStages').classList.remove('hidden');
-        }
+        let childStageHtml = `
+            <div class="form-group">
+                <label for="stageSelection">المرحلة الدراسية:</label>
+                <select id="stageSelection" onchange="updateTotalCost()">
+                    <option value="KG_BC">رياض أطفال (B.C)</option>
+                    <option value="KG">رياض أطفال (KG1, KG2)</option>
+                    <option value="GR1_GR3">ابتدائية (من GR1 إلى GR3)</option>
+                    <option value="GR4_GR6">ابتدائية (من GR4 إلى GR6)</option>
+                    <option value="GR7_GR9">إعدادية (من GR7 إلى GR9)</option>
+                    <option value="GR10_GR12">ثانوية (من GR10 إلى GR12)</option>
+                </select>
+            </div>
+        `;
+        document.getElementById('childrenStages').innerHTML = childStageHtml;
+        document.getElementById('childrenStages').classList.remove('hidden');
     }
 
     // إضافة تكلفة الكتب
@@ -316,25 +300,20 @@
             appliedDiscounts.push("الطالب حاصل على درجة الإمتياز (90): 5%");
         }
         if (criteria.includes('golden')) {
-            discount += 10;
-            appliedDiscounts.push("حاصل على الذهبية: 10%");
+            discount += 15;
+            appliedDiscounts.push("حاصل على الذهبية: 15%");
         }
         if (criteria.includes('silver')) {
-            discount += 5;
-            appliedDiscounts.push("حاصل على الفضية: 5%");
+            discount += 10;
+            appliedDiscounts.push("حاصل على الفضية: 10%");
         }
         if (criteria.includes('cashBefore31May')) {
-            discount += 10;
-            appliedDiscounts.push("سداد المصاريف قبل 31/5: 10%");
+            discount += 15;
+            appliedDiscounts.push("سداد المصاريف كاش قبل 31/5: 15%");
         }
         if (criteria.includes('cashBefore31July')) {
-            discount += 5;
-            appliedDiscounts.push("سداد المصاريف قبل 31/7: 5%");
-        }
-
-        if (discount > 25) {
-            alert("الخصم لا يمكن أن يتجاوز 25%. سيتم تطبيق الخصم الأقصى.");
-            discount = 25;
+            discount += 10;
+            appliedDiscounts.push("سداد المصاريف كاش قبل 31/7: 10%");
         }
 
         document.getElementById('selectedOptionsList').innerHTML = appliedDiscounts.map(d => `<li>${d}</li>`).join('');
@@ -342,53 +321,20 @@
         updateTotalCost();
     }
 
-    // تحديث المبلغ الإجمالي
+    // تحديث إجمالي المبلغ
     function updateTotalCost() {
-        let childrenCount = document.getElementById('childrenCount').value;
-        let totalCost = 0;
-
-        for (let i = 0; i < childrenCount; i++) {
-            let childStage = document.getElementById(`child${i+1}Stage`).value;
-            let childCost = 0;
-
-            if (childStage === 'KG_BC') {
-                childCost = 23000;
-            } else if (childStage === 'KG') {
-                childCost = 30000;
-            } else if (childStage === 'GR1_GR3') {
-                childCost = 33000;
-            } else if (childStage === 'GR4_GR6') {
-                childCost = 36000;
-            } else if (childStage === 'GR7_GR9') {
-                childCost = 39000;
-            } else if (childStage === 'GR10_GR12') {
-                childCost = 42000;
-            }
-
-            totalCost += childCost;
-        }
-
-        if (childrenCount > 1) {
-            totalCost *= 0.9;
-        }
-
-        totalCost -= totalCost * (discount / 100);
+        let total = baseCost;
 
         if (document.getElementById('busSubscription') && document.getElementById('busSubscription').value === 'yes') {
-            totalCost += busCost * childrenCount;
+            total += busCost;
         }
 
-        totalCost += booksCost;
+        total += booksCost;
 
-        document.getElementById('finalAmount').innerText = `المبلغ الإجمالي بعد الخصم: ${totalCost} جنيه`;
+        total -= (total * discount / 100);
+
+        document.getElementById('finalAmount').innerHTML = `إجمالي المبلغ: ${total.toFixed(2)} جنيه`;
         document.getElementById('totalAmount').classList.remove('hidden');
-        document.getElementById('costBeforeDiscount').innerText = `المبلغ قبل الخصم: ${totalCost} جنيه`;
-        document.getElementById('discountAmount').innerText = `الخصم: ${discount}%`;
-
-        document.getElementById('busQuestion').classList.remove('hidden');
-        document.getElementById('discountCriteriaSection').classList.remove('hidden');
-        document.getElementById('notes').classList.remove('hidden');
-        document.getElementById('booksButton').classList.remove('hidden');
     }
 </script>
 
