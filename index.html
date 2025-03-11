@@ -5,25 +5,100 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart School</title>
     <style>
-        /* ... نفس التنسيقات السابقة ... */
+        /* تنسيقات CSS الخاصة بالعناصر */
+        body {
+            font-family: 'Arial', sans-serif;
+            text-align: right;
+            margin: 0;
+            padding: 0;
+            direction: rtl; /* لجعل النصوص من اليمين لليسار */
+            background-color: #f4f4f4;
+        }
 
-        select {
+        .container {
+            width: 80%;
+            margin: 50px auto;
+            padding: 20px;
             background-color: #fff;
-            color: #333;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            width: 150px;
+            display: block;
+            margin: 0 auto 20px;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 30px;
+            color: #3498db;
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+
+        .btn {
+            background-color: #3498db;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #2980b9;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-size: 18px;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
             border: 2px solid #3498db;
             border-radius: 5px;
-            font-size: 16px;
-            padding: 10px;
+        }
+
+        select {
             appearance: none;
             -webkit-appearance: none;
             -moz-appearance: none;
-            width: 100%;
-            margin-top: 10px;
         }
 
         select:focus {
             background-color: #f9f9f9;
             border-color: #2980b9;
+        }
+
+        .cost-box {
+            margin: 20px 0;
+            padding: 10px;
+            background-color: #ecf0f1;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .cost-box div {
+            margin: 5px 0;
         }
     </style>
 </head>
@@ -33,13 +108,13 @@
     <img src="Smart.jpg" alt="Smart School Logo" class="logo">
     <h1>مدرسة سمارت</h1>
 
-    <!-- اختيارات المدرسة -->
+    <!-- اختيارات نوع التعليم -->
     <div id="schoolSelection" class="btn-container">
         <button class="btn" onclick="selectSchool('arabic')">مصاريف التعليم العربي</button>
         <button class="btn" onclick="selectSchool('foreign')">مصاريف التعليم الأجنبي</button>
     </div>
 
-    <!-- اختيار عدد الأبناء -->
+    <!-- إدخال عدد الأبناء -->
     <div id="childrenSelection" class="hidden">
         <div class="form-group">
             <label for="childrenCount">الرجاء إدخال عدد الأبناء:</label>
@@ -112,11 +187,13 @@
     let busCost = 10000; // سعر الباص
     let discount = 0;
 
+    // اختيار نوع المدرسة
     function selectSchool(type) {
         document.getElementById('schoolSelection').classList.add('hidden');
         document.getElementById('childrenSelection').classList.remove('hidden');
     }
 
+    // إظهار المرحلة التعليمية
     function showEducationalStage() {
         let childrenCount = document.getElementById('childrenCount').value;
         if (childrenCount > 0) {
@@ -126,6 +203,7 @@
         }
     }
 
+    // اختيار المرحلة التعليمية
     function selectStage() {
         const stage = document.getElementById('educationalStage').value;
         let costMessage = '';
@@ -152,6 +230,7 @@
         document.getElementById('discountCriteriaSection').classList.remove('hidden');
     }
 
+    // حساب الخصم بناءً على الاختيارات
     function calculateDiscount() {
         const selectedOptions = document.getElementById('discountCriteria').selectedOptions;
         discount = 0;
@@ -186,7 +265,7 @@
             }
         }
 
-        // تطبيق القيود
+        // تطبيق القيود على الخيارات المتعارضة
         if (isWorkerChildrenSelected) {
             disableOtherOptions(['siblings', 'topGrade', 'excellentGrade', 'golden', 'silver', 'cashBefore31May', 'cashBefore31July']);
         } else {
@@ -208,6 +287,7 @@
         updateTotalCost();
     }
 
+    // تعطيل الخيارات المتعارضة
     function disableOtherOptions(optionsToDisable) {
         const select = document.getElementById('discountCriteria');
         for (let option of select.options) {
@@ -219,6 +299,7 @@
         }
     }
 
+    // تمكين جميع الخيارات
     function enableAllOptions() {
         const select = document.getElementById('discountCriteria');
         for (let option of select.options) {
@@ -226,6 +307,7 @@
         }
     }
 
+    // تعطيل خيار معين
     function disableOption(optionValue) {
         const select = document.getElementById('discountCriteria');
         for (let option of select.options) {
@@ -236,6 +318,7 @@
         }
     }
 
+    // تمكين خيار معين
     function enableOption(optionValue) {
         const select = document.getElementById('discountCriteria');
         for (let option of select.options) {
@@ -246,6 +329,7 @@
         }
     }
 
+    // تحديث إجمالي المبلغ بعد الخصم
     function updateTotalCost() {
         let totalCost = baseCost - (baseCost * discount / 100);
         document.getElementById('totalCost').innerText = `المبلغ الإجمالي بعد الخصم: ${totalCost} جنيه`;
