@@ -101,12 +101,24 @@
         .form-group input[type="number"] {
             max-width: 80px;
         }
+
+        .radio-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .radio-group label {
+            display: inline-block;
+            margin-right: 20px;
+        }
+
     </style>
 </head>
 <body>
 
 <div class="container">
-    <img src="Smart.jpg" alt="Smart School Logo" class="logo"> <!-- مكان اللوجو -->
+    <img src="logo.png" alt="Smart School Logo" class="logo"> <!-- مكان اللوجو -->
     <h1>مدرسة سمارت</h1>
 
     <div id="schoolSelection" class="btn-container">
@@ -138,6 +150,25 @@
     <div id="costDisplay" class="hidden">
         <div class="cost-box">
             <div id="costBeforeDiscount"></div>
+        </div>
+    </div>
+
+    <!-- الأسئلة الإضافية -->
+    <div id="additionalQuestions" class="hidden">
+        <div class="form-group">
+            <label>هل للطالب أخوة في المدرسة؟</label>
+            <div class="radio-group">
+                <label><input type="radio" name="siblings" value="yes"> نعم</label>
+                <label><input type="radio" name="siblings" value="no"> لا</label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>هل الطالب حاصل على درجة التفوق (100)؟</label>
+            <div class="radio-group">
+                <label><input type="radio" name="topGrade" value="yes"> نعم</label>
+                <label><input type="radio" name="topGrade" value="no"> لا</label>
+            </div>
         </div>
     </div>
 
@@ -176,10 +207,11 @@
 
         document.getElementById('costBeforeDiscount').innerText = costMessage;
         document.getElementById('costDisplay').classList.remove('hidden');
+
+        // إظهار الأسئلة الإضافية بعد اختيار المرحلة التعليمية
+        document.getElementById('additionalQuestions').classList.remove('hidden');
     }
 </script>
-
-
 
 </body>
 </html>
