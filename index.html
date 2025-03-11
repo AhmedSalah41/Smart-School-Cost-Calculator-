@@ -164,11 +164,6 @@
         </div>
     </div>
 
-    <!-- عرض زر إضافة تكلفة الكتب -->
-    <div id="booksButton" class="form-group hidden">
-        <button class="btn" onclick="addBooksCost()">إضافة سعر الكتب</button>
-    </div>
-
     <!-- سؤال الباص -->
     <div id="busQuestion" class="hidden">
         <div class="form-group">
@@ -217,6 +212,11 @@
         </ul>
     </div>
 
+    <!-- زر إضافة سعر الكتب -->
+    <div id="addBooksCost" class="btn-container hidden">
+        <button class="btn" onclick="addBooksCost()">إضافة سعر الكتب</button>
+    </div>
+
 </div>
 
 <script>
@@ -250,7 +250,6 @@
         document.getElementById('childrenStages').innerHTML = childStageHtml;
         document.getElementById('childrenStages').classList.remove('hidden');
         // إظهار باقي الحقول بعد اختيار المرحلة الدراسية
-        document.getElementById('booksButton').classList.remove('hidden');
         document.getElementById('busQuestion').classList.remove('hidden');
         document.getElementById('discountCriteriaSection').classList.remove('hidden');
     }
@@ -284,11 +283,6 @@
         }
 
         updateTotalCost(); // تحديث الإجمالي بعد اختيار المرحلة
-    }
-
-    // إضافة تكلفة الكتب
-    function addBooksCost() {
-        updateTotalCost();
     }
 
     // حساب الخصم بناءً على الشروط
@@ -365,13 +359,27 @@
             total += busCost;
         }
 
-        total += booksCost;
         total += stageCost; // إضافة تكلفة المرحلة الدراسية
-
         total -= (total * discount / 100);
 
-        document.getElementById('finalAmount').innerHTML = `إجمالي المبلغ: ${total.toFixed(2)} جنيه`;
+        // تحديث المبلغ النهائي بعد الخصم
+        document.getElementById('finalAmount').innerHTML = `إجمالي المبلغ قبل الكتب: ${total.toFixed(2)} جنيه`;
+
+        // إضافة تكلفة الكتب في آخر خطوة
+        let totalWithBooks = total + booksCost;
+        document.getElementById('finalAmount').innerHTML = `إجمالي المبلغ مع الكتب: ${totalWithBooks.toFixed(2)} جنيه`;
+
         document.getElementById('totalAmount').classList.remove('hidden');
+
+        // إظهار زر إضافة سعر الكتب في النهاية
+        document.getElementById('addBooksCost').classList.remove('hidden');
+    }
+
+    // إضافة سعر الكتب إلى المبلغ النهائي
+    function addBooksCost() {
+        let total = parseFloat(document.getElementById('finalAmount').innerText.split(' ')[3]);
+        let totalWithBooks = total + booksCost;
+        document.getElementById('finalAmount').innerHTML = `إجمالي المبلغ مع الكتب: ${totalWithBooks.toFixed(2)} جنيه`;
     }
 </script>
 
