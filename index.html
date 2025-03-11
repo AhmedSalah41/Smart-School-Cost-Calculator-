@@ -191,4 +191,137 @@
             <select id="educationalStage" onchange="selectStage()">
                 <option value="">اختر المرحلة التعليمية</option>
                 <option value="KG">رياض أطفال</option>
-                <option value="GR1_GR3">ابتدائية (من GR1 
+                <option value="GR1_GR3">ابتدائية (من GR1 إلى GR3)</option>
+                <option value="GR4_GR6">ابتدائية (من GR4 إلى GR6)</option>
+                <option value="GR7_GR9">إعدادية (من GR7 إلى GR9)</option>
+                <option value="GR10_GR12">ثانوية (من GR10 إلى GR12)</option>
+            </select>
+        </div>
+    </div>
+
+    <div id="costDisplay" class="hidden">
+        <div class="cost-box">
+            <div id="costBeforeDiscount"></div>
+            <div id="discountAmount"></div>
+            <div id="totalCost"></div>
+        </div>
+    </div>
+
+    <!-- سؤال الاشتراك في الباص -->
+    <div id="busQuestion" class="hidden">
+        <div class="form-group">
+            <label for="busSubscription">هل ترغب في الاشتراك في الباص؟</label>
+            <select id="busSubscription" onchange="updateTotalCost()">
+                <option value="">اختر إذا كنت ترغب في الاشتراك</option>
+                <option value="yes">نعم</option>
+                <option value="no">لا</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- إجمالي المطلوب -->
+    <div id="totalAmount" class="hidden">
+        <div class="cost-box">
+            <div id="finalAmount"></div>
+        </div>
+    </div>
+
+    <!-- اختيار خصم -->
+    <div id="discountCriteriaSection" class="form-group hidden">
+        <label for="discountCriteria">برجاء اختيار ما يتطابق للحصول على الخصم:</label>
+        <select id="discountCriteria" multiple onchange="calculateDiscount()">
+            <option value="siblings">الطالب لديه أخوه في المدرسة</option>
+            <option value="topGrade">الطالب حاصل على درجة التفوق (100)</option>
+            <option value="excellentGrade">الطالب حاصل على درجة الإمتياز (90)</option>
+            <option value="cashBefore31May">سداد المصاريف كاش قبل 31/5</option>
+            <option value="cashBefore31July">سداد المصاريف كاش قبل 31/7</option>
+        </select>
+    </div>
+
+</div>
+
+<script>
+    let baseCost = 0;
+    let busCost = 10000; // سعر الباص
+    let discount = 0;
+
+    function selectSchool(type) {
+        document.getElementById('schoolSelection').classList.add('hidden');
+        document.getElementById('childrenSelection').classList.remove('hidden');
+    }
+
+    function showEducationalStage() {
+        let childrenCount = document.getElementById('childrenCount').value;
+        if (childrenCount > 0) {
+            document.getElementById('educationalStageSelection').classList.remove('hidden');
+        } else {
+            document.getElementById('educationalStageSelection').classList.add('hidden');
+        }
+    }
+
+    function selectStage() {
+        const stage = document.getElementById('educationalStage').value;
+        let costMessage = '';
+        if (stage === 'KG') {
+            baseCost = 30000;
+            costMessage = 'المصاريف قبل الخصم: 30,000 جنيه';
+        } else if (stage === 'GR1_GR3') {
+            baseCost = 33000;
+            costMessage = 'المصاريف قبل الخصم: 33,000 جنيه';
+        } else if (stage === 'GR4_GR6') {
+            baseCost = 33000;
+            costMessage = 'المصاريف قبل الخصم: 33,000 جنيه';
+        } else if (stage === 'GR7_GR9') {
+            baseCost = 35000;
+            costMessage = 'المصاريف قبل الخصم: 35,000 جنيه';
+        } else if (stage === 'GR10_GR12') {
+            baseCost = 40000;
+            costMessage = 'المصاريف قبل الخصم: 40,000 جنيه';
+        }
+
+        document.getElementById('costBeforeDiscount').innerText = costMessage;
+        document.getElementById('costDisplay').classList.remove('hidden');
+        document.getElementById('busQuestion').classList.remove('hidden');
+        document.getElementById('discountCriteriaSection').classList.remove('hidden');
+    }
+
+    function calculateDiscount() {
+        const selectedOptions = document.getElementById('discountCriteria').selectedOptions;
+        discount = 0;
+
+        for (let option of selectedOptions) {
+            if (option.value === 'siblings') {
+                discount += 5;
+            } else if (option.value === 'topGrade') {
+                discount += 10;
+            } else if (option.value === 'excellentGrade') {
+                discount += 5;
+            } else if (option.value === 'cashBefore31May') {
+                discount += 10;
+            } else if (option.value === 'cashBefore31July') {
+                discount += 5;
+            }
+        }
+
+        updateTotalCost(); // إعادة حساب المجموع الكلي بعد إضافة الخصم
+    }
+
+    function updateTotalCost() {
+        const busSubscription = document.getElementById('busSubscription').value;
+        let totalCost = baseCost;
+
+        if (busSubscription === 'yes') {
+            totalCost += busCost;
+        }
+
+        // حساب الخصم
+        totalCost -= totalCost * (discount / 100);
+
+        // تحديث الإجمالي المطلوب
+        document.getElementById('finalAmount').innerText = `إجمالي المطلوب: ${totalCost} جنيه`;
+        document.getElementById('totalAmount').classList.remove('hidden');
+    }
+</script>
+
+</body>
+</html>
