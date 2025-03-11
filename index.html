@@ -10,7 +10,7 @@
             text-align: right;
             margin: 0;
             padding: 0;
-            direction: rtl; /* لجعل النصوص من اليمين لليسار */
+            direction: rtl; /* النص من اليمين لليسار */
             background-color: #f4f4f4;
         }
 
@@ -88,12 +88,13 @@
             padding: 10px;
             font-size: 16px;
         }
+
     </style>
 </head>
 <body>
 
 <div class="container">
-    <img src="logo.png" alt="Smart School Logo" class="logo">
+    <img src="Smart.jpg" alt="Smart School Logo" class="logo">
     <h1>مدرسة سمارت</h1>
 
     <!-- اختيارات نوع التعليم -->
@@ -142,11 +143,13 @@
 </div>
 
 <script>
+    // التعامل مع اختيار نوع التعليم
     function selectSchool(type) {
         alert("تم اختيار " + (type === 'arabic' ? 'التعليم العربي' : 'التعليم الأجنبي'));
         document.getElementById('educationLevel').style.display = 'block';
     }
 
+    // عرض المصاريف بناءً على المرحلة التعليمية
     function showFees() {
         const level = document.getElementById('level').value;
         let fees = 0;
@@ -176,6 +179,7 @@
         document.getElementById('discount').style.display = 'block';
     }
 
+    // حساب الخصم بناءً على الاختيارات
     function calculateDiscount() {
         const selectedDiscount = document.getElementById('discountSelect').value;
         let discount = 0;
