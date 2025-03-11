@@ -115,24 +115,41 @@
             box-sizing: border-box;
             font-size: 16px;
             padding: 10px;
+            appearance: none; /* إزالة الشكل الافتراضي */
+            -webkit-appearance: none;
+            -moz-appearance: none;
         }
 
+        /* عند التركيز على select */
         select[multiple]:focus {
             background-color: #f9f9f9;
             border-color: #2980b9;
         }
 
-        /* إضافة تأثير عند التمرير على select */
+        /* تصميم زر الـ select لتغيير اللون ونمط الزر */
         select[multiple] option {
             padding: 10px;
         }
 
+        /* تغيير النص الافتراضي في select */
+        select[multiple]::before {
+            content: "اضغط هنا"; /* النص الذي سيظهر قبل الاختيار */
+            color: #999;
+        }
+
+        /* إضافة صورة السهم */
+        select[multiple] {
+            background-image: url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 width=%2216%22 height=%2216%22%3E%3Cpath d=%22M7 10l5 5 5-5z%22/%3E%3C/svg%3E');
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 10px 5px;
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <img src="ٍSmart.Jpg" alt="Smart School Logo" class="logo"> <!-- مكان اللوجو -->
+    <img src="logo.png" alt="Smart School Logo" class="logo"> <!-- مكان اللوجو -->
     <h1>مدرسة سمارت</h1>
 
     <div id="schoolSelection" class="btn-container">
@@ -223,46 +240,4 @@
             costMessage = 'المصاريف قبل الخصم: 40,000 جنيه';
         }
 
-        document.getElementById('costBeforeDiscount').innerText = costMessage;
-        document.getElementById('costDisplay').classList.remove('hidden');
-
-        // إظهار الأسئلة الإضافية بعد اختيار المرحلة التعليمية
-        document.getElementById('additionalQuestions').classList.remove('hidden');
-    }
-
-    function calculateDiscount() {
-        const selectedOptions = document.getElementById('discountCriteria').selectedOptions;
-        let discountPercentage = 0;
-
-        // حساب الخصم بناءً على الاختيارات
-        for (let option of selectedOptions) {
-            switch(option.value) {
-                case 'siblings':
-                    discountPercentage += 5;
-                    break;
-                case 'topGrade':
-                    discountPercentage += 10;
-                    break;
-                case 'excellentGrade':
-                    discountPercentage += 5;
-                    break;
-                case 'cashBefore31May':
-                    discountPercentage += 10;
-                    break;
-                case 'cashBefore31July':
-                    discountPercentage += 5;
-                    break;
-            }
-        }
-
-        const discountAmount = (baseCost * discountPercentage) / 100;
-        const totalCost = baseCost - discountAmount;
-
-        // عرض الخصم والمبلغ الإجمالي
-        document.getElementById('discountAmount').innerText = `الخصم: ${discountAmount} جنيه`;
-        document.getElementById('totalCost').innerText = `المبلغ الإجمالي بعد الخصم: ${totalCost} جنيه`;
-    }
-</script>
-
-</body>
-</html>
+        document.getElementById('costBeforeDiscount').
