@@ -304,7 +304,7 @@
 
         // إضافة تكلفة الباص إذا تم الاشتراك
         if (document.getElementById('busSubscription') && document.getElementById('busSubscription').value === 'yes') {
-            totalCost += busCost;
+            totalCost += busCost * childrenCount;
         }
 
         // تحديث المبلغ الإجمالي بعد الحساب
@@ -335,6 +335,16 @@
         // التحقق من الشروط المتضادة:
         if (criteria.includes('golden') && criteria.includes('silver')) {
             alert("لا يمكن اختيار الخصمين: الذهبية والفضية في نفس الوقت.");
+            return;
+        }
+
+        if (criteria.includes('topGrade') && criteria.includes('excellentGrade')) {
+            alert("لا يمكن اختيار الخصمين: درجة التفوق ودرجة الإمتياز في نفس الوقت.");
+            return;
+        }
+
+        if (criteria.includes('cashBefore31May') && criteria.includes('cashBefore31July')) {
+            alert("لا يمكن اختيار الخصمين: سداد المصاريف قبل 31 مايو و31 يوليو في نفس الوقت.");
             return;
         }
 
