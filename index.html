@@ -298,6 +298,8 @@
         let isSilverSelected = false;
         let is31MaySelected = false;
         let is31JulySelected = false;
+        let isTopGradeSelected = false;
+        let isExcellentGradeSelected = false;
 
         // إلغاء الخصومات المتعارضة
         for (let option of selectedOptions) {
@@ -326,9 +328,11 @@
                 discount += 10; // خصم 10% إذا كان الطالب لديه إخوة
                 selectedDiscounts.push("الطالب لديه أخوه في المدرسة");
             } else if (option.value === 'topGrade') {
+                isTopGradeSelected = true;
                 discount += 10; // خصم 10% إذا كان الطالب حاصل على درجة التفوق
                 selectedDiscounts.push("الطالب حاصل على درجة التفوق (100)");
             } else if (option.value === 'excellentGrade') {
+                isExcellentGradeSelected = true;
                 discount += 5; // خصم 5% إذا كان الطالب حاصل على درجة الإمتياز
                 selectedDiscounts.push("الطالب حاصل على درجة الإمتياز (90)");
             }
@@ -342,6 +346,18 @@
         }
         if (is31MaySelected && is31JulySelected) {
             alert("لا يمكن اختيار سداد المصاريف قبل 31/5 مع سداد المصاريف قبل 31/7");
+            resetDiscounts();
+            return;
+        }
+        if (isTopGradeSelected && isExcellentGradeSelected) {
+            alert("لا يمكن اختيار التفوق مع الإمتياز");
+            resetDiscounts();
+            return;
+        }
+
+        // التأكد من أنه لا يمكن اختيار أي خصم مع أبناء العاملين
+        if (isWorkerChildrenSelected) {
+            alert("لا يمكن اختيار أي خصم آخر مع أبناء العاملين");
             resetDiscounts();
             return;
         }
@@ -360,23 +376,26 @@
         updateTotalCost();
     }
 
-    // تحديث المبلغ الإجمالي بعد الخصم
+    // حساب المبلغ النهائي بعد الخصم
     function updateTotalCost() {
-        let finalCost = baseCost - (baseCost * discount / 100);
-        if (document.getElementById('busSubscription').value === 'yes') {
-            finalCost += busCost;
+        const busSubscription = document.getElementById('busSubscription').value;
+        let totalCost = baseCost;
+
+        if (busSubscription === 'yes') {
+            totalCost += busCost;
         }
-        document.getElementById('finalAmount').innerText = `المبلغ النهائي: ${finalCost} جنيه`;
+
+        totalCost -= (totalCost * discount) / 100;
+        document.getElementById('finalAmount').innerText = `المبلغ النهائي: ${totalCost.toFixed(2)} جنيه`;
         document.getElementById('totalAmount').classList.remove('hidden');
     }
 
     // إعادة تعيين الخصومات
     function resetDiscounts() {
         document.getElementById('discountCriteria').selectedIndex = -1;
+        document.getElementById('selectedOptions').classList.add('hidden');
         document.getElementById('discountAmount').innerText = '';
-        document.getElementById('selectedOptionsList').innerHTML = '';
         discount = 0;
-        updateTotalCost();
     }
 </script>
 
