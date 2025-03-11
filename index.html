@@ -106,7 +106,7 @@
 <body>
 
 <div class="container">
-    <img src="logo.png" alt="Smart School Logo" class="logo"> <!-- مكان اللوجو -->
+    <img src="Smart.jpg" alt="Smart School Logo" class="logo"> <!-- مكان اللوجو -->
     <h1>مدرسة سمارت</h1>
 
     <div id="schoolSelection" class="btn-container">
@@ -160,4 +160,26 @@
     }
 
     function selectStage() {
-        const stage =
+        const stage = document.getElementById('educationalStage').value;
+        let costMessage = '';
+        if (stage === 'KG') {
+            costMessage = 'المصاريف قبل الخصم: 30,000 جنيه';
+        } else if (stage === 'GR1_GR3') {
+            costMessage = 'المصاريف قبل الخصم: 33,000 جنيه';
+        } else if (stage === 'GR4_GR6') {
+            costMessage = 'المصاريف قبل الخصم: 33,000 جنيه';
+        } else if (stage === 'GR7_GR9') {
+            costMessage = 'المصاريف قبل الخصم: 35,000 جنيه';
+        } else if (stage === 'GR10_GR12') {
+            costMessage = 'المصاريف قبل الخصم: 40,000 جنيه';
+        }
+
+        document.getElementById('costBeforeDiscount').innerText = costMessage;
+        document.getElementById('costDisplay').classList.remove('hidden');
+    }
+</script>
+
+
+
+</body>
+</html>
