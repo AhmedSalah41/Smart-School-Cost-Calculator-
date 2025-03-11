@@ -10,7 +10,7 @@
             text-align: right;
             margin: 0;
             padding: 0;
-            direction: rtl;
+            direction: rtl; /* لجعل النصوص من اليمين لليسار */
             background-color: #f4f4f4;
         }
 
@@ -117,7 +117,7 @@
 <body>
 
 <div class="container">
-    <img src="Smart.jpg" alt="Smart School Logo" class="logo">
+    <img src="logo.png" alt="Smart School Logo" class="logo">
     <h1>مدرسة سمارت</h1>
 
     <!-- اختيارات نوع التعليم -->
@@ -249,58 +249,131 @@
         document.getElementById('costBeforeDiscount').innerText = costMessage;
         document.getElementById('costDisplay').classList.remove('hidden');
         document.getElementById('busQuestion').classList.remove('hidden');
-    }
-
-    // تحديث الإجمالي بناءً على الاختيارات
-    function updateTotalCost() {
-        let totalCost = baseCost;
-
-        // إضافة تكلفة الباص إذا تم اختياره
-        if (document.getElementById('busSubscription').value === 'yes') {
-            totalCost += busCost;
-        }
-
-        // عرض المبلغ الإجمالي
-        document.getElementById('finalAmount').innerText = `إجمالي المبلغ: ${totalCost.toLocaleString()} جنيه`;
-        document.getElementById('totalAmount').classList.remove('hidden');
+        document.getElementById('discountCriteriaSection').classList.remove('hidden');
     }
 
     // حساب الخصم بناءً على الاختيارات
     function calculateDiscount() {
         const selectedOptions = document.getElementById('discountCriteria').selectedOptions;
-        let selectedList = [];
         discount = 0;
+        let selectedDiscounts = [];
+        let isWorkerChildrenSelected = false;
+        let isGoldenSelected = false;
+        let isSilverSelected = false;
+        let is31MaySelected = false;
+        let is31JulySelected = false;
 
-        // إضافة الخصومات بناءً على الخيارات المحددة
         for (let option of selectedOptions) {
-            selectedList.push(option.text);
-            if (option.value === "siblings") {
-                discount += 3000;
-            } else if (option.value === "topGrade") {
-                discount += 5000;
-            } else if (option.value === "excellentGrade") {
-                discount += 4000;
-            } else if (option.value === "golden") {
-                discount += 10000;
-            } else if (option.value === "silver") {
-                discount += 7000;
-            } else if (option.value === "workerChildren") {
-                discount += 5000;
-            } else if (option.value === "cashBefore31May") {
-                discount += 3000;
-            } else if (option.value === "cashBefore31July") {
-                discount += 2000;
+            if (option.value === 'siblings') {
+                discount += 5;
+                selectedDiscounts.push("الطالب لديه أخوه في المدرسة");
+            } else if (option.value === 'topGrade') {
+                discount += 10;
+                selectedDiscounts.push("الطالب حاصل على درجة التفوق (100)");
+            } else if (option.value === 'excellentGrade') {
+                discount += 5;
+                selectedDiscounts.push("الطالب حاصل على درجة الإمتياز (90)");
+            } else if (option.value === 'golden') {
+                discount = 10; // خصم الذهبية 10%
+                selectedDiscounts.push("حاصل على الذهبية");
+                isGoldenSelected = true;
+            } else if (option.value === 'silver') {
+                discount = 5; // خصم الفضية 5%
+                selectedDiscounts.push("حاصل على الفضية");
+                isSilverSelected = true;
+            } else if (option.value === 'workerChildren') {
+                discount = 25; // خصم أبناء العاملين 25%
+                selectedDiscounts.push("أبناء عاملين");
+                isWorkerChildrenSelected = true;
+            } else if (option.value === 'cashBefore31May') {
+                discount += 5;
+                selectedDiscounts.push("سداد المصاريف كاش قبل 31/5");
+                is31MaySelected = true;
+            } else if (option.value === 'cashBefore31July') {
+                discount += 5;
+                selectedDiscounts.push("سداد المصاريف كاش قبل 31/7");
+                is31JulySelected = true;
             }
         }
 
-        // تحديث المبلغ النهائي بعد الخصم
-        let totalAfterDiscount = baseCost + (document.getElementById('busSubscription').value === 'yes' ? busCost : 0) - discount;
-        document.getElementById('discountAmount').innerText = `الخصم: -${discount.toLocaleString()} جنيه`;
-        document.getElementById('totalCost').innerText = `المبلغ بعد الخصم: ${totalAfterDiscount.toLocaleString()} جنيه`;
+        // تطبيق القيود على الخيارات المتعارضة
+        if (isWorkerChildrenSelected) {
+            disableOtherOptions(['siblings', 'topGrade', 'excellentGrade', 'golden', 'silver', 'cashBefore31May', 'cashBefore31July']);
+        } else {
+            enableAllOptions();
+        }
 
-        // عرض الاختيارات المحددة للخصم
-        document.getElementById('selectedOptionsList').innerHTML = selectedList.map(option => `<li>${option}</li>`).join('');
+        if (isGoldenSelected && isSilverSelected) {
+            disableOption('silver');
+        } else {
+            enableOption('silver');
+        }
+
+        if (is31MaySelected && is31JulySelected) {
+            disableOption('cashBefore31July');
+        } else {
+            enableOption('cashBefore31July');
+        }
+
+        // تحديث الاختيارات التي تم تحديدها
+        document.getElementById('selectedOptionsList').innerHTML = selectedDiscounts.map(d => <li>${d}</li>).join('');
         document.getElementById('selectedOptions').classList.remove('hidden');
+        
+        updateTotalCost();
+    }
+
+    // تعطيل الخيارات المتعارضة
+    function disableOtherOptions(optionsToDisable) {
+        const select = document.getElementById('discountCriteria');
+        for (let option of select.options) {
+            if (optionsToDisable.includes(option.value)) {
+                option.disabled = true;
+            }
+        }
+    }
+
+    // تفعيل جميع الخيارات
+    function enableAllOptions() {
+        const select = document.getElementById('discountCriteria');
+        for (let option of select.options) {
+            option.disabled = false;
+        }
+    }
+
+    // تعطيل خيار محدد
+    function disableOption(value) {
+        const select = document.getElementById('discountCriteria');
+        for (let option of select.options) {
+            if (option.value === value) {
+                option.disabled = true;
+            }
+        }
+    }
+
+    // تفعيل خيار محدد
+    function enableOption(value) {
+        const select = document.getElementById('discountCriteria');
+        for (let option of select.options) {
+            if (option.value === value) {
+                option.disabled = false;
+            }
+        }
+    }
+
+    // تحديث الإجمالي بعد الخصم
+    function updateTotalCost() {
+        const busSelection = document.getElementById('busSubscription').value;
+        let totalCost = baseCost;
+        
+        if (busSelection === "yes") {
+            totalCost += busCost;
+        }
+
+        totalCost -= totalCost * (discount / 100);
+
+        document.getElementById('totalCost').innerText = الإجمالي بعد الخصم: ${totalCost.toLocaleString()} جنيه;
+        document.getElementById('finalAmount').innerText = الإجمالي النهائي: ${totalCost.toLocaleString()} جنيه;
+        document.getElementById('totalAmount').classList.remove('hidden');
     }
 </script>
 
