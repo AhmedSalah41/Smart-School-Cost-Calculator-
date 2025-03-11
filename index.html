@@ -303,22 +303,34 @@
         for (let option of selectedOptions) {
             if (option.value === 'golden') {
                 isGoldenSelected = true;
-                discount = 10; // خصم الذهبية 10%
+                discount += 10; // خصم الذهبية 10%
                 selectedDiscounts.push("حاصل على الذهبية");
             } else if (option.value === 'silver') {
                 isSilverSelected = true;
-                discount = 5; // خصم الفضية 5%
+                discount += 5; // خصم الفضية 5%
                 selectedDiscounts.push("حاصل على الفضية");
             } else if (option.value === 'cashBefore31May') {
                 is31MaySelected = true;
+                discount += 5; // خصم 5% للسداد قبل 31 مايو
                 selectedDiscounts.push("سداد المصاريف كاش قبل 31/5");
             } else if (option.value === 'cashBefore31July') {
                 is31JulySelected = true;
+                discount += 3; // خصم 3% للسداد قبل 31 يوليو
                 selectedDiscounts.push("سداد المصاريف كاش قبل 31/7");
             } else if (option.value === 'workerChildren') {
                 isWorkerChildrenSelected = true;
+                discount += 25; // خصم 25% لأبناء العاملين
                 selectedDiscounts = ["أبناء عاملين"];
                 break; // إذا تم اختيار أبناء عاملين، نبطل باقي الاختيارات
+            } else if (option.value === 'siblings') {
+                discount += 10; // خصم 10% إذا كان الطالب لديه إخوة
+                selectedDiscounts.push("الطالب لديه أخوه في المدرسة");
+            } else if (option.value === 'topGrade') {
+                discount += 10; // خصم 10% إذا كان الطالب حاصل على درجة التفوق
+                selectedDiscounts.push("الطالب حاصل على درجة التفوق (100)");
+            } else if (option.value === 'excellentGrade') {
+                discount += 5; // خصم 5% إذا كان الطالب حاصل على درجة الإمتياز
+                selectedDiscounts.push("الطالب حاصل على درجة الإمتياز (90)");
             }
         }
 
@@ -333,11 +345,6 @@
             resetDiscounts();
             return;
         }
-        if (isWorkerChildrenSelected) {
-            document.getElementById('discountCriteria').disabled = true;
-        } else {
-            document.getElementById('discountCriteria').disabled = false;
-        }
 
         // تحديث عرض الخصومات المختارة
         document.getElementById('discountAmount').innerText = `الخصم الكلي هو: ${discount}%`; // نقل الخصم الكلي هنا
@@ -350,24 +357,21 @@
 
     // تحديث إجمالي المبلغ بعد الخصم
     function updateTotalCost() {
-        let totalAmount = baseCost - (baseCost * discount / 100);
-
-        // إضافة تكلفة الباص إذا تم اختياره
-        const busSubscription = document.getElementById('busSubscription').value;
-        if (busSubscription === 'yes') {
-            totalAmount += busCost;
+        let totalCost = baseCost - (baseCost * discount / 100);
+        if (document.getElementById('busSubscription').value === 'yes') {
+            totalCost += busCost;
         }
-
-        document.getElementById('finalAmount').innerText = `إجمالي المبلغ بعد الخصم هو: ${totalAmount} جنيه`;
-        document.getElementById('totalAmount').classList.remove('hidden'); // إظهار بوكس إجمالي المبلغ
+        document.getElementById('finalAmount').innerText = `المبلغ الإجمالي بعد الخصم: ${totalCost.toFixed(2)} جنيه`;
+        document.getElementById('totalAmount').classList.remove('hidden');
     }
 
+    // إعادة تعيين الخصم
     function resetDiscounts() {
         discount = 0;
+        document.getElementById('selectedOptionsList').innerHTML = '';
         document.getElementById('discountAmount').innerText = '';
         document.getElementById('selectedOptions').classList.add('hidden');
-        document.getElementById('discountCriteria').selectedIndex = -1;
-        updateTotalCost();
+        document.getElementById('totalAmount').classList.add('hidden');
     }
 </script>
 
