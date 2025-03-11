@@ -1,1 +1,23 @@
-<!DOCTYPE html><html lang="ar"><head>    <meta charset="UTF-8">    <meta name="viewport" content="width=device-width, initial-scale=1.0">    <title>  </title></head><body>    <h1>  </h1>    <form id="schoolForm">        <label for="studentName"> :</label><br>        <input type="text" id="studentName" name="studentName"><br><br>        <label for="grade"> :</label><br>        <select id="grade" name="grade">            <option value="1"> </option>            <option value="2"> </option>            <option value="3"> </option>            <option value="4"> </option>        </select><br><br>        <label for="numberOfSubjects">  :</label><br>        <input type="number" id="numberOfSubjects" name="numberOfSubjects"><br><br>        <button type="button" onclick="calculateCost()"> </button><br><br>        <p id="costResult"></p>    </form>    <script>        function calculateCost() {            var grade = document.getElementById('grade').value;            var numberOfSubjects = document.getElementById('numberOfSubjects').value;            var baseCost = 100; //              var cost = baseCost + (grade * 20) + (numberOfSubjects * 10);            document.getElementById('costResult').innerText = "  : " + cost + " ";        }    </script></body></html>
+<!DOCTYPE html><html lang="ar"><head> 
+   <meta charset="UTF-8">   
+   <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+   <title>  </title></head>
+   <body>    <h1>  </h1>    <form id="schoolForm">
+   <label for="studentName">
+   :</label><br> 
+   <input type="text" id="studentName" name="studentName"><br><br>
+   <label for="grade"> :</label><br> 
+   <select id="grade" name="grade"> 
+   <option value="1"> </option> 
+   <option value="2"> </option> 
+   <option value="3"> </option> 
+   <option value="4"> </option> 
+   </select><br><br>
+   <label for="numberOfSubjects">
+   :</label><br> 
+   <input type="number" id="numberOfSubjects" name="numberOfSubjects"><br><br> 
+   <button type="button" onclick="calculateCost()"> </button><br><br>   
+   <p id="costResult"></p> 
+   </form>    <script>
+   function calculateCost() {            var grade = document.getElementById('grade').value;            var numberOfSubjects = document.getElementById('numberOfSubjects').value;            var baseCost = 100; //              var cost = baseCost + (grade * 20) + (numberOfSubjects * 10);            document.getElementById('costResult').innerText = "  : " + cost + " ";        }  
+   </script></body></html>
