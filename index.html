@@ -114,6 +114,20 @@
             color: #2980b9;
         }
 
+        .notes {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f9e79f;
+            border-radius: 8px;
+            font-size: 16px;
+            color: #d35400;
+        }
+
+        .notes ul {
+            list-style-type: disc;
+            margin-left: 20px;
+        }
+
         @media (max-width: 768px) {
             .btn-container {
                 flex-direction: column;
@@ -131,7 +145,7 @@
 <body>
 
 <div class="container">
-    <img src="logo.png" alt="Smart School Logo" class="logo">
+    <img src="Smart.jpg" alt="Smart School Logo" class="logo">
     <h1>مدرسة سمارت</h1>
 
     <!-- اختيارات نوع التعليم -->
@@ -211,6 +225,15 @@
     <div id="selectedOptions" class="selected-options hidden">
         <p>الخصومات التي تم الموافقة عليها:</p>
         <ul id="selectedOptionsList"></ul>
+    </div>
+
+    <!-- ملاحظات -->
+    <div class="notes">
+        <p>ملاحظات هامة:</p>
+        <ul>
+            <li>مصاريف الكتب: 8,000 جنيه.</li>
+            <li>يوجد خصومات أخرى للطلاب الفائزين في بطولات رياضية أو دينية.</li>
+        </ul>
     </div>
 
 </div>
