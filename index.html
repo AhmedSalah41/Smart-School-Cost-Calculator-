@@ -172,6 +172,11 @@
         </div>
     </div>
 
+    <!-- عرض زر إضافة تكلفة الكتب -->
+    <div id="booksButton" class="form-group hidden">
+        <button class="btn" onclick="addBooksCost()">إضافة سعر الكتب</button>
+    </div>
+
     <!-- سؤال الباص -->
     <div id="busQuestion" class="hidden">
         <div class="form-group">
@@ -186,13 +191,8 @@
 
     <!-- إجمالي المبلغ -->
     <div id="totalAmount" class="cost-box hidden">
-        <div id="discountAmount"></div> <!-- وضع الخصم الكلي هنا -->
+        <div id="discountAmount"></div>
         <div id="finalAmount"></div>
-    </div>
-
-    <!-- إضافة سعر الكتب -->
-    <div id="booksButton" class="form-group hidden">
-        <button class="btn" onclick="addBooksCost()">إضافة سعر الكتب</button>
     </div>
 
     <!-- اختيار ما يتطابق للحصول على الخصم -->
@@ -230,7 +230,7 @@
 <script>
     let baseCost = 0;
     let busCost = 10000; // سعر الباص
-    let booksCost = 30000; // سعر الكتب
+    let booksCost = 30000; // تكلفة الكتب
     let discount = 0;
 
     // اختيار نوع المدرسة
@@ -243,10 +243,8 @@
     function showEducationalStage() {
         let childrenCount = document.getElementById('childrenCount').value;
 
-        // إخفاء الحقول السابقة
         document.getElementById('childrenStages').innerHTML = '';
 
-        // إظهار الحقول الخاصة بكل طفل
         if (childrenCount > 0) {
             for (let i = 0; i < childrenCount; i++) {
                 let childStageHtml = `
@@ -265,88 +263,22 @@
                 document.getElementById('childrenStages').innerHTML += childStageHtml;
             }
             document.getElementById('childrenStages').classList.remove('hidden');
-        } else {
-            document.getElementById('childrenStages').classList.add('hidden');
         }
-        updateTotalCost(); // تحديث التكلفة عند إدخال عدد الأطفال
     }
 
-    // حساب المصاريف بناءً على مراحل الأطفال
-    function updateTotalCost() {
-        let childrenCount = document.getElementById('childrenCount').value;
-        let totalCost = 0;
-
-        // حساب المصاريف بناءً على المرحلة الدراسية لكل طفل
-        for (let i = 0; i < childrenCount; i++) {
-            let childStage = document.getElementById(`child${i+1}Stage`).value;
-            let childCost = 0;
-
-            // تحديد المصاريف بناءً على مرحلة الطفل
-            if (childStage === 'KG_BC') {
-                childCost = 23000;
-            } else if (childStage === 'KG') {
-                childCost = 30000;
-            } else if (childStage === 'GR1_GR3') {
-                childCost = 33000;
-            } else if (childStage === 'GR4_GR6') {
-                childCost = 36000;
-            } else if (childStage === 'GR7_GR9') {
-                childCost = 39000;
-            } else if (childStage === 'GR10_GR12') {
-                childCost = 42000;
-            }
-
-            // إضافة المصاريف الخاصة بالطفل للمجموع الكلي
-            totalCost += childCost;
-        }
-
-        // إضافة خصم بناءً على عدد الأبناء
-        if (childrenCount > 1) {
-            totalCost *= 0.9; // خصم 10% إذا كان هناك أكثر من طفل
-        }
-
-        // إضافة خصم آخر إذا تم اختياره
-        totalCost -= totalCost * (discount / 100);
-
-        // إضافة تكلفة الباص إذا تم الاشتراك
-        if (document.getElementById('busSubscription') && document.getElementById('busSubscription').value === 'yes') {
-            totalCost += busCost * childrenCount;
-        }
-
-        // إضافة تكلفة الكتب
-        totalCost += booksCost;
-
-        // تحديث المبلغ الإجمالي بعد الحساب
-        document.getElementById('finalAmount').innerText = `المبلغ الإجمالي بعد الخصم: ${totalCost} جنيه`;
-        document.getElementById('totalAmount').classList.remove('hidden');
-
-        // حساب التكلفة قبل الخصم
-        document.getElementById('costBeforeDiscount').innerText = `المبلغ قبل الخصم: ${totalCost} جنيه`;
-        document.getElementById('discountAmount').innerText = `الخصم: ${discount}%`;
-
-        // إظهار أقسام الباص والخصم والملاحظات
-        document.getElementById('busQuestion').classList.remove('hidden');
-        document.getElementById('discountCriteriaSection').classList.remove('hidden');
-        document.getElementById('totalAmount').classList.remove('hidden');
-
-        // عرض الملاحظات
-        document.getElementById('notes').classList.remove('hidden');
-    }
-
-    // إضافة سعر الكتب إلى التكلفة الإجمالية
+    // إضافة تكلفة الكتب
     function addBooksCost() {
         updateTotalCost();
     }
 
-    // تحديث عرض الخصومات المطبقة
+    // حساب الخصم بناءً على الشروط
     function calculateDiscount() {
         let criteria = Array.from(document.getElementById('discountCriteria').selectedOptions)
                             .map(option => option.value);
 
-        discount = 0; // إعادة تعيين الخصم
-        let appliedDiscounts = []; // قائمة لحفظ الخصومات المطبقة
+        discount = 0;
+        let appliedDiscounts = [];
 
-        // التحقق من الشروط المتضادة:
         if (criteria.includes('golden') && criteria.includes('silver')) {
             alert("لا يمكن اختيار الخصمين: الذهبية والفضية في نفس الوقت.");
             return;
@@ -362,9 +294,8 @@
             return;
         }
 
-        // إذا تم اختيار "أبناء العاملين"، إلغاء جميع الخصومات الأخرى
         if (criteria.includes('workerChildren')) {
-            discount = 25; // خصم 25% لأبناء العاملين
+            discount = 25;
             appliedDiscounts.push("أبناء العاملين: 25%");
             document.getElementById('selectedOptionsList').innerHTML = appliedDiscounts.map(d => `<li>${d}</li>`).join('');
             document.getElementById('selectedOptions').classList.remove('hidden');
@@ -372,46 +303,92 @@
             return;
         }
 
-        // تطبيق الخصم بناءً على الاختيارات:
         if (criteria.includes('siblings')) {
-            discount += 5;  // خصم 5% إذا كان الطالب لديه أخوة في المدرسة
+            discount += 5;
             appliedDiscounts.push("الطالب لديه أخوه في المدرسة: 5%");
         }
         if (criteria.includes('topGrade')) {
-            discount += 10; // خصم 10% إذا كان الطالب متفوقًا
+            discount += 10;
             appliedDiscounts.push("الطالب حاصل على درجة التفوق (100): 10%");
         }
         if (criteria.includes('excellentGrade')) {
-            discount += 5;  // خصم 5% إذا كان الطالب متميزًا
+            discount += 5;
             appliedDiscounts.push("الطالب حاصل على درجة الإمتياز (90): 5%");
         }
         if (criteria.includes('golden')) {
-            discount += 10; // خصم 10% إذا كان الطالب حصل على الميدالية الذهبية
+            discount += 10;
             appliedDiscounts.push("حاصل على الذهبية: 10%");
         }
         if (criteria.includes('silver')) {
-            discount += 5;  // خصم 5% إذا كان الطالب حاصل على الميدالية الفضية
+            discount += 5;
             appliedDiscounts.push("حاصل على الفضية: 5%");
         }
         if (criteria.includes('cashBefore31May')) {
-            discount += 10; // خصم 10% إذا تم سداد المصاريف قبل 31 مايو
+            discount += 10;
             appliedDiscounts.push("سداد المصاريف قبل 31/5: 10%");
         }
         if (criteria.includes('cashBefore31July')) {
-            discount += 5;  // خصم 5% إذا تم سداد المصاريف قبل 31 يوليو
+            discount += 5;
             appliedDiscounts.push("سداد المصاريف قبل 31/7: 5%");
         }
 
-        // التأكد من أن الخصم لا يتجاوز 25%
         if (discount > 25) {
             alert("الخصم لا يمكن أن يتجاوز 25%. سيتم تطبيق الخصم الأقصى.");
-            discount = 25;  // تحديد الخصم الأقصى إلى 25%
+            discount = 25;
         }
 
-        // عرض الخصومات المطبقة في القائمة
         document.getElementById('selectedOptionsList').innerHTML = appliedDiscounts.map(d => `<li>${d}</li>`).join('');
         document.getElementById('selectedOptions').classList.remove('hidden');
         updateTotalCost();
+    }
+
+    // تحديث المبلغ الإجمالي
+    function updateTotalCost() {
+        let childrenCount = document.getElementById('childrenCount').value;
+        let totalCost = 0;
+
+        for (let i = 0; i < childrenCount; i++) {
+            let childStage = document.getElementById(`child${i+1}Stage`).value;
+            let childCost = 0;
+
+            if (childStage === 'KG_BC') {
+                childCost = 23000;
+            } else if (childStage === 'KG') {
+                childCost = 30000;
+            } else if (childStage === 'GR1_GR3') {
+                childCost = 33000;
+            } else if (childStage === 'GR4_GR6') {
+                childCost = 36000;
+            } else if (childStage === 'GR7_GR9') {
+                childCost = 39000;
+            } else if (childStage === 'GR10_GR12') {
+                childCost = 42000;
+            }
+
+            totalCost += childCost;
+        }
+
+        if (childrenCount > 1) {
+            totalCost *= 0.9;
+        }
+
+        totalCost -= totalCost * (discount / 100);
+
+        if (document.getElementById('busSubscription') && document.getElementById('busSubscription').value === 'yes') {
+            totalCost += busCost * childrenCount;
+        }
+
+        totalCost += booksCost;
+
+        document.getElementById('finalAmount').innerText = `المبلغ الإجمالي بعد الخصم: ${totalCost} جنيه`;
+        document.getElementById('totalAmount').classList.remove('hidden');
+        document.getElementById('costBeforeDiscount').innerText = `المبلغ قبل الخصم: ${totalCost} جنيه`;
+        document.getElementById('discountAmount').innerText = `الخصم: ${discount}%`;
+
+        document.getElementById('busQuestion').classList.remove('hidden');
+        document.getElementById('discountCriteriaSection').classList.remove('hidden');
+        document.getElementById('totalAmount').classList.remove('hidden');
+        document.getElementById('notes').classList.remove('hidden');
     }
 </script>
 
