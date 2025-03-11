@@ -39,6 +39,7 @@
             display: flex;
             justify-content: space-evenly;
             margin: 20px 0;
+            flex-wrap: wrap;
         }
 
         .btn {
@@ -50,6 +51,7 @@
             font-size: 18px;
             cursor: pointer;
             width: 200px;
+            margin: 5px;
         }
 
         .btn:hover {
@@ -110,6 +112,19 @@
             margin: 20px 0;
             font-size: 16px;
             color: #2980b9;
+        }
+
+        /* تكبير الأزرار في الجوال */
+        @media (max-width: 768px) {
+            .btn-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 80%;
+                margin: 10px 0;
+            }
         }
 
     </style>
@@ -263,34 +278,24 @@
         let is31MaySelected = false;
         let is31JulySelected = false;
 
+        // إلغاء الخصومات المتعارضة
         for (let option of selectedOptions) {
-            if (option.value === 'siblings') {
-                discount += 5;
-                selectedDiscounts.push("الطالب لديه أخوه في المدرسة");
-            } else if (option.value === 'topGrade') {
-                discount += 10;
-                selectedDiscounts.push("الطالب حاصل على درجة التفوق (100)");
-            } else if (option.value === 'excellentGrade') {
-                discount += 5;
-                selectedDiscounts.push("الطالب حاصل على درجة الإمتياز (90)");
-            } else if (option.value === 'golden') {
+            if (option.value === 'golden') {
+                isGoldenSelected = true;
                 discount = 10; // خصم الذهبية 10%
                 selectedDiscounts.push("حاصل على الذهبية");
-                isGoldenSelected = true;
             } else if (option.value === 'silver') {
+                isSilverSelected = true;
                 discount = 5; // خصم الفضية 5%
                 selectedDiscounts.push("حاصل على الفضية");
-                isSilverSelected = true;
-            } else if (option.value === 'workerChildren') {
-                isWorkerChildrenSelected = true;
-                selectedDiscounts.push("أبناء عاملين");
-            } else if (option.value === 'cashBefore31May') {
-                is31MaySelected = true;
-                selectedDiscounts.push("سداد المصاريف كاش قبل 31/5");
-            } else if (option.value === 'cashBefore31July') {
-                is31JulySelected = true;
-                selectedDiscounts.push("سداد المصاريف كاش قبل 31/7");
             }
+        }
+
+        // إذا تم تحديد خصم الذهبية أو الفضية، لا يمكن اختيار خصم آخر يتعارض معها
+        if (isGoldenSelected && isSilverSelected) {
+            alert("لا يمكن اختيار الخصم الذهبية مع الفضية");
+            document.getElementById('discountCriteria').value = [];
+            return;
         }
 
         // تحديث عرض الخصومات المختارة
