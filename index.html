@@ -103,10 +103,29 @@
             margin: 5px 0;
         }
 
+        .criteria {
+            margin: 20px 0;
+            text-align: center;
+        }
+
         .selected-options {
             margin: 20px 0;
             font-size: 16px;
             color: #2980b9;
+        }
+
+        .notes {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f9e79f;
+            border-radius: 8px;
+            font-size: 16px;
+            color: #d35400;
+        }
+
+        .notes ul {
+            list-style-type: disc;
+            margin-left: 20px;
         }
 
         @media (max-width: 768px) {
@@ -120,6 +139,7 @@
                 margin: 10px 0;
             }
         }
+
     </style>
 </head>
 <body>
@@ -130,14 +150,20 @@
 
     <!-- اختيارات نوع التعليم -->
     <div id="schoolSelection" class="btn-container">
-        <button class="btn" onclick="selectSchool('arabic')">مصاريف مدرسة سمارت (قسم العربي)</button>
-        <button class="btn" onclick="selectSchool('foreign')">مصاريف مدرسة سمارت (قسم لغات)</button>
+        <button class="btn" onclick="selectSchool('arabic')">مصاريف مدرسة سمارت (قسم العربي )</button>
+        <button class="btn" onclick="selectSchool('foreign')">مصاريف  مدرسة سمارت (قسم لغات )</button>
     </div>
 
-    <!-- عرض المراحل الدراسية فقط بعد اختيار نوع المدرسة -->
-    <div id="childrenStages" class="hidden">
-        <!-- سيتم ملء هذه الأقسام بناءً على الاختيار -->
+    <!-- إدخال عدد الأبناء -->
+    <div id="childrenSelection" class="hidden">
+        <div class="form-group">
+            <label for="childrenCount">الرجاء إدخال عدد الأبناء:</label>
+            <input type="number" id="childrenCount" min="1" max="10" placeholder="عدد الأبناء" oninput="showEducationalStage()">
+        </div>
     </div>
+
+    <!-- اختيار المراحل الدراسية للأطفال -->
+    <div id="childrenStages" class="hidden"></div>
 
     <!-- عرض المصاريف -->
     <div id="costDisplay" class="hidden">
@@ -190,40 +216,54 @@
         <ul id="selectedOptionsList"></ul>
     </div>
 
+    <!-- ملاحظات -->
+    <div id="notes" class="notes hidden">
+        <p>ملاحظات هامة:</p>
+        <ul>
+            <li>مصاريف الكتب: 30,000 جنيه.</li>
+            <li>يوجد خصومات أخرى للطلاب الفائزين في بطولات رياضية أو دينية.</li>
+        </ul>
+    </div>
+
 </div>
 
 <script>
     let baseCost = 0;
     let busCost = 10000; // سعر الباص
-    let booksCost = 3000; // تكلفة الكتب
+    let booksCost = 30000; // تكلفة الكتب
     let discount = 0;
 
     // اختيار نوع المدرسة
     function selectSchool(type) {
-        // إخفاء الخيارات الأولية
         document.getElementById('schoolSelection').classList.add('hidden');
-        
-        // تحديد التكاليف بناءً على اختيار المدرسة
-        let costText = '';
-        if (type === 'arabic') {
-            costText = `
-                <h2>تكاليف قسم العربي</h2>
-                <p>المرحلة الابتدائية: 23000 جنيه</p>
-                <p>المرحلة الإعدادية: 25000 جنيه</p>
-                <p>المرحلة الثانوية: 28000 جنيه</p>
-            `;
-        } else {
-            costText = `
-                <h2>تكاليف قسم اللغات</h2>
-                <p>المرحلة الابتدائية: 30000 جنيه</p>
-                <p>المرحلة الإعدادية: 35000 جنيه</p>
-                <p>المرحلة الثانوية: 40000 جنيه</p>
-            `;
-        }
-        document.getElementById('childrenStages').innerHTML = costText;
+        document.getElementById('childrenSelection').classList.remove('hidden');
+    }
 
-        // إظهار قسم اختيار المراحل الدراسية فقط
-        document.getElementById('childrenStages').classList.remove('hidden');
+    // إظهار الحقول الخاصة بكل طفل بناءً على عدد الأبناء
+    function showEducationalStage() {
+        let childrenCount = document.getElementById('childrenCount').value;
+
+        document.getElementById('childrenStages').innerHTML = '';
+
+        if (childrenCount > 0) {
+            for (let i = 0; i < childrenCount; i++) {
+                let childStageHtml = `
+                    <div class="form-group">
+                        <label for="child${i+1}Stage">المرحلة الدراسية للطفل ${i+1}:</label>
+                        <select id="child${i+1}Stage" onchange="updateTotalCost()">
+                            <option value="KG_BC">رياض أطفال (B.C)</option>
+                            <option value="KG">رياض أطفال (KG1, KG2)</option>
+                            <option value="GR1_GR3">ابتدائية (من GR1 إلى GR3)</option>
+                            <option value="GR4_GR6">ابتدائية (من GR4 إلى GR6)</option>
+                            <option value="GR7_GR9">إعدادية (من GR7 إلى GR9)</option>
+                            <option value="GR10_GR12">ثانوية (من GR10 إلى GR12)</option>
+                        </select>
+                    </div>
+                `;
+                document.getElementById('childrenStages').innerHTML += childStageHtml;
+            }
+            document.getElementById('childrenStages').classList.remove('hidden');
+        }
     }
 
     // إضافة تكلفة الكتب
@@ -263,54 +303,92 @@
             return;
         }
 
-        // إضافة بقية شروط الخصم إذا كانت موجودة
         if (criteria.includes('siblings')) {
-            discount = 10;
-            appliedDiscounts.push("الطالب لديه أخوه في المدرسة: 10%");
+            discount += 5;
+            appliedDiscounts.push("الطالب لديه أخوه في المدرسة: 5%");
         }
         if (criteria.includes('topGrade')) {
-            discount = 15;
-            appliedDiscounts.push("الطالب حاصل على درجة التفوق (100): 15%");
+            discount += 10;
+            appliedDiscounts.push("الطالب حاصل على درجة التفوق (100): 10%");
         }
         if (criteria.includes('excellentGrade')) {
-            discount = 12;
-            appliedDiscounts.push("الطالب حاصل على درجة الإمتياز (90): 12%");
+            discount += 5;
+            appliedDiscounts.push("الطالب حاصل على درجة الإمتياز (90): 5%");
         }
         if (criteria.includes('golden')) {
-            discount = 20;
-            appliedDiscounts.push("حاصل على الذهبية: 20%");
+            discount += 10;
+            appliedDiscounts.push("حاصل على الذهبية: 10%");
         }
         if (criteria.includes('silver')) {
-            discount = 18;
-            appliedDiscounts.push("حاصل على الفضية: 18%");
+            discount += 5;
+            appliedDiscounts.push("حاصل على الفضية: 5%");
         }
         if (criteria.includes('cashBefore31May')) {
-            discount = 30;
-            appliedDiscounts.push("سداد المصاريف كاش قبل 31 مايو: 30%");
+            discount += 10;
+            appliedDiscounts.push("سداد المصاريف قبل 31/5: 10%");
         }
         if (criteria.includes('cashBefore31July')) {
-            discount = 20;
-            appliedDiscounts.push("سداد المصاريف كاش قبل 31 يوليو: 20%");
+            discount += 5;
+            appliedDiscounts.push("سداد المصاريف قبل 31/7: 5%");
         }
 
-        // عرض الاختيارات المحددة
+        if (discount > 25) {
+            alert("الخصم لا يمكن أن يتجاوز 25%. سيتم تطبيق الخصم الأقصى.");
+            discount = 25;
+        }
+
         document.getElementById('selectedOptionsList').innerHTML = appliedDiscounts.map(d => `<li>${d}</li>`).join('');
         document.getElementById('selectedOptions').classList.remove('hidden');
         updateTotalCost();
     }
 
-    // تحديث الإجمالي بعد الخصم
+    // تحديث المبلغ الإجمالي
     function updateTotalCost() {
-        let totalCost = baseCost;
-        if (document.getElementById('busSubscription').value === 'yes') {
-            totalCost += busCost;
+        let childrenCount = document.getElementById('childrenCount').value;
+        let totalCost = 0;
+
+        for (let i = 0; i < childrenCount; i++) {
+            let childStage = document.getElementById(`child${i+1}Stage`).value;
+            let childCost = 0;
+
+            if (childStage === 'KG_BC') {
+                childCost = 23000;
+            } else if (childStage === 'KG') {
+                childCost = 30000;
+            } else if (childStage === 'GR1_GR3') {
+                childCost = 33000;
+            } else if (childStage === 'GR4_GR6') {
+                childCost = 36000;
+            } else if (childStage === 'GR7_GR9') {
+                childCost = 39000;
+            } else if (childStage === 'GR10_GR12') {
+                childCost = 42000;
+            }
+
+            totalCost += childCost;
         }
 
-        totalCost -= (totalCost * discount) / 100;
-        
-        // عرض المبلغ النهائي
-        document.getElementById('finalAmount').innerHTML = `إجمالي المبلغ بعد الخصم: ${totalCost} جنيه`;
+        if (childrenCount > 1) {
+            totalCost *= 0.9;
+        }
+
+        totalCost -= totalCost * (discount / 100);
+
+        if (document.getElementById('busSubscription') && document.getElementById('busSubscription').value === 'yes') {
+            totalCost += busCost * childrenCount;
+        }
+
+        totalCost += booksCost;
+
+        document.getElementById('finalAmount').innerText = `المبلغ الإجمالي بعد الخصم: ${totalCost} جنيه`;
         document.getElementById('totalAmount').classList.remove('hidden');
+        document.getElementById('costBeforeDiscount').innerText = `المبلغ قبل الخصم: ${totalCost} جنيه`;
+        document.getElementById('discountAmount').innerText = `الخصم: ${discount}%`;
+
+        document.getElementById('busQuestion').classList.remove('hidden');
+        document.getElementById('discountCriteriaSection').classList.remove('hidden');
+        document.getElementById('notes').classList.remove('hidden');
+        document.getElementById('booksButton').classList.remove('hidden');
     }
 </script>
 
