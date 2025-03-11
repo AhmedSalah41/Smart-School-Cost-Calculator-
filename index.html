@@ -246,7 +246,7 @@
                 let childStageHtml = `
                     <div class="form-group">
                         <label for="child${i+1}Stage">المرحلة الدراسية للطفل ${i+1}:</label>
-                        <select id="child${i+1}Stage">
+                        <select id="child${i+1}Stage" onchange="updateTotalCost()">
                             <option value="KG_BC">رياض أطفال (B.C)</option>
                             <option value="KG">رياض أطفال (KG1, KG2)</option>
                             <option value="GR1_GR3">ابتدائية (من GR1 إلى GR3)</option>
@@ -262,6 +262,7 @@
         } else {
             document.getElementById('childrenStages').classList.add('hidden');
         }
+        updateTotalCost(); // تحديث التكلفة عند إدخال عدد الأطفال
     }
 
     // حساب المصاريف بناءً على مراحل الأطفال
@@ -302,7 +303,7 @@
         totalCost -= totalCost * (discount / 100);
 
         // إضافة تكلفة الباص إذا تم الاشتراك
-        if (document.getElementById('busSubscription').value === 'yes') {
+        if (document.getElementById('busSubscription') && document.getElementById('busSubscription').value === 'yes') {
             totalCost += busCost;
         }
 
@@ -346,7 +347,7 @@
         // تحديث القائمة التي تم تحديدها
         document.getElementById('selectedOptionsList').innerHTML = criteria
             .map(criteriaItem => `<li>${criteriaItem}</li>`)
-            .join('');
+            .join(''); 
 
         // إظهار الخصومات
         document.getElementById('selectedOptions').classList.remove('hidden');
