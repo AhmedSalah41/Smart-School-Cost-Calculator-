@@ -182,7 +182,6 @@
     <div id="costDisplay" class="hidden">
         <div class="cost-box">
             <div id="costBeforeDiscount"></div>
-            <div id="totalCost"></div>
         </div>
     </div>
 
@@ -199,11 +198,9 @@
     </div>
 
     <!-- إجمالي المبلغ -->
-    <div id="totalAmount" class="hidden">
-        <div class="cost-box">
-            <div id="discountAmount"></div> <!-- وضع الخصم الكلي هنا -->
-            <div id="finalAmount"></div>
-        </div>
+    <div id="totalAmount" class="cost-box hidden">
+        <div id="discountAmount"></div> <!-- وضع الخصم الكلي هنا -->
+        <div id="finalAmount"></div>
     </div>
 
     <!-- اختيار ما يتطابق للحصول على الخصم -->
@@ -355,6 +352,7 @@
     function updateTotalCost() {
         let finalAmount = baseCost - (baseCost * discount / 100);
         document.getElementById('finalAmount').innerText = `إجمالي المبلغ بعد الخصم هو: ${finalAmount} جنيه`;
+        document.getElementById('totalAmount').classList.remove('hidden'); // إظهار بوكس إجمالي المبلغ
     }
 
     function resetDiscounts() {
