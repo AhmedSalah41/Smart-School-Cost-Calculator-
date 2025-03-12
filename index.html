@@ -280,6 +280,10 @@
         }
 
         discount = 1 - totalDiscount;
+
+        // الآن نعرض المربع الذي يحتوي على الإجمالي بعد الخصم
+        document.getElementById('totalAmount').classList.remove('hidden');
+
         updateTotalCost();
     }
 
@@ -306,11 +310,6 @@
         document.getElementById('finalCostWithAdditions').classList.remove('hidden');
     }
 
-    // إظهار أسئلة الباص والكتب بعد اختيار الخصم
-    function displayAdditions() {
-        document.getElementById('busQuestion').classList.remove('hidden');
-        document.getElementById('addBooksCostQuestion').classList.remove('hidden');
-    }
 </script>
 
 </body>
