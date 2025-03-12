@@ -331,6 +331,10 @@
         document.getElementById('selectedOptionsList').innerHTML = appliedDiscounts.map(d => `<li>${d}</li>`).join('');
         document.getElementById('selectedOptions').classList.remove('hidden');
 
+        // إظهار اختيار الباص والكتب
+        document.getElementById('busQuestion').classList.remove('hidden');
+        document.getElementById('addBooksCostQuestion').classList.remove('hidden');
+
         updateTotalCost();
     }
 
