@@ -243,7 +243,6 @@
         `;
         document.getElementById('childrenStages').innerHTML = childStageHtml;
         document.getElementById('childrenStages').classList.remove('hidden');
-	    document.getElementById('Sign').classList.remove('hidden');
 
         // إظهار باقي الحقول بعد اختيار المرحلة الدراسية
         document.getElementById('discountCriteriaSection').classList.remove('hidden');
@@ -344,7 +343,9 @@ function calculateDiscount() {
 	document.getElementById('totalAmount').classList.remove('hidden');
         
 	
-        document.getElementById('selectedOptions').classList.remove('hidden');
+    document.getElementById('selectedOptions').classList.remove('hidden');
+    document.getElementById('Sign').classList.remove('hidden');
+
 
    // إظهار أسئلة الباص والكتب مباشرة بعد تحديد الخصم
         document.getElementById('busQuestion').classList.remove('hidden');
