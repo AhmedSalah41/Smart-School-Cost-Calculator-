@@ -347,17 +347,20 @@
         document.getElementById('totalAmount').classList.remove('hidden');
 
         // الآن إضافة الباص والكتب بشكل منفصل
+        let finalCostWithBus = finalAmount;
+        let finalCostWithBooks = finalAmount;
+
         if (document.getElementById('busSubscription') && document.getElementById('busSubscription').value === 'yes') {
-            finalAmount += busCost;
-            document.getElementById('finalCostWithBus').innerHTML = `المبلغ بعد إضافة الباص: ${finalAmount} جنيه`;
+            finalCostWithBus += busCost;
+            document.getElementById('finalCostWithBus').innerHTML = `المبلغ بعد إضافة الباص: ${finalCostWithBus} جنيه`;
             document.getElementById('finalCostWithBus').classList.remove('hidden');
         } else {
             document.getElementById('finalCostWithBus').classList.add('hidden');
         }
 
         if (document.getElementById('addBooksSubscription') && document.getElementById('addBooksSubscription').value === 'yes') {
-            finalAmount += booksCost;
-            document.getElementById('finalCostWithBooks').innerHTML = `المبلغ بعد إضافة الكتب: ${finalAmount} جنيه`;
+            finalCostWithBooks += booksCost;
+            document.getElementById('finalCostWithBooks').innerHTML = `المبلغ بعد إضافة الكتب: ${finalCostWithBooks} جنيه`;
             document.getElementById('finalCostWithBooks').classList.remove('hidden');
         } else {
             document.getElementById('finalCostWithBooks').classList.add('hidden');
