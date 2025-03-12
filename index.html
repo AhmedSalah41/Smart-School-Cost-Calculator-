@@ -241,7 +241,7 @@
 
     // إظهار الحقول الخاصة بالمرحلة الدراسية
     function showEducationalStage() {
-        let childStageHtml = `
+        let childStageHtml = ` 
             <div class="form-group">
                 <label for="stageSelection">المرحلة الدراسية:</label>
                 <select id="stageSelection" onchange="updateStageCost()">
@@ -380,7 +380,7 @@
     // تحديث المبلغ النهائي بعد إضافة الكتب
     function updateBooksCost() {
         let addBooks = document.getElementById('addBooksSubscription').value;
-        let total = parseFloat(document.getElementById('finalAmount').innerText.split(' ')[3]);
+        let total = parseFloat(document.getElementById('finalAmount').innerText.split(' ')[3]); // الحصول على المبلغ بعد الخصم
 
         if (addBooks === 'yes') {
             // إضافة سعر الكتب إذا اختار "نعم"
