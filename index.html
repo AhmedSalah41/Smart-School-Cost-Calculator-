@@ -270,77 +270,65 @@
     }
 
     // حساب الخصم بناءً على الاختيارات
-    function calculateDiscount() {
-        let discountCriteria = document.getElementById('discountCriteria');
-        let selectedDiscounts = Array.from(discountCriteria.selectedOptions).map(option => option.value);
-        let totalDiscount = 0;
-        
-        // التحقق من وجود "أبناء عاملين" ومنع اختيار أي خصم آخر
-        if (selectedDiscounts.includes('workerChildren')) {
-            selectedDiscounts = ['workerChildren'];
-        }
-
-        // التحقق من وجود الخصومات المتضادة
-        if (selectedDiscounts.includes('goldenBatch') && selectedDiscounts.includes('silverBatch')) {
-            alert("لا يمكن اختيار الدفعة الذهبية والفضية معًا.");
-            return;
-        }
-        if (selectedDiscounts.includes('topGrade') && selectedDiscounts.includes('excellentGrade')) {
-            alert("لا يمكن اختيار درجة التفوق مع الإمتياز.");
-            return;
-        }
-        if (selectedDiscounts.includes('cashBefore31May') && selectedDiscounts.includes('cashBefore31July')) {
-            alert("لا يمكن اختيار السداد قبل 31/5 و 31/7 معًا.");
-            return;
-        }
-
-        // تعريف نسب الخصم بناءً على ترتيب الاختيارات
-        let discountPercentages = {
-            'siblings': 0.05,       // 5%
-            'topGrade': 0.10,       // 10%
-            'excellentGrade': 0.05, // 5%
-            'goldenBatch': 0.10,    // 10%
-            'silverBatch': 0.05,    // 5%
-            'workerChildren': 0.25, // 25%
-            'cashBefore31May': 0.10, // 10%
-            'cashBefore31July': 0.05, // 5%
-            'championship': 0.10,   // 10%
-            'quranHafiz': 0.10      // 10%
-        };
-
-        // حساب إجمالي الخصم بناءً على النسب المحددة
-        selectedDiscounts.forEach(function(discount) {
-            totalDiscount += discountPercentages[discount] || 0;
-        });
-
-        // التأكد من أن الخصم لا يتجاوز 25%
-        if (totalDiscount > 0.25) {
-            totalDiscount = 0.25; // الحد الأقصى للخصم هو 25%
-        }
-
-        // تطبيق الخصم على السعر
-        discount = 1 - totalDiscount;
-
-        // الآن نعرض المربع الذي يحتوي على الإجمالي بعد الخصم
-        document.getElementById('totalAmount').classList.remove('hidden');
-        
-        // إظهار الخصومات المتوافقة
-        let selectedOptionsList = document.getElementById('selectedOptionsList');
-        selectedOptionsList.innerHTML = '';  // تفريغ القائمة قبل الإضافة
-        selectedDiscounts.forEach(function(discount) {
-            let listItem = document.createElement('li');
-            listItem.textContent = discount;
-            selectedOptionsList.appendChild(listItem);
-        });
-
-        document.getElementById('selectedOptions').classList.remove('hidden');
-
-        // إظهار أسئلة الباص والكتب مباشرة بعد تحديد الخصم
-        document.getElementById('busQuestion').classList.remove('hidden');
-        document.getElementById('addBooksCostQuestion').classList.remove('hidden');
-
-        updateTotalCost();
+    // حساب الخصم بناءً على الاختيارات
+function calculateDiscount() {
+    let discountCriteria = document.getElementById('discountCriteria');
+    let selectedDiscounts = Array.from(discountCriteria.selectedOptions).map(option => option.value);
+    
+    // التحقق من وجود "أبناء عاملين" ومنع اختيار أي خصم آخر
+    if (selectedDiscounts.includes('workerChildren')) {
+        selectedDiscounts = ['workerChildren']; // خصم واحد فقط إذا كان من أبناء العاملين
     }
+
+    // التحقق من وجود الخصومات المتضادة
+    if (selectedDiscounts.includes('goldenBatch') && selectedDiscounts.includes('silverBatch')) {
+        alert("لا يمكن اختيار الدفعة الذهبية والفضية معًا.");
+        return;
+    }
+    if (selectedDiscounts.includes('topGrade') && selectedDiscounts.includes('excellentGrade')) {
+        alert("لا يمكن اختيار درجة التفوق مع الإمتياز.");
+        return;
+    }
+    if (selectedDiscounts.includes('cashBefore31May') && selectedDiscounts.includes('cashBefore31July')) {
+        alert("لا يمكن اختيار السداد قبل 31/5 و 31/7 معًا.");
+        return;
+    }
+
+    // تعريف نسب الخصم بناءً على اختيار المستخدم
+    let discountFactors = {
+        'siblings': 0.95,           // 5% خصم
+        'topGrade': 0.90,           // 10% خصم
+        'excellentGrade': 0.95,     // 5% خصم
+        'goldenBatch': 0.90,        // 10% خصم
+        'silverBatch': 0.95,        // 5% خصم
+        'workerChildren': 0.75,     // 25% خصم
+        'cashBefore31May': 0.90,    // 10% خصم
+        'cashBefore31July': 0.95,   // 5% خصم
+        'championship': 0.90,       // 10% خصم
+        'quranHafiz': 0.90          // 10% خصم
+    };
+
+    // نبدأ بمضاعفة الخصومات بناءً على اختيار المستخدم
+    let finalDiscount = 1; // نبدأ من 100% (مضاعفة لاحقاً)
+
+    selectedDiscounts.forEach(function(discount) {
+        if (discountFactors[discount]) {
+            finalDiscount *= discountFactors[discount];
+        }
+    });
+
+    // التأكد من أن الخصم لا يتجاوز 25% من المبلغ الأصلي
+    if (finalDiscount < 0.75) {
+        finalDiscount = 0.75; // الحد الأدنى 75% من المبلغ الأصلي
+    }
+
+    // تطبيق الخصم النهائي على التكلفة
+    discount = finalDiscount;
+
+    // تحديث عرض الإجمالي مع الخصم
+    updateTotalCost();
+}
+
 
     // تحديث الإجمالي مع الخصم
     function updateTotalCost() {
