@@ -136,43 +136,7 @@
     <!-- اختيار المرحلة الدراسية -->
     <div id="childrenStages" class="hidden"></div>
 
-    <!-- عرض المصاريف -->
-    <div id="costDisplay" class="hidden">
-        <div class="cost-box">
-            <div id="costBeforeDiscount"></div>
-        </div>
-    </div>
-
-    <!-- سؤال الباص -->
-    <div id="busQuestion" class="hidden">
-        <div class="form-group">
-            <label for="busSubscription">هل ترغب في الاشتراك في الباص؟</label>
-            <select id="busSubscription" onchange="updateTotalCost()">
-                <option value="" disabled selected>اضغط هنا</option>
-                <option value="yes">نعم</option>
-                <option value="no">لا</option>
-            </select>
-        </div>
-    </div>
-
-    <!-- إضافة سعر الكتب -->
-    <div id="addBooksCostQuestion" class="hidden">
-        <div class="form-group">
-            <label for="addBooksSubscription">هل ترغب في إضافة سعر الكتب؟</label>
-            <select id="addBooksSubscription" onchange="updateBooksCost()">
-                <option value="" disabled selected>اضغط هنا</option>
-                <option value="yes">نعم</option>
-                <option value="no">لا</option>
-            </select>
-        </div>
-    </div>
-
-    <!-- إجمالي المبلغ -->
-    <div id="totalAmount" class="cost-box hidden">
-        <div id="finalAmount"></div>
-    </div>
-
-    <!-- اختيار ما يتطابق للحصول على الخصم -->
+    <!-- اختيار نسبة الخصم -->
     <div id="discountCriteriaSection" class="form-group hidden">
         <label for="discountCriteria">برجاء اختيار ما يتطابق للحصول على الخصم:</label>
         <select id="discountCriteria" multiple onchange="calculateDiscount()">
@@ -187,10 +151,39 @@
         </select>
     </div>
 
-    <!-- عرض الاختيارات التي تم تحديدها للخصم -->
-    <div id="selectedOptions" class="selected-options hidden">
-        <p>الخصومات التي تم الموافقة عليها:</p>
-        <ul id="selectedOptionsList"></ul>
+    <!-- عرض اجمالي المبلغ بعد الخصم -->
+    <div id="totalAmount" class="cost-box hidden">
+        <div id="finalAmount"></div>
+    </div>
+
+    <!-- سؤال الباص -->
+    <div id="busQuestion" class="hidden">
+        <div class="form-group">
+            <label for="busSubscription">هل ترغب في الاشتراك في الباص؟</label>
+            <select id="busSubscription" onchange="updateTotalCost()">
+                <option value="" disabled selected>اضغط هنا</option>
+                <option value="yes">نعم</option>
+                <option value="no">لا</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- سؤال الكتب -->
+    <div id="addBooksCostQuestion" class="hidden">
+        <div class="form-group">
+            <label for="addBooksSubscription">هل ترغب في إضافة سعر الكتب؟</label>
+            <select id="addBooksSubscription" onchange="updateTotalCost()">
+                <option value="" disabled selected>اضغط هنا</option>
+                <option value="yes">نعم</option>
+                <option value="no">لا</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- مربع عرض الإجمالي مع الباص والكتب -->
+    <div id="finalCostWithAdditions" class="cost-box hidden">
+        <div id="finalCostWithBus"></div>
+        <div id="finalCostWithBooks"></div>
     </div>
 
     <!-- ملاحظات -->
@@ -235,9 +228,7 @@
         document.getElementById('childrenStages').innerHTML = childStageHtml;
         document.getElementById('childrenStages').classList.remove('hidden');
         // إظهار باقي الحقول بعد اختيار المرحلة الدراسية
-        document.getElementById('busQuestion').classList.remove('hidden');
         document.getElementById('discountCriteriaSection').classList.remove('hidden');
-        document.getElementById('addBooksCostQuestion').classList.remove('hidden');
     }
 
     // تحديث تكلفة المرحلة الدراسية عند اختيار المرحلة
@@ -341,23 +332,30 @@
     function updateTotalCost() {
         let total = stageCost;
 
-        // إضافة تكلفة الباص إذا كان مختارًا
-        if (document.getElementById('busSubscription') && document.getElementById('busSubscription').value === 'yes') {
-            total += busCost;
-        }
-
-        // إضافة تكلفة الكتب إذا كان مختارًا
-        if (document.getElementById('addBooksSubscription') && document.getElementById('addBooksSubscription').value === 'yes') {
-            total += booksCost;
-        }
-
         // حساب النسبة التكميلية
         let complementaryPercentage = 100 - discount; // النسبة التكميلية
         let finalAmount = total * (complementaryPercentage / 100); // حساب المبلغ النهائي بعد الخصم
 
-        // تحديث المبلغ النهائي
+        // تحديث المبلغ النهائي بعد الخصم
         document.getElementById('finalAmount').innerHTML = `إجمالي المبلغ بعد الخصم: ${finalAmount} جنيه`;
         document.getElementById('totalAmount').classList.remove('hidden');
+
+        // الآن إضافة الباص والكتب بشكل منفصل
+        if (document.getElementById('busSubscription') && document.getElementById('busSubscription').value === 'yes') {
+            finalAmount += busCost;
+            document.getElementById('finalCostWithBus').innerHTML = `المبلغ بعد إضافة الباص: ${finalAmount} جنيه`;
+            document.getElementById('finalCostWithBus').classList.remove('hidden');
+        } else {
+            document.getElementById('finalCostWithBus').classList.add('hidden');
+        }
+
+        if (document.getElementById('addBooksSubscription') && document.getElementById('addBooksSubscription').value === 'yes') {
+            finalAmount += booksCost;
+            document.getElementById('finalCostWithBooks').innerHTML = `المبلغ بعد إضافة الكتب: ${finalAmount} جنيه`;
+            document.getElementById('finalCostWithBooks').classList.remove('hidden');
+        } else {
+            document.getElementById('finalCostWithBooks').classList.add('hidden');
+        }
     }
 </script>
 
