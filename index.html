@@ -293,11 +293,11 @@
             return;
         }
 
+        // تحديث النسب بناءً على الخصومات التي يتم تحديدها
         if (criteria.includes('workerChildren')) {
-            discount = 25; // خصم 25%
+            discount += 25; // خصم 25%
             appliedDiscounts.push("أبناء العاملين: 25%");
         }
-
         if (criteria.includes('siblings')) {
             discount += 5; // خصم 5%
             appliedDiscounts.push("الطالب لديه أخوه في المدرسة: 5%");
@@ -311,20 +311,20 @@
             appliedDiscounts.push("الطالب حاصل على درجة الإمتياز (90): 5%");
         }
         if (criteria.includes('golden')) {
-            discount += 15; // خصم 15%
-            appliedDiscounts.push("حاصل على الذهبية: 15%");
+            discount += 10; // خصم 10%
+            appliedDiscounts.push("حاصل على الذهبية: 10%");
         }
         if (criteria.includes('silver')) {
-            discount += 10; // خصم 10%
-            appliedDiscounts.push("حاصل على الفضية: 10%");
+            discount += 5; // خصم 5%
+            appliedDiscounts.push("حاصل على الفضية: 5%");
         }
         if (criteria.includes('cashBefore31May')) {
-            discount += 15; // خصم 15%
-            appliedDiscounts.push("سداد المصاريف كاش قبل 31/5: 15%");
+            discount += 10; // خصم 10%
+            appliedDiscounts.push("سداد المصاريف كاش قبل 31/5: 10%");
         }
         if (criteria.includes('cashBefore31July')) {
-            discount += 10; // خصم 10%
-            appliedDiscounts.push("سداد المصاريف كاش قبل 31/7: 10%");
+            discount += 5; // خصم 5%
+            appliedDiscounts.push("سداد المصاريف كاش قبل 31/7: 5%");
         }
 
         // عرض الخصومات التي تم اختيارها
