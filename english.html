@@ -127,11 +127,7 @@
     <img src="Smart.jpg" alt="Smart School Logo" class="logo">
     <h1>مدرسة سمارت</h1>
 
-    <!-- اختيارات نوع التعليم -->
-    <div id="schoolSelection" class="btn-container">
-        <button class="btn" onclick="selectSchool('arabic')">مصاريف مدرسة سمارت (قسم العربي )</button>
-        <button class="btn" onclick="selectSchool('foreign')">مصاريف  مدرسة سمارت (قسم لغات )</button>
-    </div>
+   
 
     <!-- اختيار المرحلة الدراسية -->
     <div id="childrenStages" class="hidden"></div>
@@ -222,7 +218,6 @@
 
     // اختيار نوع المدرسة
     function selectSchool(type) {
-        document.getElementById('schoolSelection').classList.add('hidden');
         showEducationalStage();
     }
 
