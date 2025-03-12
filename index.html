@@ -331,6 +331,11 @@ function calculateDiscount() {
 
     // تطبيق الخصم النهائي على التكلفة
     discount = finalDiscount;
+	document.getElementById('totalAmount').classList.remove('hidden');
+        
+	
+        document.getElementById('selectedOptions').classList.remove('hidden');
+
    // إظهار أسئلة الباص والكتب مباشرة بعد تحديد الخصم
         document.getElementById('busQuestion').classList.remove('hidden');
         document.getElementById('addBooksCostQuestion').classList.remove('hidden');
