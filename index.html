@@ -133,251 +133,27 @@
         <button class="btn" onclick="selectSchool('foreign')">مصاريف  مدرسة سمارت (قسم لغات )</button>
     </div>
 
-    <!-- اختيار المرحلة الدراسية -->
-    <div id="childrenStages" class="hidden"></div>
+   
 
-    <!-- اختيار نسبة الخصم -->
-    <div id="discountCriteriaSection" class="form-group hidden">
-        <label for="discountCriteria">برجاء اختيار ما يتطابق للحصول على الخصم:</label>
-        <select id="discountCriteria" multiple onchange="calculateDiscount()">
-            <option value="خثم الاخوة">الطالب لديه أخوه في المدرسة</option>
-            <option value="خصم درجة التفوق">الطالب حاصل على درجة التفوق (100)</option>
-            <option value="خصم الامتياز">الطالب حاصل على درجة الإمتياز (90)</option>
-            <option value="خصم الدفعة الذهبية">الدفعة الذهبية 22-23</option>
-            <option value="خصم الدفعة الفضية">الدفعة الفضية 24-25</option>
-            <option value="خصم ابناء العاملين">أبناء عاملين</option>
-            <option value="خصم الدفع الكاش قبل 31 مايو">سداد المصاريف كاش قبل 31/5</option>
-            <option value="خصم الدفع الكاش قبل 31 يوليو">سداد المصاريف كاش قبل 31/7</option>
-            <option value="خصم الحصول على بطولة جمهورية">حاصل على بطولة جمهورية أو محافظة</option>
-            <option value="خصم حفظ القرٱن الكريم">حافظ للقرآن الكريم</option>
-        </select>
-    </div>
+   
 
-    <!-- عرض اجمالي المبلغ بعد الخصم -->
-    <div id="totalAmount" class="cost-box hidden">
-        <div id="finalAmount"></div>
-    </div>
-
-    <!-- عرض الخصومات المتوافقة -->
-    <div id="selectedOptions" class="hidden">
-        <h3>الخصومات المتوافقة:</h3>
-        <ul id="selectedOptionsList"></ul>
-    </div>
-
-    <!-- سؤال الباص -->
-    <div id="busQuestion" class="hidden">
-        <div class="form-group">
-            <label for="busSubscription">هل ترغب في الاشتراك في الباص؟</label>
-            <select id="busSubscription" onchange="updateTotalCost()">
-                <option value="" disabled selected>اضغط هنا</option>
-                <option value="yes">نعم</option>
-                <option value="no">لا</option>
-            </select>
-        </div>
-    </div>
-
-    <!-- سؤال الكتب -->
-    <div id="addBooksCostQuestion" class="hidden">
-        <div class="form-group">
-            <label for="addBooksSubscription">هل ترغب في إضافة سعر الكتب؟</label>
-            <select id="addBooksSubscription" onchange="updateTotalCost()">
-                <option value="" disabled selected>اضغط هنا</option>
-                <option value="yes">نعم</option>
-                <option value="no">لا</option>
-            </select>
-        </div>
-    </div>
-
-    <!-- مربع عرض الإجمالي مع الباص والكتب -->
-    <div id="finalCostWithAdditions" class="cost-box hidden">
-        <div id="finalCostWithBus"></div>
-        <div id="finalCostWithBooks"></div>
-    </div>
-
-    <!-- ملاحظات -->
-    <div id="notes" class="notes hidden">
-        <p>ملاحظات هامة:</p>
-        <ul>
-            <li>مصاريف الكتب: 3,000 جنيه.</li>
-            <li>يوجد خصومات أخرى للطلاب الفائزين في بطولات رياضية أو دينية.</li>
-        </ul>
-    </div>
-
-
-<!-- زر الانتقال إلى Google Forms -->
-<div id="Sign" class="notes hidden" style="text-align: center; margin-top: 20px;">
-    <a href="https://docs.google.com/forms/d/1g8K4mwCP0TVMzC_AsdWAhht2OcoEwT43z5LTtU0tH_k/viewform" target="_blank">
-        <button class="btn">الرجاء الضغط هنا لإتمام التسجيل</button>
-    </a>
-</div>
-
-</div>
 
 <script>
-    let baseCost = 0;
-    let busCost = 10000; // سعر الباص
-    let booksCost = 3000; // تكلفة الكتب
-    let discount = 1; // ستكون النسب الآن من 1 (100%) كإجمالي المبلغ بدون خصم
-    let stageCost = 0; // تكلفة المرحلة الدراسية
+   // اختيار نوع المدرسة
+function selectSchool(type) {
+    // إخفاء قسم الاختيارات
+    document.getElementById('schoolSelection').classList.add('hidden');
 
-    // اختيار نوع المدرسة
-    function selectSchool(type) {
-        document.getElementById('schoolSelection').classList.add('hidden');
-        showEducationalStage();
+    // تحديد الرابط بناءً على النوع المختار
+    if (type === 'arabic') {
+        // إذا تم اختيار قسم العربي، يتم نقلك إلى هذه الصفحة
+        window.location.href = "arabic.html"; // المسار النسبي للصفحة العربية
+    } else if (type === 'foreign') {
+        // إذا تم اختيار قسم اللغات، يتم نقلك إلى هذه الصفحة
+        window.location.href = "english.html"; // المسار النسبي للصفحة الأجنبية
     }
-
-    // إظهار الحقول الخاصة بالمرحلة الدراسية
-    function showEducationalStage() {
-        let childStageHtml = ` 
-            <div class="form-group">
-                <label for="stageSelection">المرحلة الدراسية:</label>
-                <select id="stageSelection" onchange="updateStageCost()">
-                    <option value="KG_BC">رياض أطفال (B.C) - 23,000 جنيه</option>
-                    <option value="KG">رياض أطفال (KG1, KG2) - 30,000 جنيه</option>
-                    <option value="GR1_GR3">ابتدائية (من GR1 إلى GR3) - 33,000 جنيه</option>
-                    <option value="GR4_GR6">ابتدائية (من GR4 إلى GR6) - 36,000 جنيه</option>
-                    <option value="GR7_GR9">إعدادية (من GR7 إلى GR9) - 39,000 جنيه</option>
-                    <option value="GR10_GR12">ثانوية (من GR10 إلى GR12) - 42,000 جنيه</option>
-                </select>
-            </div>
-        `;
-        document.getElementById('childrenStages').innerHTML = childStageHtml;
-        document.getElementById('childrenStages').classList.remove('hidden');
-
-        // إظهار باقي الحقول بعد اختيار المرحلة الدراسية
-        document.getElementById('discountCriteriaSection').classList.remove('hidden');
-    }
-
-    // تحديث تكلفة المرحلة الدراسية عند اختيار المرحلة
-    function updateStageCost() {
-        let selectedStage = document.getElementById('stageSelection').value;
-
-        // تحديد تكلفة المرحلة بناءً على الاختيار
-        switch (selectedStage) {
-            case 'KG_BC':
-                stageCost = 23000;
-                break;
-            case 'KG':
-                stageCost = 30000;
-                break;
-            case 'GR1_GR3':
-                stageCost = 33000;
-                break;
-            case 'GR4_GR6':
-                stageCost = 36000;
-                break;
-            case 'GR7_GR9':
-                stageCost = 39000;
-                break;
-            case 'GR10_GR12':
-                stageCost = 42000;
-                break;
-        }
-
-        baseCost = stageCost;
-        calculateDiscount();
-    }
-
-    // حساب الخصم بناءً على الاختيارات
-    // حساب الخصم بناءً على الاختيارات
-function calculateDiscount() {
-    let discountCriteria = document.getElementById('discountCriteria');
-    let selectedDiscounts = Array.from(discountCriteria.selectedOptions).map(option => option.value);
-    
-    // التحقق من وجود "أبناء عاملين" ومنع اختيار أي خصم آخر
-    if (selectedDiscounts.includes('خصم ابناء العاملين')) {
-        selectedDiscounts = ['خصم ابناء العاملين']; // خصم واحد فقط إذا كان من أبناء العاملين
-    }
-
-    // التحقق من وجود الخصومات المتضادة
-    if (selectedDiscounts.includes('خصم الدفعة الذهبية') && selectedDiscounts.includes('خصم الدفعة الفضية')) {
-        alert("لا يمكن اختيار الدفعة الذهبية والفضية معًا.");
-        return;
-    }
-    if (selectedDiscounts.includes('خصم درجة التفوق') && selectedDiscounts.includes('خصم الامتياز')) {
-        alert("لا يمكن اختيار درجة التفوق مع الإمتياز.");
-        return;
-    }
-    if (selectedDiscounts.includes('خصم الدفع الكاش قبل 31 مايو') && selectedDiscounts.includes('خصم الدفع الكاش قبل 31 يوليو')) {
-        alert("لا يمكن اختيار السداد قبل 31/5 و 31/7 معًا.");
-        return;
-    }
-
-    // تعريف نسب الخصم بناءً على اختيار المستخدم
-    let discountFactors = {
-        'خثم الاخوة': 0.95,           // 5% خصم
-        'خصم درجة التفوق': 0.90,           // 10% خصم
-        'خصم الامتياز': 0.95,     // 5% خصم
-        'خصم الدفعة الذهبية': 0.90,        // 10% خصم
-        'خصم الدفعة الفضية': 0.95,        // 5% خصم
-        'خصم ابناء العاملين': 0.75,     // 25% خصم
-        'خصم الدفع الكاش قبل 31 مايو': 0.90,    // 10% خصم
-        'خصم الدفع الكاش قبل 31 يوليو': 0.95,   // 5% خصم
-        'خصم الحصول على بطولة جمهورية': 0.90,       // 10% خصم
-        'خصم الحصول على بطولة جمهورية': 0.90          // 10% خصم
-    };
-
-    // نبدأ بمضاعفة الخصومات بناءً على اختيار المستخدم
-    let finalDiscount = 1; // نبدأ من 100% (مضاعفة لاحقاً)
-
-    selectedDiscounts.forEach(function(discount) {
-        if (discountFactors[discount]) {
-            finalDiscount *= discountFactors[discount];
-        }
-    });
-  // إظهار الخصومات المتوافقة
-        let selectedOptionsList = document.getElementById('selectedOptionsList');
-        selectedOptionsList.innerHTML = '';  // تفريغ القائمة قبل الإضافة
-        selectedDiscounts.forEach(function(discount) {
-            let listItem = document.createElement('li');
-            listItem.textContent = discount;
-            selectedOptionsList.appendChild(listItem);
-        });
-    // التأكد من أن الخصم لا يتجاوز 25% من المبلغ الأصلي
-    if (finalDiscount < 0.75) {
-        finalDiscount = 0.75; // الحد الأدنى 75% من المبلغ الأصلي
-    }
-
-    // تطبيق الخصم النهائي على التكلفة
-    discount = finalDiscount;
-	document.getElementById('totalAmount').classList.remove('hidden');
-        
-	
-    document.getElementById('selectedOptions').classList.remove('hidden');
-    document.getElementById('Sign').classList.remove('hidden');
-
-
-   // إظهار أسئلة الباص والكتب مباشرة بعد تحديد الخصم
-        document.getElementById('busQuestion').classList.remove('hidden');
-        document.getElementById('addBooksCostQuestion').classList.remove('hidden');
-
-    
-    // تحديث عرض الإجمالي مع الخصم
-    updateTotalCost();
 }
 
-
-    // تحديث الإجمالي مع الخصم
-    function updateTotalCost() {
-        let finalCost = baseCost * discount;
-        document.getElementById('finalAmount').innerText = `الإجمالي بعد الخصم: ${finalCost} جنيه`;
-
-        // إضافة الباص والكتب
-        let busSelection = document.getElementById('busSubscription').value;
-        let booksSelection = document.getElementById('addBooksSubscription').value;
-
-        let additionalCost = finalCost;
-        if (busSelection === 'yes') {
-            additionalCost += busCost;
-        }
-        if (booksSelection === 'yes') {
-            additionalCost += booksCost;
-        }
-
-        document.getElementById('finalCostWithBus').innerText = ` الإجمالي مع الباص والكتب حسب اختيارك: ${additionalCost} جنيه`;
-
-        document.getElementById('finalCostWithAdditions').classList.remove('hidden');
-    }
 </script>
 
 </body>
