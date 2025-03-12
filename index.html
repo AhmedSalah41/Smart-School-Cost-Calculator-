@@ -203,11 +203,9 @@
         </ul>
     </div>
 
-<!-- زر إتمام عملية التسجيل -->
-<button class="btn" onclick="completeRegistration()">إتمام عملية التسجيل</button>
 
 <!-- زر الانتقال إلى Google Forms -->
-<div style="text-align: center; margin-top: 20px;">
+<div id="Sign" class="notes hidden" style="text-align: center; margin-top: 20px;">
     <a href="https://docs.google.com/forms/d/1g8K4mwCP0TVMzC_AsdWAhht2OcoEwT43z5LTtU0tH_k/viewform" target="_blank">
         <button class="btn">الرجاء الضغط هنا لإتمام التسجيل</button>
     </a>
@@ -245,6 +243,8 @@
         `;
         document.getElementById('childrenStages').innerHTML = childStageHtml;
         document.getElementById('childrenStages').classList.remove('hidden');
+	    document.getElementById('Sign').classList.remove('hidden');
+
         // إظهار باقي الحقول بعد اختيار المرحلة الدراسية
         document.getElementById('discountCriteriaSection').classList.remove('hidden');
     }
