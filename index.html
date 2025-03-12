@@ -346,7 +346,7 @@
         document.getElementById('finalAmount').innerHTML = `إجمالي المبلغ بعد الخصم: ${finalAmount} جنيه`;
         document.getElementById('totalAmount').classList.remove('hidden');
 
-        // الآن إضافة الباص والكتب بشكل منفصل
+        // إضافة الباص والكتب بعد الخصم
         let finalCostWithBus = finalAmount;
         let finalCostWithBooks = finalAmount;
 
@@ -365,6 +365,9 @@
         } else {
             document.getElementById('finalCostWithBooks').classList.add('hidden');
         }
+
+        // عرض المبلغ الإجمالي النهائي مع الباص والكتب
+        document.getElementById('finalCostWithAdditions').classList.remove('hidden');
     }
 </script>
 
