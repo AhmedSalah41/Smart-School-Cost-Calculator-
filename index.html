@@ -283,6 +283,17 @@
 
         // الآن نعرض المربع الذي يحتوي على الإجمالي بعد الخصم
         document.getElementById('totalAmount').classList.remove('hidden');
+        
+        // إظهار الخصومات المتوافقة
+        let selectedOptionsList = document.getElementById('selectedOptionsList');
+        selectedOptionsList.innerHTML = '';  // تفريغ القائمة قبل الإضافة
+        selectedDiscounts.forEach(function(discount) {
+            let listItem = document.createElement('li');
+            listItem.textContent = discount;
+            selectedOptionsList.appendChild(listItem);
+        });
+
+        document.getElementById('selectedOptions').classList.remove('hidden');
 
         updateTotalCost();
     }
