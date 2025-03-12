@@ -148,7 +148,7 @@
             <option value="خصم ابناء العاملين">أبناء عاملين</option>
             <option value="خصم الدفع الكاش قبل 31 مايو">سداد المصاريف كاش قبل 31/5</option>
             <option value="خصم الدفع الكاش قبل 31 يوليو">سداد المصاريف كاش قبل 31/7</option>
-            <option value="خثم الحصول على بطولة جمهورية">حاصل على بطولة جمهورية أو محافظة</option>
+            <option value="خصم الحصول على بطولة جمهورية">حاصل على بطولة جمهورية أو محافظة</option>
             <option value="خصم حفظ القرٱن الكريم">حافظ للقرآن الكريم</option>
         </select>
     </div>
@@ -281,31 +281,31 @@ function calculateDiscount() {
     }
 
     // التحقق من وجود الخصومات المتضادة
-    if (selectedDiscounts.includes('goldenBatch') && selectedDiscounts.includes('silverBatch')) {
+    if (selectedDiscounts.includes('خصم الدفعة الذهبية') && selectedDiscounts.includes('خصم الدفعة الفضية')) {
         alert("لا يمكن اختيار الدفعة الذهبية والفضية معًا.");
         return;
     }
-    if (selectedDiscounts.includes('topGrade') && selectedDiscounts.includes('excellentGrade')) {
+    if (selectedDiscounts.includes('خصم درجة التفوق') && selectedDiscounts.includes('خصم الامتياز')) {
         alert("لا يمكن اختيار درجة التفوق مع الإمتياز.");
         return;
     }
-    if (selectedDiscounts.includes('cashBefore31May') && selectedDiscounts.includes('cashBefore31July')) {
+    if (selectedDiscounts.includes('خصم الدفع الكاش قبل 31 مايو') && selectedDiscounts.includes('خصم الدفع الكاش قبل 31 يوليو')) {
         alert("لا يمكن اختيار السداد قبل 31/5 و 31/7 معًا.");
         return;
     }
 
     // تعريف نسب الخصم بناءً على اختيار المستخدم
     let discountFactors = {
-        'siblings': 0.95,           // 5% خصم
-        'topGrade': 0.90,           // 10% خصم
-        'excellentGrade': 0.95,     // 5% خصم
-        'goldenBatch': 0.90,        // 10% خصم
-        'silverBatch': 0.95,        // 5% خصم
+        'خثم الاخوة': 0.95,           // 5% خصم
+        'خصم درجة التفوق': 0.90,           // 10% خصم
+        'خصم الامتياز': 0.95,     // 5% خصم
+        'خصم الدفعة الذهبية': 0.90,        // 10% خصم
+        'خصم الدفعة الفضية': 0.95,        // 5% خصم
         'خصم ابناء العاملين': 0.75,     // 25% خصم
-        'cashBefore31May': 0.90,    // 10% خصم
-        'cashBefore31July': 0.95,   // 5% خصم
-        'championship': 0.90,       // 10% خصم
-        'quranHafiz': 0.90          // 10% خصم
+        'خصم الدفع الكاش قبل 31 مايو': 0.90,    // 10% خصم
+        'خصم الدفع الكاش قبل 31 يوليو': 0.95,   // 5% خصم
+        'خصم الحصول على بطولة جمهورية': 0.90,       // 10% خصم
+        'خصم الحصول على بطولة جمهورية': 0.90          // 10% خصم
     };
 
     // نبدأ بمضاعفة الخصومات بناءً على اختيار المستخدم
