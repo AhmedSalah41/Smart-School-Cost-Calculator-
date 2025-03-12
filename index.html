@@ -276,8 +276,8 @@ function calculateDiscount() {
     let selectedDiscounts = Array.from(discountCriteria.selectedOptions).map(option => option.value);
     
     // التحقق من وجود "أبناء عاملين" ومنع اختيار أي خصم آخر
-    if (selectedDiscounts.includes('workerChildren')) {
-        selectedDiscounts = ['workerChildren']; // خصم واحد فقط إذا كان من أبناء العاملين
+    if (selectedDiscounts.includes('خصم ابناء العاملين')) {
+        selectedDiscounts = ['خصم ابناء العاملين']; // خصم واحد فقط إذا كان من أبناء العاملين
     }
 
     // التحقق من وجود الخصومات المتضادة
@@ -301,7 +301,7 @@ function calculateDiscount() {
         'excellentGrade': 0.95,     // 5% خصم
         'goldenBatch': 0.90,        // 10% خصم
         'silverBatch': 0.95,        // 5% خصم
-        'workerChildren': 0.75,     // 25% خصم
+        'خصم ابناء العاملين': 0.75,     // 25% خصم
         'cashBefore31May': 0.90,    // 10% خصم
         'cashBefore31July': 0.95,   // 5% خصم
         'championship': 0.90,       // 10% خصم
