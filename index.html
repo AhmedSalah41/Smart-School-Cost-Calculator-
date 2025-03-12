@@ -13,7 +13,6 @@
             direction: rtl;
             background-color: #f4f4f4;
         }
-
         .container {
             width: 80%;
             margin: 50px auto;
@@ -22,26 +21,22 @@
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-
         .logo {
             width: 150px;
             display: block;
             margin: 0 auto 20px;
         }
-
         h1 {
             text-align: center;
             font-size: 30px;
             color: #3498db;
         }
-
         .btn-container {
             display: flex;
             justify-content: space-evenly;
             margin: 20px 0;
             flex-wrap: wrap;
         }
-
         .btn {
             background-color: #3498db;
             color: #fff;
@@ -53,25 +48,20 @@
             width: 200px;
             margin: 5px;
         }
-
         .btn:hover {
             background-color: #2980b9;
         }
-
         .hidden {
             display: none;
         }
-
         .form-group {
             margin-bottom: 20px;
         }
-
         label {
             font-size: 18px;
             display: block;
             margin-bottom: 10px;
         }
-
         input, select {
             width: 100%;
             padding: 10px;
@@ -79,18 +69,15 @@
             border: 2px solid #3498db;
             border-radius: 5px;
         }
-
         select {
             appearance: none;
             -webkit-appearance: none;
             -moz-appearance: none;
         }
-
         select:focus {
             background-color: #f9f9f9;
             border-color: #2980b9;
         }
-
         .cost-box {
             margin: 20px 0;
             padding: 10px;
@@ -98,22 +85,18 @@
             border-radius: 5px;
             text-align: center;
         }
-
         .cost-box div {
             margin: 5px 0;
         }
-
         .criteria {
             margin: 20px 0;
             text-align: center;
         }
-
         .selected-options {
             margin: 20px 0;
             font-size: 16px;
             color: #2980b9;
         }
-
         .notes {
             margin-top: 20px;
             padding: 15px;
@@ -122,18 +105,15 @@
             font-size: 16px;
             color: #d35400;
         }
-
         .notes ul {
             list-style-type: disc;
             margin-left: 20px;
         }
-
         @media (max-width: 768px) {
             .btn-container {
                 flex-direction: column;
                 align-items: center;
             }
-
             .btn {
                 width: 80%;
                 margin: 10px 0;
@@ -150,44 +130,76 @@
     <!-- اختيارات نوع التعليم -->
     <div id="schoolSelection" class="btn-container">
         <button class="btn" onclick="selectSchool('arabic')">مصاريف مدرسة سمارت (قسم العربي )</button>
-        <button class="btn" onclick="selectSchool('foreign')">مصاريف مدرسة سمارت (قسم لغات )</button>
+        <button class="btn" onclick="selectSchool('foreign')">مصاريف  مدرسة سمارت (قسم لغات )</button>
     </div>
 
     <!-- اختيار المرحلة الدراسية -->
     <div id="childrenStages" class="hidden"></div>
 
-    <!-- عرض المصاريف قبل الخصم -->
-    <div id="costBeforeDiscountBox" class="cost-box hidden">
-        <div id="costBeforeDiscount"></div>
+    <!-- عرض المصاريف -->
+    <div id="costDisplay" class="hidden">
+        <div class="cost-box">
+            <div id="costBeforeDiscount"></div>
+        </div>
     </div>
 
     <!-- سؤال الباص -->
     <div id="busQuestion" class="hidden">
         <div class="form-group">
             <label for="busSubscription">هل ترغب في الاشتراك في الباص؟</label>
-            <select id="busSubscription" onchange="updateTotalCostWithBusAndBooks()">
+            <select id="busSubscription" onchange="updateTotalCost()">
                 <option value="" disabled selected>اضغط هنا</option>
                 <option value="yes">نعم</option>
                 <option value="no">لا</option>
             </select>
         </div>
-    </div>
-
-    <!-- إجمالي المبلغ بعد الخصم مع الباص والكتب -->
-    <div id="finalAmountWithBusAndBooks" class="cost-box hidden">
-        <div id="finalAmountText"></div>
     </div>
 
     <!-- إضافة سعر الكتب -->
     <div id="addBooksCostQuestion" class="hidden">
         <div class="form-group">
             <label for="addBooksSubscription">هل ترغب في إضافة سعر الكتب؟</label>
-            <select id="addBooksSubscription" onchange="updateTotalCostWithBusAndBooks()">
+            <select id="addBooksSubscription" onchange="updateBooksCost()">
                 <option value="" disabled selected>اضغط هنا</option>
                 <option value="yes">نعم</option>
                 <option value="no">لا</option>
             </select>
         </div>
+    </div>
+
+    <!-- إجمالي المبلغ -->
+    <div id="totalAmount" class="cost-box hidden">
+        <div id="finalAmount"></div>
+    </div>
+
+    <!-- اختيار ما يتطابق للحصول على الخصم -->
+    <div id="discountCriteriaSection" class="form-group hidden">
+        <label for="discountCriteria">برجاء اختيار ما يتطابق للحصول على الخصم:</label>
+        <select id="discountCriteria" multiple onchange="calculateDiscount()">
+            <option value="siblings">الطالب لديه أخوه في المدرسة</option>
+            <option value="topGrade">الطالب حاصل على درجة التفوق (100)</option>
+            <option value="excellentGrade">الطالب حاصل على درجة الإمتياز (90)</option>
+            <option value="golden">حاصل على الذهبية</option>
+            <option value="silver">حاصل على الفضية</option>
+            <option value="workerChildren">أبناء عاملين</option>
+            <option value="cashBefore31May">سداد المصاريف كاش قبل 31/5</option>
+            <option value="cashBefore31July">سداد المصاريف كاش قبل 31/7</option>
+        </select>
+    </div>
+
+    <!-- عرض الاختيارات التي تم تحديدها للخصم -->
+    <div id="selectedOptions" class="selected-options hidden">
+        <p>الخصومات التي تم الموافقة عليها:</p>
+        <ul id="selectedOptionsList"></ul>
+    </div>
+
+    <!-- ملاحظات -->
+    <div id="notes" class="notes hidden">
+        <p>ملاحظات هامة:</p>
+        <ul>
+            <li>مصاريف الكتب: 3,000 جنيه.</li>
+            <li>يوجد خصومات أخرى للطلاب الفائزين في بطولات رياضية أو دينية.</li>
+        </ul>
     </div>
 
 </div>
@@ -224,6 +236,8 @@
         document.getElementById('childrenStages').classList.remove('hidden');
         // إظهار باقي الحقول بعد اختيار المرحلة الدراسية
         document.getElementById('busQuestion').classList.remove('hidden');
+        document.getElementById('discountCriteriaSection').classList.remove('hidden');
+        document.getElementById('addBooksCostQuestion').classList.remove('hidden');
     }
 
     // تحديث تكلفة المرحلة الدراسية عند اختيار المرحلة
@@ -254,33 +268,96 @@
                 stageCost = 0;
         }
 
-        // حساب المصاريف الإجمالية
-        updateTotalCostBeforeDiscount(); 
+        updateTotalCost(); // تحديث الإجمالي بعد اختيار المرحلة
     }
 
-    // حساب المبلغ الإجمالي قبل الخصم
-    function updateTotalCostBeforeDiscount() {
-        let totalBeforeDiscount = stageCost;
-        document.getElementById('costBeforeDiscount').innerHTML = `إجمالي المبلغ قبل الخصم: ${totalBeforeDiscount.toFixed(2)} جنيه`;
-        document.getElementById('costBeforeDiscountBox').classList.remove('hidden');
+    // حساب الخصم بناءً على الشروط
+    function calculateDiscount() {
+        let criteria = Array.from(document.getElementById('discountCriteria').selectedOptions)
+                            .map(option => option.value);
+
+        let originalCost = stageCost; // المبلغ الأساسي قبل الخصم
+        discount = 0;
+
+        let appliedDiscounts = [];
+
+        if (criteria.includes('golden') && criteria.includes('silver')) {
+            alert("لا يمكن اختيار الخصمين: الذهبية والفضية في نفس الوقت.");
+            return;
+        }
+
+        if (criteria.includes('topGrade') && criteria.includes('excellentGrade')) {
+            alert("لا يمكن اختيار الخصمين: درجة التفوق ودرجة الإمتياز في نفس الوقت.");
+            return;
+        }
+
+        if (criteria.includes('cashBefore31May') && criteria.includes('cashBefore31July')) {
+            alert("لا يمكن اختيار الخصمين: سداد المصاريف قبل 31 مايو و31 يوليو في نفس الوقت.");
+            return;
+        }
+
+        if (criteria.includes('workerChildren')) {
+            discount = 25; // خصم 25%
+            appliedDiscounts.push("أبناء العاملين: 25%");
+        }
+
+        if (criteria.includes('siblings')) {
+            discount += 5; // خصم 5%
+            appliedDiscounts.push("الطالب لديه أخوه في المدرسة: 5%");
+        }
+        if (criteria.includes('topGrade')) {
+            discount += 10; // خصم 10%
+            appliedDiscounts.push("الطالب حاصل على درجة التفوق (100): 10%");
+        }
+        if (criteria.includes('excellentGrade')) {
+            discount += 5; // خصم 5%
+            appliedDiscounts.push("الطالب حاصل على درجة الإمتياز (90): 5%");
+        }
+        if (criteria.includes('golden')) {
+            discount += 15; // خصم 15%
+            appliedDiscounts.push("حاصل على الذهبية: 15%");
+        }
+        if (criteria.includes('silver')) {
+            discount += 10; // خصم 10%
+            appliedDiscounts.push("حاصل على الفضية: 10%");
+        }
+        if (criteria.includes('cashBefore31May')) {
+            discount += 15; // خصم 15%
+            appliedDiscounts.push("سداد المصاريف كاش قبل 31/5: 15%");
+        }
+        if (criteria.includes('cashBefore31July')) {
+            discount += 10; // خصم 10%
+            appliedDiscounts.push("سداد المصاريف كاش قبل 31/7: 10%");
+        }
+
+        // عرض الخصومات التي تم اختيارها
+        document.getElementById('selectedOptionsList').innerHTML = appliedDiscounts.map(d => `<li>${d}</li>`).join('');
+        document.getElementById('selectedOptions').classList.remove('hidden');
+
+        updateTotalCost();
     }
 
-    // حساب المبلغ النهائي مع الباص والكتب
-    function updateTotalCostWithBusAndBooks() {
+    // تحديث إجمالي المبلغ باستخدام النسبة التكميلية
+    function updateTotalCost() {
         let total = stageCost;
 
         // إضافة تكلفة الباص إذا كان مختارًا
-        if (document.getElementById('busSubscription').value === 'yes') {
+        if (document.getElementById('busSubscription') && document.getElementById('busSubscription').value === 'yes') {
             total += busCost;
         }
 
         // إضافة تكلفة الكتب إذا كان مختارًا
-        if (document.getElementById('addBooksSubscription').value === 'yes') {
+        if (document.getElementById('addBooksSubscription') && document.getElementById('addBooksSubscription').value === 'yes') {
             total += booksCost;
         }
 
-        document.getElementById('finalAmountText').innerHTML = `الإجمالي النهائي مع الباص والكتب: ${total.toFixed(2)} جنيه`;
-        document.getElementById('finalAmountWithBusAndBooks').classList.remove('hidden');
+        // حساب النسبة التكميلية
+        let complementaryPercentage = 100 - discount; // النسبة التكميلية
+        let finalAmount = total * (complementaryPercentage / 100); // حساب المبلغ النهائي بعد الخصم
+
+        // تحديث المبلغ النهائي
+        document.getElementById('finalAmount').innerHTML = `إجمالي المبلغ بعد الخصم: ${finalAmount} جنيه`;
+        document.getElementById('totalAmount').classList.remove('hidden');
     }
 </script>
 
