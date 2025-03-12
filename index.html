@@ -209,7 +209,7 @@
     let baseCost = 0;
     let busCost = 10000; // سعر الباص
     let booksCost = 3000; // تكلفة الكتب
-    let discount = 0;
+    let discount = 1; // ستكون النسب الآن من 1 (100%) كإجمالي المبلغ بدون خصم
     let stageCost = 0; // تكلفة المرحلة الدراسية
 
     // اختيار نوع المدرسة
@@ -275,8 +275,7 @@
         let criteria = Array.from(document.getElementById('discountCriteria').selectedOptions)
                             .map(option => option.value);
 
-        let originalCost = stageCost; // المبلغ الأساسي قبل الخصم
-        discount = 0;
+        discount = 1; // البداية ستكون 100% (1)
 
         let appliedDiscounts = [];
 
@@ -297,43 +296,43 @@
 
         // تحديث النسب بناءً على الخصومات التي يتم تحديدها
         if (criteria.includes('workerChildren')) {
-            discount += 25; // خصم 25%
+            discount *= 0.75; // خصم 25% (النسبة التكميلية)
             appliedDiscounts.push("أبناء العاملين: 25%");
         }
         if (criteria.includes('siblings')) {
-            discount += 5; // خصم 5%
+            discount *= 0.95; // خصم 5%
             appliedDiscounts.push("الطالب لديه أخوه في المدرسة: 5%");
         }
         if (criteria.includes('topGrade')) {
-            discount += 10; // خصم 10%
+            discount *= 0.9; // خصم 10%
             appliedDiscounts.push("الطالب حاصل على درجة التفوق (100): 10%");
         }
         if (criteria.includes('excellentGrade')) {
-            discount += 5; // خصم 5%
+            discount *= 0.95; // خصم 5%
             appliedDiscounts.push("الطالب حاصل على درجة الإمتياز (90): 5%");
         }
         if (criteria.includes('goldenBatch')) {
-            discount += 10; // خصم 10%
+            discount *= 0.9; // خصم 10%
             appliedDiscounts.push("الدفعة الذهبية 22-23: 10%");
         }
         if (criteria.includes('silverBatch')) {
-            discount += 5; // خصم 5%
+            discount *= 0.95; // خصم 5%
             appliedDiscounts.push("الدفعة الفضية 24-25: 5%");
         }
         if (criteria.includes('cashBefore31May')) {
-            discount += 10; // خصم 10%
+            discount *= 0.9; // خصم 10%
             appliedDiscounts.push("سداد المصاريف كاش قبل 31/5: 10%");
         }
         if (criteria.includes('cashBefore31July')) {
-            discount += 5; // خصم 5%
+            discount *= 0.95; // خصم 5%
             appliedDiscounts.push("سداد المصاريف كاش قبل 31/7: 5%");
         }
         if (criteria.includes('championship')) {
-            discount += 10; // خصم 10%
+            discount *= 0.9; // خصم 10%
             appliedDiscounts.push("حاصل على بطولة جمهورية أو محافظة: 10%");
         }
         if (criteria.includes('quranHafiz')) {
-            discount += 10; // خصم 10%
+            discount *= 0.9; // خصم 10%
             appliedDiscounts.push("حافظ للقرآن الكريم: 10%");
         }
 
@@ -352,34 +351,37 @@
     function updateTotalCost() {
         let total = stageCost;
 
-        // حساب النسبة التكميلية
-        let complementaryPercentage = 100 - discount; // النسبة التكميلية
-        let finalAmount = total * (complementaryPercentage / 100); // حساب المبلغ النهائي بعد الخصم
+        // حساب المبلغ النهائي بعد الخصم
+        let finalAmount = total * discount; 
 
         // تحديث المبلغ النهائي بعد الخصم
         document.getElementById('finalAmount').innerHTML = `إجمالي المبلغ بعد الخصم: ${finalAmount} جنيه`;
         document.getElementById('totalAmount').classList.remove('hidden');
+        
+        // حساب إجمالي المبلغ مع الباص والكتب
+        let busOption = document.getElementById('busSubscription').value;
+        let booksOption = document.getElementById('addBooksSubscription').value;
 
-        // إضافة الباص والكتب بعد الخصم
         let finalCostWithBus = finalAmount;
-        let finalCostWithBooks = finalAmount;
-
-        if (document.getElementById('busSubscription') && document.getElementById('busSubscription').value === 'yes') {
+        if (busOption === 'yes') {
             finalCostWithBus += busCost;
-            document.getElementById('finalCostWithBus').innerHTML = `المبلغ بعد إضافة الباص: ${finalCostWithBus} جنيه`;
-            document.getElementById('finalCostWithBus').classList.remove('hidden');
-        } else {
-            document.getElementById('finalCostWithBus').classList.add('hidden');
         }
 
-        if (document.getElementById('addBooksSubscription') && document.getElementById('addBooksSubscription').value === 'yes') {
+        let finalCostWithBooks = finalAmount;
+        if (booksOption === 'yes') {
             finalCostWithBooks += booksCost;
-            document.getElementById('finalCostWithBooks').innerHTML = `المبلغ بعد إضافة الكتب: ${finalCostWithBooks} جنيه`;
-            document.getElementById('finalCostWithBooks').classList.remove('hidden');
-        } else {
-            document.getElementById('finalCostWithBooks').classList.add('hidden');
         }
+
+        // عرض القيمة مع الباص
+        document.getElementById('finalCostWithBus').innerHTML = `إجمالي المبلغ مع الباص: ${finalCostWithBus} جنيه`;
+
+        // عرض القيمة مع الكتب
+        document.getElementById('finalCostWithBooks').innerHTML = `إجمالي المبلغ مع الكتب: ${finalCostWithBooks} جنيه`;
+
+        // إظهار المبلغ النهائي مع الباص والكتب
+        document.getElementById('finalCostWithAdditions').classList.remove('hidden');
     }
 </script>
+
 </body>
 </html>
