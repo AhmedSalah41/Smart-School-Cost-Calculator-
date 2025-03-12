@@ -212,9 +212,16 @@
         </ul>
     </div>
 
-    <!-- زر إضافة سعر الكتب -->
-    <div id="addBooksCost" class="btn-container hidden">
-        <button class="btn" onclick="addBooksCost()">إضافة سعر الكتب</button>
+    <!-- سؤال إضافة سعر الكتب -->
+    <div id="addBooksCostQuestion" class="hidden">
+        <div class="form-group">
+            <label for="addBooksSubscription">هل ترغب في إضافة سعر الكتب؟</label>
+            <select id="addBooksSubscription" onchange="updateBooksCost()">
+                <option value="" disabled selected>اضغط هنا</option>
+                <option value="yes">نعم</option>
+                <option value="no">لا</option>
+            </select>
+        </div>
     </div>
 
 </div>
@@ -365,21 +372,24 @@
         // تحديث المبلغ النهائي بعد الخصم
         document.getElementById('finalAmount').innerHTML = `إجمالي المبلغ قبل الكتب: ${total.toFixed(2)} جنيه`;
 
-        // إضافة تكلفة الكتب في آخر خطوة
-        let totalWithBooks = total + booksCost;
-        document.getElementById('finalAmount').innerHTML = `إجمالي المبلغ مع الكتب: ${totalWithBooks.toFixed(2)} جنيه`;
-
         document.getElementById('totalAmount').classList.remove('hidden');
 
-        // إظهار زر إضافة سعر الكتب في النهاية
-        document.getElementById('addBooksCost').classList.remove('hidden');
+        // إظهار سؤال إضافة سعر الكتب
+        document.getElementById('addBooksCostQuestion').classList.remove('hidden');
     }
 
-    // إضافة سعر الكتب إلى المبلغ النهائي
-    function addBooksCost() {
+    // تحديث المبلغ النهائي بعد إضافة الكتب
+    function updateBooksCost() {
+        let addBooks = document.getElementById('addBooksSubscription').value;
         let total = parseFloat(document.getElementById('finalAmount').innerText.split(' ')[3]);
-        let totalWithBooks = total + booksCost;
-        document.getElementById('finalAmount').innerHTML = `إجمالي المبلغ مع الكتب: ${totalWithBooks.toFixed(2)} جنيه`;
+
+        if (addBooks === 'yes') {
+            // إضافة سعر الكتب إذا اختار "نعم"
+            total += booksCost;
+        }
+
+        // تحديث المبلغ النهائي بعد إضافة الكتب
+        document.getElementById('finalAmount').innerHTML = `إجمالي المبلغ مع الكتب: ${total.toFixed(2)} جنيه`;
     }
 </script>
 
