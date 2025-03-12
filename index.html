@@ -295,36 +295,31 @@
         }
 
         // تعريف نسب الخصم بناءً على ترتيب الاختيارات
-        let discountFactors = {
-        'siblings': 0.95,           // 5% خصم
-        'topGrade': 0.90,           // 10% خصم
-        'excellentGrade': 0.95,     // 5% خصم
-        'goldenBatch': 0.90,        // 10% خصم
-        'silverBatch': 0.95,        // 5% خصم
-        'workerChildren': 0.75,     // 25% خصم
-        'cashBefore31May': 0.90,    // 10% خصم
-        'cashBefore31July': 0.95,   // 5% خصم
-        'championship': 0.90,       // 10% خصم
-        'quranHafiz': 0.90          // 10% خصم
-    };
+        let discountPercentages = {
+            'siblings': 0.05,       // 5%
+            'topGrade': 0.10,       // 10%
+            'excellentGrade': 0.05, // 5%
+            'goldenBatch': 0.10,    // 10%
+            'silverBatch': 0.05,    // 5%
+            'workerChildren': 0.25, // 25%
+            'cashBefore31May': 0.10, // 10%
+            'cashBefore31July': 0.05, // 5%
+            'championship': 0.10,   // 10%
+            'quranHafiz': 0.10      // 10%
+        };
 
-      // حساب إجمالي الخصم بناءً على النسب المحددة
-    let totalDiscount = 1;  // نبدأ من 100% (1 يعني 100% من القيمة الأصلية)
+        // حساب إجمالي الخصم بناءً على النسب المحددة
+        selectedDiscounts.forEach(function(discount) {
+            totalDiscount += discountPercentages[discount] || 0;
+        });
 
-    // ضرب الخصومات المختارة في بعضها
-    selectedDiscounts.forEach(function(discount) {
-        if (discountPercentages[discount]) {
-            totalDiscount *= discountPercentages[discount];
+        // التأكد من أن الخصم لا يتجاوز 25%
+        if (totalDiscount > 0.25) {
+            totalDiscount = 0.25; // الحد الأقصى للخصم هو 25%
         }
-		    });
-
-         // التأكد من أن الخصم لا يتجاوز 25% من المبلغ الأصلي
-    if (finalDiscount < 0.75) {
-        finalDiscount = 0.75; // الحد الأدنى 75% من المبلغ الأصلي
-    }
 
         // تطبيق الخصم على السعر
-        discount =  totalDiscount;
+        discount = 1 - totalDiscount;
 
         // الآن نعرض المربع الذي يحتوي على الإجمالي بعد الخصم
         document.getElementById('totalAmount').classList.remove('hidden');
