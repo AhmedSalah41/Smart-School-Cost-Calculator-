@@ -294,10 +294,26 @@
             return;
         }
 
-        // حساب الخصم بناءً على الاختيارات
-        totalDiscount = selectedDiscounts.length * 0.05; // كل خصم يضيف 5%
+        // تعريف نسب الخصم بناءً على ترتيب الاختيارات
+        let discountPercentages = {
+            'siblings': 0.05,       // 5%
+            'topGrade': 0.10,       // 10%
+            'excellentGrade': 0.05, // 5%
+            'goldenBatch': 0.10,    // 10%
+            'silverBatch': 0.05,    // 5%
+            'workerChildren': 0.25, // 25%
+            'cashBefore31May': 0.10, // 10%
+            'cashBefore31July': 0.05, // 5%
+            'championship': 0.10,   // 10%
+            'quranHafiz': 0.10      // 10%
+        };
 
-        // التأكد أن الخصم لا يتجاوز 25%
+        // حساب إجمالي الخصم بناءً على النسب المحددة
+        selectedDiscounts.forEach(function(discount) {
+            totalDiscount += discountPercentages[discount] || 0;
+        });
+
+        // التأكد من أن الخصم لا يتجاوز 25%
         if (totalDiscount > 0.25) {
             totalDiscount = 0.25; // الحد الأقصى للخصم هو 25%
         }
@@ -348,7 +364,6 @@
 
         document.getElementById('finalCostWithAdditions').classList.remove('hidden');
     }
-
 </script>
 
 </body>
