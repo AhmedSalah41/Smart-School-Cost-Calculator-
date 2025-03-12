@@ -360,21 +360,20 @@
 
     // تحديث إجمالي المبلغ
     function updateTotalCost() {
-        let total = baseCost;
+        let total = stageCost;
 
+        // إضافة تكلفة الباص إذا كان مختارًا
         if (document.getElementById('busSubscription') && document.getElementById('busSubscription').value === 'yes') {
             total += busCost;
         }
 
-        total += stageCost; // إضافة تكلفة المرحلة الدراسية
-        total -= (total * discount / 100);
+        total -= (total * discount / 100); // تطبيق الخصم
 
-        // تحديث المبلغ النهائي بعد الخصم
+        // تحديث المبلغ النهائي قبل إضافة الكتب
         document.getElementById('finalAmount').innerHTML = `إجمالي المبلغ قبل الكتب: ${total.toFixed(2)} جنيه`;
 
+        // إظهار المبلغ النهائي وإضافة سؤال الكتب
         document.getElementById('totalAmount').classList.remove('hidden');
-
-        // إظهار سؤال إضافة سعر الكتب
         document.getElementById('addBooksCostQuestion').classList.remove('hidden');
     }
 
