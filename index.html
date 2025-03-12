@@ -279,15 +279,18 @@
         if (selectedDiscounts.includes('workerChildren')) {
             selectedDiscounts = ['workerChildren'];
         }
-        
-        // التحقق من وجود الخصومات المتضادة
-        if (selectedDiscounts.includes('siblings') && selectedDiscounts.includes('topGrade')) {
-            alert("لا يمكن اختيار خصمين متضادين مثل الأخوة ودرجة التفوق.");
-            return;
-        }
 
+        // التحقق من وجود الخصومات المتضادة
         if (selectedDiscounts.includes('goldenBatch') && selectedDiscounts.includes('silverBatch')) {
             alert("لا يمكن اختيار الدفعة الذهبية والفضية معًا.");
+            return;
+        }
+        if (selectedDiscounts.includes('topGrade') && selectedDiscounts.includes('excellentGrade')) {
+            alert("لا يمكن اختيار درجة التفوق مع الإمتياز.");
+            return;
+        }
+        if (selectedDiscounts.includes('cashBefore31May') && selectedDiscounts.includes('cashBefore31July')) {
+            alert("لا يمكن اختيار السداد قبل 31/5 و 31/7 معًا.");
             return;
         }
 
