@@ -316,7 +316,14 @@ function calculateDiscount() {
             finalDiscount *= discountFactors[discount];
         }
     });
-
+  // إظهار الخصومات المتوافقة
+        let selectedOptionsList = document.getElementById('selectedOptionsList');
+        selectedOptionsList.innerHTML = '';  // تفريغ القائمة قبل الإضافة
+        selectedDiscounts.forEach(function(discount) {
+            let listItem = document.createElement('li');
+            listItem.textContent = discount;
+            selectedOptionsList.appendChild(listItem);
+        });
     // التأكد من أن الخصم لا يتجاوز 25% من المبلغ الأصلي
     if (finalDiscount < 0.75) {
         finalDiscount = 0.75; // الحد الأدنى 75% من المبلغ الأصلي
@@ -324,7 +331,11 @@ function calculateDiscount() {
 
     // تطبيق الخصم النهائي على التكلفة
     discount = finalDiscount;
+   // إظهار أسئلة الباص والكتب مباشرة بعد تحديد الخصم
+        document.getElementById('busQuestion').classList.remove('hidden');
+        document.getElementById('addBooksCostQuestion').classList.remove('hidden');
 
+    
     // تحديث عرض الإجمالي مع الخصم
     updateTotalCost();
 }
