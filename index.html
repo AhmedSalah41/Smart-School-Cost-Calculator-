@@ -316,6 +316,8 @@
         if (discountPercentages[discount]) {
             totalDiscount *= discountPercentages[discount];
         }
+		    });
+
          // التأكد من أن الخصم لا يتجاوز 25% من المبلغ الأصلي
     if (finalDiscount < 0.75) {
         finalDiscount = 0.75; // الحد الأدنى 75% من المبلغ الأصلي
