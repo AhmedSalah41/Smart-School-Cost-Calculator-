@@ -280,7 +280,7 @@ function calculateDiscount() {
     if (selectedDiscounts.includes('خصم ابناء العاملين')) {
         selectedDiscounts = ['خصم ابناء العاملين']; // خصم واحد فقط إذا كان من أبناء العاملين
         alert("لا يمكن اختيار اي خصم مع ابناء العاملين.");
-        return;
+       
    }
 
     // التحقق من وجود الخصومات المتضادة
@@ -297,7 +297,7 @@ function calculateDiscount() {
         return;
     }
 	 if (selectedDiscounts.includes('خصم الحصول على بطولة جمهورية') && selectedDiscounts.includes('خصم الحصول على بطولة المحافظة')) {
-        alert("لا يمكن اختيار السداد قبل 31/5 و 31/7 معًا.");
+        alert("لا يمكن اختيار حاصل على بطولة الجمهورية والمحافظة.");
         return;
     }
 
