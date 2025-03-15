@@ -124,16 +124,16 @@
 <body>
 
 <div class="container">
-    <img src="Smart.jpg" alt="Smart School Logo" class="logo">
+    <img src="Smart.png" alt="Smart School Logo" class="logo">
     <h1>مدرسة سمارت</h1>
 
     <!-- اختيارات نوع التعليم -->
     <div id="schoolSelection" class="btn-container">
         <button class="btn" onclick="selectSchool('arabic')">مصاريف مدرسة سمارت (قسم العربي )</button>
         <button class="btn" onclick="selectSchool('foreign')">مصاريف  مدرسة سمارت (قسم لغات )</button>
-    </div>
+		<button class="btn" onclick="selectSchool('American')">مصاريف  مدرسة سمارت (القسم الدولي American)</button>
 
-   
+    </div>
 
    
 
@@ -151,6 +151,10 @@ function selectSchool(type) {
     } else if (type === 'foreign') {
         // إذا تم اختيار قسم اللغات، يتم نقلك إلى هذه الصفحة
         window.location.href = "english.html"; // المسار النسبي للصفحة الأجنبية
+    }
+	    } else if (type === 'American') {
+        // إذا تم اختيار قسم اللغات،الدزلي قلك إلى هذه الصفحة
+        window.location.href = "American.html"; // المسار النسبي للصفحة الأجنبية
     }
 }
 
