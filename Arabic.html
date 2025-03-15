@@ -275,6 +275,22 @@ function calculateDiscount() {
     let discountCriteria = document.getElementById('discountCriteria');
     let selectedDiscounts = Array.from(discountCriteria.selectedOptions).map(option => option.value);
     
+	  // التحقق من المرحلة التعليمية
+    let selectedStage = document.getElementById('stageSelection').value;
+
+    // منع اختيار "خصم الدفعة الذهبية" و "خصم الدفعة الفضية" إذا كانت المرحلة "رياض أطفال"
+    if (selectedStage === 'KG' || selectedStage === 'KG_BC') {
+        if (selectedDiscounts.includes('خصم الدفعة الذهبية')) {
+            alert("لا يمكن اختيار خصم الدفعة الذهبية في مرحلة رياض الأطفال.");
+            selectedDiscounts = selectedDiscounts.filter(discount => discount !== 'خصم الدفعة الذهبية');
+        }
+        if (selectedDiscounts.includes('خصم الدفعة الفضية')) {
+            alert("لا يمكن اختيار خصم الدفعة الفضية في مرحلة رياض الأطفال.");
+            selectedDiscounts = selectedDiscounts.filter(discount => discount !== 'خصم الدفعة الفضية');
+        }
+    }
+
+	
     // التحقق من وجود "أبناء عاملين" ومنع اختيار أي خصم آخر
     if (selectedDiscounts.includes('خصم ابناء العاملين')) {
         selectedDiscounts = ['خصم ابناء العاملين']; // خصم واحد فقط إذا كان من أبناء العاملين
