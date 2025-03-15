@@ -289,6 +289,14 @@ function calculateDiscount() {
             alert("لا يمكن اختيار خصم الدفعة الفضية في مرحلة رياض الأطفال.");
             selectedDiscounts = selectedDiscounts.filter(discount => discount !== 'خصم الدفعة الفضية');
         }
+		 if (selectedDiscounts.includes('خصم درجة التفوق')) {
+            alert("لا يمكن اختيار خصم درجة التفوق في مرحلة رياض اطفال .");
+            selectedDiscounts = selectedDiscounts.filter(discount => discount !== 'خصم الدفعة الذهبية');
+        }
+		 if (selectedDiscounts.includes('خصم الامتياز')) {
+            alert("لا يمكن اختيار خصم الامتياز في مرحلة رياض الاطفال.");
+            selectedDiscounts = selectedDiscounts.filter(discount => discount !== 'خصم الدفعة الذهبية');
+        }
     }
 
 	
