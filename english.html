@@ -138,7 +138,7 @@
             <option value="خثم الاخوة">الطالب لديه أخوه في المدرسة</option>
             <option value="خصم درجة التفوق">الطالب حاصل على درجة التفوق (100)</option>
             <option value="خصم الامتياز">الطالب حاصل على درجة الإمتياز (90)</option>
-            <option value="خصم الدفعة الذهبية">الدفعة الذهبية 22-23</option>
+            <option value="خصم الدفعة الذهبية">الدفعة الذهبية 23-24</option>
             <option value="خصم الدفعة الفضية">الدفعة الفضية 24-25</option>
             <option value="خصم ابناء العاملين">أبناء عاملين</option>
             <option value="خصم الدفع الكاش قبل 31 مايو">سداد المصاريف كاش قبل 31/5</option>
@@ -291,11 +291,11 @@ function calculateDiscount() {
         }
 		 if (selectedDiscounts.includes('خصم درجة التفوق')) {
             alert("لا يمكن اختيار خصم درجة التفوق في مرحلة رياض اطفال .");
-            selectedDiscounts = selectedDiscounts.filter(discount => discount !== 'خصم الدفعة الذهبية');
+            selectedDiscounts = selectedDiscounts.filter(discount => discount !== 'خصم درجة التفوق');
         }
 		 if (selectedDiscounts.includes('خصم الامتياز')) {
             alert("لا يمكن اختيار خصم الامتياز في مرحلة رياض الاطفال.");
-            selectedDiscounts = selectedDiscounts.filter(discount => discount !== 'خصم الدفعة الذهبية');
+            selectedDiscounts = selectedDiscounts.filter(discount => discount !== 'خصم الامتياز');
         }
     }
     // التحقق من وجود "أبناء عاملين" ومنع اختيار أي خصم آخر
