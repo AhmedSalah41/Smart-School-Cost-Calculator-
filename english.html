@@ -123,7 +123,7 @@
 <body>
 
 <div class="container">
-    <img src="Smart.jpg" alt="Smart School Logo" class="logo">
+    <img src="Smart.png" alt="Smart School Logo" class="logo">
     <h1>مدرسة سمارت</h1>
 
    
@@ -224,12 +224,13 @@
             <div class="form-group">
                 <label for="stageSelection">المرحلة الدراسية:</label>
                 <select id="stageSelection" onchange="updateStageCost()">
-                    <option value="KG_BC">رياض أطفال (B.C) - 23,000 جنيه</option>
-                    <option value="KG">رياض أطفال (KG1, KG2) - 30,000 جنيه</option>
-                    <option value="GR1_GR3">ابتدائية (من GR1 إلى GR3) - 33,000 جنيه</option>
-                    <option value="GR4_GR6">ابتدائية (من GR4 إلى GR6) - 36,000 جنيه</option>
-                    <option value="GR7_GR9">إعدادية (من GR7 إلى GR9) - 39,000 جنيه</option>
-                    <option value="GR10_GR12">ثانوية (من GR10 إلى GR12) - 42,000 جنيه</option>
+				    <option value=" ">الرجاء اختيار المرحلة التعليمية</option>
+                    <option value="KG_BC">رياض أطفال (B.C)</option>
+                    <option value="KG">رياض أطفال (KG1, KG2)</option>
+                    <option value="GR1_GR3">ابتدائية (من GR1 إلى GR3)</option>
+                    <option value="GR4_GR6">ابتدائية (من GR4 إلى GR6)</option>
+                    <option value="GR7_GR9">إعدادية (من GR7 إلى GR9)</option>
+                    <option value="GR10_GR12">ثانوية (من GR10 إلى GR12)</option>
                 </select>
             </div>
         `;
@@ -275,7 +276,20 @@
 function calculateDiscount() {
     let discountCriteria = document.getElementById('discountCriteria');
     let selectedDiscounts = Array.from(discountCriteria.selectedOptions).map(option => option.value);
-    
+    	  // التحقق من المرحلة التعليمية
+    let selectedStage = document.getElementById('stageSelection').value;
+
+    // منع اختيار "خصم الدفعة الذهبية" و "خصم الدفعة الفضية" إذا كانت المرحلة "رياض أطفال"
+    if (selectedStage === 'KG' || selectedStage === 'KG_BC') {
+        if (selectedDiscounts.includes('خصم الدفعة الذهبية')) {
+            alert("لا يمكن اختيار خصم الدفعة الذهبية في مرحلة رياض الأطفال.");
+            selectedDiscounts = selectedDiscounts.filter(discount => discount !== 'خصم الدفعة الذهبية');
+        }
+        if (selectedDiscounts.includes('خصم الدفعة الفضية')) {
+            alert("لا يمكن اختيار خصم الدفعة الفضية في مرحلة رياض الأطفال.");
+            selectedDiscounts = selectedDiscounts.filter(discount => discount !== 'خصم الدفعة الفضية');
+        }
+    }
     // التحقق من وجود "أبناء عاملين" ومنع اختيار أي خصم آخر
     if (selectedDiscounts.includes('خصم ابناء العاملين')) {
         selectedDiscounts = ['خصم ابناء العاملين']; // خصم واحد فقط إذا كان من أبناء العاملين
