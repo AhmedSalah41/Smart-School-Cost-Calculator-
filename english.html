@@ -390,8 +390,11 @@ function calculateDiscount() {
    // إظهار أسئلة الباص والكتب مباشرة بعد تحديد الخصم
         document.getElementById('busQuestion').classList.remove('hidden');
 if ( selectedStage !== 'KG_BC') {
-       
-                document.getElementById('addBooksCostQuestion').classList.remove('hidden');
+        
+		document.getElementById('addBooksCostQuestion').classList.remove('hidden');
+		else {
+        document.getElementById('addBooksCostQuestion').classList.add('hidden');
+}
 
     }
     

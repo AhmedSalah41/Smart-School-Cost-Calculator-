@@ -226,7 +226,8 @@
 				    <option value=" ">الرجاء اختيار المرحلة التعليمية</option>
 					<option value="KG_BC">رياض أطفال (B.C)</option>
                     <option value="KG">رياض أطفال (KG1)</option>
-					<option value="KG2">رياض أطفال (KG2)</option>                    <option value="GR1_GR3">ابتدائية (من GR1 إلى GR3)</option>
+					<option value="KG2">رياض أطفال (KG2)</option>                    
+					<option value="GR1_GR3">ابتدائية (من GR1 إلى GR3)</option>
                     <option value="GR4_GR6">ابتدائية (من GR4 إلى GR6)</option>
                     <option value="GR7_GR9">إعدادية (من GR7 إلى GR9)</option>
                     <option value="GR10_GR12">ثانوية (من GR10 إلى GR12)</option>
@@ -386,9 +387,12 @@ function calculateDiscount() {
 
    // إظهار أسئلة الباص والكتب مباشرة بعد تحديد الخصم
         document.getElementById('busQuestion').classList.remove('hidden');
-if ( selectedStage !=== 'KG_BC') {
+if ( selectedStage !== 'KG_BC') {
        
-                document.getElementById('addBooksCostQuestion').classList.remove('hidden');
+        document.getElementById('addBooksCostQuestion').classList.remove('hidden');
+		else {
+        document.getElementById('addBooksCostQuestion').classList.add('hidden');
+}
 
     }
     
