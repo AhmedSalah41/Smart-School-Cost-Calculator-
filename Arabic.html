@@ -134,7 +134,7 @@
     <div id="discountCriteriaSection" class="form-group hidden">
         <label for="discountCriteria">برجاء اختيار ما يتطابق للحصول على الخصم:</label>
         <select id="discountCriteria" multiple onchange="calculateDiscount()">
-            <option value="خثم الاخوة">الطالب لديه أخوه في المدرسة</option>
+            <option value="خصم الأخوة">الطالب لديه أخوه في المدرسة</option>
             <option value="خصم درجة التفوق">الطالب حاصل على درجة التفوق (100)</option>
             <option value="خصم الامتياز">الطالب حاصل على درجة الإمتياز (90)</option>
             <option value="خصم الدفعة الذهبية">الدفعة الذهبية 23-24</option>
@@ -308,11 +308,11 @@ function calculateDiscount() {
 	 // منع اختيار "خصم التفوق والامتياز من kg0 الى G3"
     if (selectedStage === 'KG2' || selectedStage === 'GR1_GR3') {
 		 if (selectedDiscounts.includes('خصم درجة التفوق')) {
-            alert("لا يمكن اختيار خصم درجة التفوق في مرحلة رياض اطفال  ومراحل KG1,2,3.");
+            alert("لا يمكن اختيار خصم درجة التفوق في مرحلة رياض اطفال  ومراحل (GR1,2,3).");
             selectedDiscounts = selectedDiscounts.filter(discount => discount !== 'خصم درجة التفوق');
         }
 		 if (selectedDiscounts.includes('خصم الامتياز')) {
-            alert("لا يمكن اختيار خصم الامتياز في مرحلة رياض الاطفال ومراحل kG1,2,3.");
+            alert("لا يمكن اختيار خصم الامتياز في مرحلة رياض الاطفال  ومراحل (GR1,2,3).");
             selectedDiscounts = selectedDiscounts.filter(discount => discount !== 'خصم الامتياز');
         }
     }
@@ -343,7 +343,7 @@ function calculateDiscount() {
 
     // تعريف نسب الخصم بناءً على اختيار المستخدم
     let discountFactors = {
-        'خثم الاخوة': 0.95,           // 5% خصم
+        'خصم الأخوة': 0.95,           // 5% خصم
         'خصم درجة التفوق': 0.90,           // 10% خصم
         'خصم الامتياز': 0.95,     // 5% خصم
         'خصم الدفعة الذهبية': 0.90,        // 10% خصم
