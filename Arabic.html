@@ -225,8 +225,8 @@
                 <select id="stageSelection" onchange="updateStageCost()">
 				    <option value=" ">الرجاء اختيار المرحلة التعليمية</option>
 					<option value="KG_BC">رياض أطفال (B.C)</option>
-                    <option value="KG">رياض أطفال (KG1, KG2)</option>
-                    <option value="GR1_GR3">ابتدائية (من GR1 إلى GR3)</option>
+                    <option value="KG">رياض أطفال (KG1)</option>
+					<option value="KG2">رياض أطفال (KG2)</option>                    <option value="GR1_GR3">ابتدائية (من GR1 إلى GR3)</option>
                     <option value="GR4_GR6">ابتدائية (من GR4 إلى GR6)</option>
                     <option value="GR7_GR9">إعدادية (من GR7 إلى GR9)</option>
                     <option value="GR10_GR12">ثانوية (من GR10 إلى GR12)</option>
@@ -247,11 +247,14 @@
         // تحديد تكلفة المرحلة بناءً على الاختيار
         switch (selectedStage) {
             case 'KG_BC':
-                stageCost = 20700;
+                stageCost = 23000;
                 break;
             case 'KG':
                 stageCost = 27000;
                 break;
+			case 'KG2':
+                stageCost = 27000;
+                break;	
             case 'GR1_GR3':
                 stageCost = 29700;
                 break;
@@ -285,10 +288,6 @@ function calculateDiscount() {
             alert("لا يمكن اختيار خصم الدفعة الذهبية في مرحلة رياض الأطفال.");
             selectedDiscounts = selectedDiscounts.filter(discount => discount !== 'خصم الدفعة الذهبية');
         }
-        if (selectedDiscounts.includes('خصم الدفعة الفضية')) {
-            alert("لا يمكن اختيار خصم الدفعة الفضية في مرحلة رياض الأطفال.");
-            selectedDiscounts = selectedDiscounts.filter(discount => discount !== 'خصم الدفعة الفضية');
-        }
 		 if (selectedDiscounts.includes('خصم درجة التفوق')) {
             alert("لا يمكن اختيار خصم درجة التفوق في مرحلة رياض اطفال .");
             selectedDiscounts = selectedDiscounts.filter(discount => discount !== 'خصم درجة التفوق');
@@ -298,7 +297,24 @@ function calculateDiscount() {
             selectedDiscounts = selectedDiscounts.filter(discount => discount !== 'خصم الامتياز');
         }
     }
-
+	 // منع اختيار "خصم الدفعة الذهبية" و "خصم الدفعة الفضية" إذا كانت المرحلة "رياض أطفال"
+    if (selectedStage === 'KG_BC') {
+        if (selectedDiscounts.includes('خصم الدفعة الفضية')) {
+            alert("لا يمكن اختيار خصم الدفعة الفضية في مرحلة رياض الأطفال.");
+            selectedDiscounts = selectedDiscounts.filter(discount => discount !== 'خصم الدفعة الفضية');
+        }
+    }
+	 // منع اختيار "خصم التفوق والامتياز من kg0 الى G3"
+    if (selectedStage === 'KG2' || selectedStage === 'GR1_GR3') {
+		 if (selectedDiscounts.includes('خصم درجة التفوق')) {
+            alert("لا يمكن اختيار خصم درجة التفوق في مرحلة رياض اطفال  ومراحل KG1,2,3.");
+            selectedDiscounts = selectedDiscounts.filter(discount => discount !== 'خصم درجة التفوق');
+        }
+		 if (selectedDiscounts.includes('خصم الامتياز')) {
+            alert("لا يمكن اختيار خصم الامتياز في مرحلة رياض الاطفال ومراحل kG1,2,3.");
+            selectedDiscounts = selectedDiscounts.filter(discount => discount !== 'خصم الامتياز');
+        }
+    }
 	
     // التحقق من وجود "أبناء عاملين" ومنع اختيار أي خصم آخر
     if (selectedDiscounts.includes('خصم ابناء العاملين')) {
@@ -370,8 +386,12 @@ function calculateDiscount() {
 
    // إظهار أسئلة الباص والكتب مباشرة بعد تحديد الخصم
         document.getElementById('busQuestion').classList.remove('hidden');
-        document.getElementById('addBooksCostQuestion').classList.remove('hidden');
+if ( selectedStage !=== 'KG_BC') {
+       
+                document.getElementById('addBooksCostQuestion').classList.remove('hidden');
 
+    }
+    
     
     // تحديث عرض الإجمالي مع الخصم
     updateTotalCost();
