@@ -264,22 +264,22 @@
                 stageCost = 23000;
                 break;
             case 'KG':
-                stageCost = 27000;
+                stageCost = 32100;
                 break;
 			case 'KG2':
-                stageCost = 27000;
+                stageCost = 32100;
                 break;	
             case 'GR1_GR3':
-                stageCost = 29700;
+                stageCost = 37100;
                 break;
             case 'GR4_GR6':
-                stageCost = 32400;
+                stageCost = 37100;
                 break;
             case 'GR7_GR9':
-                stageCost = 35100;
+                stageCost = 42400;
                 break;
             case 'GR10_GR12':
-                stageCost = 37800;
+                stageCost = 47700;
                 break;
         }
   
@@ -430,9 +430,9 @@ if (selectedStage !== 'KG_BC') {
 
         // تطبيق خصم الدفعة بناءً على الاختيار
         if (selectedPaymentBatch === "دفعة ذهبية") {
-            finalAmountWithBatch *= 0.90; // خصم 10% للدفعة الذهبية
+            finalAmountWithBatch *= 0.40; // خصم 10% للدفعة الذهبية
         } else if (selectedPaymentBatch === "دفعة جديدة") {
-            finalAmountWithBatch *= 0.95; // خصم 5% للدفعة الجديدة
+            finalAmountWithBatch *= 0.70; // خصم 5% للدفعة الجديدة
         }
 
         // عرض المبلغ النهائي بعد خصم الدفعة
