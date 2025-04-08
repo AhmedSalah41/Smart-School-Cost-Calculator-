@@ -405,8 +405,8 @@ if (selectedStage !== 'KG_BC') {
 
  // تحديث الإجمالي مع الخصم
     function updateTotalCost() {
-        let finalCost = baseCost * discount;
-        document.getElementById('finalAmount').innerText = `الإجمالي بعد الخصم: ${finalCost} جنيه`;
+       // let finalCost = baseCost * discount;
+        document.getElementById('finalAmount').innerText = `الإجمالي بعد الخصم: ${finalAmountAfterDiscount} جنيه`; // عرض الإجمالي النهائي بعد خصم الدفعة والخصم
 
         // إضافة الباص والكتب
         let busSelection = document.getElementById('busSubscription').value;
@@ -449,6 +449,8 @@ if (selectedStage !== 'KG_BC') {
         finalAmountWithBatch += extra15;
     }
 
+          // حساب الإجمالي بعد خصم الدفعة بناءً على نسب الخصم
+    let finalAmountAfterDiscount = finalAmountWithBatch * discount;
     // عرض المبلغ النهائي بعد خصم الدفعة
     document.getElementById('finalPaymentBatchAmount').innerText = `الإجمالي بعد خصم الدفعة: ${finalAmountWithBatch} جنيه`;
     document.getElementById('paymentBatchAmount').classList.remove('hidden');
