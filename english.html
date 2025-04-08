@@ -446,6 +446,12 @@ if (selectedStage !== 'KG_BC') {
         finalAmountWithBatch += extra15;
     }
 
+    // عرض المبلغ النهائي بعد خصم الدفعة
+    document.getElementById('finalPaymentBatchAmount').innerText = `الإجمالي بعد خصم الدفعة: ${finalAmountWithBatch} جنيه`;
+    document.getElementById('paymentBatchAmount').classList.remove('hidden');
+}
+
+       
 </script>
 
 </body>
