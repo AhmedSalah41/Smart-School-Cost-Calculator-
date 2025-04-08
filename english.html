@@ -442,7 +442,7 @@ if (selectedStage !== 'KG_BC') {
     // إذا كانت المرحلة الدراسية "ابتدائية (GR4 - GR6)" نضيف 15% من أساسي المرحلة
     let selectedStage = document.getElementById('stageSelection').value;
     if (selectedStage === "GR4_GR6") {
-        let extra15 = baseCost * 0.15; // 15% من أساسي المرحلة الدراسية
+        let extra15 = baseCost * 0.5; // 5% من أساسي المرحلة الدراسية
         finalAmountWithBatch += extra15;
     }
 
