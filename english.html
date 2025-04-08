@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart School</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            text-align: right;
+            margin: 0;
+            padding: 0;
+            direction: rtl;
+        }
+        .container {
+            width: 80%;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .logo {
+            width: 150px;
+            display: block;
+            margin: 0 auto 20px;
+        }
+        h1 {
+            text-align: center;
+            font-size: 30px;
+            color: #3498db;
+        }
+        .btn-container {
+            display: flex;
+            justify-content: space-evenly;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        .btn {
+            background-color: #3498db;
+            color: #fff;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            width: 200px;
+            margin: 5px;
+        }
+        .btn:hover {
+            background-color: #2980b9;
+        }
+        .hidden {
+            display: none;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            font-size: 18px;
+            display: block;
+            margin-bottom: 10px;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid #3498db;
+            border-radius: 5px;
+        }
+        select {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+        }
+        select:focus {
+            background-color: #f9f9f9;
+            border-color: #2980b9;
+        }
+        .cost-box {
+            margin: 20px 0;
+            padding: 10px;
+            background-color: #ecf0f1;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .cost-box div {
+            margin: 5px 0;
+        }
+        .criteria {
+            margin: 20px 0;
+            text-align: center;
+        }
+        .selected-options {
+            margin: 20px 0;
+            font-size: 16px;
+            color: #2980b9;
+        }
+        .notes {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 16px;
+            color: #d35400;
+        }
+        .notes ul {
+            list-style-type: disc;
+            margin-left: 20px;
+        }
+        @media (max-width: 768px) {
+            .btn-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            .btn {
+                width: 80%;
+                margin: 10px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <img src="Smart.png" alt="Smart School Logo" class="logo">
+    <h1>مدرسة سمارت</h1>
+
+   
+
+    <!-- اختيار المرحلة الدراسية -->
+    <div id="childrenStages" class="hidden"></div>
+    <!-- إضافة قسم خصم الدفعات بعد اختيار المرحلة الدراسية -->
+    <div id="paymentBatchDiscountSection" class="hidden">
+    <div class="form-group">
+        <label for="paymentBatch">اختيار خصم الدفعة:</label>
+        <select id="paymentBatch" onchange="calculatePaymentBatchDiscount()">
+            <option value="" disabled selected>اختر خصم الدفعة</option>
+            <option value="دفعة ذهبية">الدفعة الذهبية (سنة 2023-2024)</option>
+            <option value="دفعة جديدة">الدفعة الجديدة (2025-2026)</option>
+        </select>
+    </div>
+
+    <!-- عرض المبلغ بعد خصم الدفعة -->
+    <div id="paymentBatchAmount" class="cost-box hidden">
+        <div id="finalPaymentBatchAmount"></div>
+    </div>
+</div>
+    <!-- اختيار نسبة الخصم -->
+    <div id="discountCriteriaSection" class="form-group hidden">
+        <label for="discountCriteria">برجاء اختيار ما يتطابق للحصول على الخصم:</label>
+        <select id="discountCriteria" multiple onchange="calculateDiscount()">
+            <option value="خصم الأخوة">الطالب لديه أخوه في المدرسة</option>
+            <option value="خصم درجة التفوق">الطالب حاصل على درجة التفوق (100)</option>
+            <option value="خصم الامتياز">الطالب حاصل على درجة الإمتياز (90)</option>
+            <option value="خصم ابناء العاملين">أبناء عاملين</option>
+            <option value="خصم الدفع الكاش قبل 31 مايو">سداد المصاريف كاش قبل 31/5</option>
+            <option value="خصم الدفع الكاش قبل 31 يوليو">سداد المصاريف كاش قبل 31/7</option>
+           <option value="خصم الحصول على بطولة جمهورية">حاصل على بطولة جمهورية رياضي او علمي</option>
+            <option value="خصم الحصول على بطولة المحافظة">حاصل على بطولة محافظة رياضي او علمي</option>
+        </select>
+    </div>
+
+    <!-- عرض اجمالي المبلغ بعد الخصم -->
+    <div id="totalAmount" class="cost-box hidden">
+        <div id="finalAmount"></div>
+    </div>
+
+    <!-- عرض الخصومات المتوافقة -->
+    <div id="selectedOptions" class="hidden">
+        <h3>الخصومات المتوافقة:</h3>
+        <ul id="selectedOptionsList"></ul>
+    </div>
+
+    <!-- سؤال الباص -->
+    <div id="busQuestion" class="hidden">
+        <div class="form-group">
+            <label for="busSubscription">هل ترغب في الاشتراك في الباص؟</label>
+            <select id="busSubscription" onchange="updateTotalCost()">
+                <option value="" disabled selected>اضغط هنا</option>
+                <option value="yes">نعم</option>
+                <option value="no">لا</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- سؤال الكتب -->
+    <div id="addBooksCostQuestion" class="hidden">
+        <div class="form-group">
+            <label for="addBooksSubscription">هل ترغب في إضافة سعر الكتب؟</label>
+            <select id="addBooksSubscription" onchange="updateTotalCost()">
+                <option value="" disabled selected>اضغط هنا</option>
+                <option value="yes">نعم</option>
+                <option value="no">لا</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- مربع عرض الإجمالي مع الباص والكتب -->
+    <div id="finalCostWithAdditions" class="cost-box hidden">
+        <div id="finalCostWithBus"></div>
+        <div id="finalCostWithBooks"></div>
+    </div>
+
+    <!-- ملاحظات -->
+    <div id="notes" class="notes hidden">
+        <p>ملاحظات هامة:</p>
+        <ul>
+            <li>مصاريف الكتب: 3,000 جنيه.</li>
+            <li>يوجد خصومات أخرى للطلاب الفائزين في بطولات رياضية أو دينية.</li>
+        </ul>
+    </div>
+
+
+<!-- زر الانتقال إلى Google Forms -->
+<div id="Sign" class="notes hidden" style="text-align: center; margin-top: 20px;">
+    <a href="https://docs.google.com/forms/d/1g8K4mwCP0TVMzC_AsdWAhht2OcoEwT43z5LTtU0tH_k/viewform" target="_blank">
+        <button class="btn">الرجاء الضغط هنا لإتمام التسجيل</button>
+    </a>
+</div>
+
+</div>
+
+<script>
+    let baseCost = 0;
+    let busCost = 10000; // سعر الباص
+    let booksCost = 3000; // تكلفة الكتب
+    let discount = 1; // ستكون النسب الآن من 1 (100%) كإجمالي المبلغ بدون خصم
+    let stageCost = 0; // تكلفة المرحلة الدراسية
+
+        showEducationalStage();
+
+
+    // إظهار الحقول الخاصة بالمرحلة الدراسية
+    function showEducationalStage() {
+        let childStageHtml = ` 
+            <div class="form-group">
+                <label for="stageSelection">المرحلة الدراسية:</label>
+                <select id="stageSelection" onchange="updateStageCost()">
+				    <option value=" ">الرجاء اختيار المرحلة التعليمية</option>
+					<option value="KG_BC">رياض أطفال (B.C)</option>
+                    <option value="KG">رياض أطفال (KG1)</option>
+					<option value="KG2">رياض أطفال (KG2)</option>                    
+					<option value="GR1_GR3">ابتدائية (من GR1 إلى GR3)</option>
+                    <option value="GR4_GR6">ابتدائية (من GR4 إلى GR6)</option>
+                    <option value="GR7_GR9">إعدادية (من GR7 إلى GR9)</option>
+                    <option value="GR10_GR12">ثانوية (من GR10 إلى GR12)</option>
+                </select>
+            </div>
+        `;
+        document.getElementById('childrenStages').innerHTML = childStageHtml;
+        document.getElementById('childrenStages').classList.remove('hidden');
+
+        // إظهار باقي الحقول بعد اختيار المرحلة الدراسية
+        document.getElementById('discountCriteriaSection').classList.remove('hidden');
+    }
+
+    // تحديث تكلفة المرحلة الدراسية عند اختيار المرحلة
+    function updateStageCost() {
+        let selectedStage = document.getElementById('stageSelection').value;
+
+        // تحديد تكلفة المرحلة بناءً على الاختيار
+        switch (selectedStage) {
+            case 'KG_BC':
+                stageCost = 23000;
+                break;
+            case 'KG':
+                stageCost = 32100;
+                break;
+			case 'KG2':
+                stageCost = 32100;
+                break;	
+            case 'GR1_GR3':
+                stageCost = 37100;
+                break;
+            case 'GR4_GR6':
+                stageCost = 37100;
+                break;
+            case 'GR7_GR9':
+                stageCost = 42400;
+                break;
+            case 'GR10_GR12':
+                stageCost = 47700;
+                break;
+        }
+  
+        baseCost = stageCost;
+        calculateDiscount();
+        
+        // إظهار قسم خصم الدفعات بعد اختيار المرحلة الدراسية
+        document.getElementById('paymentBatchDiscountSection').classList.remove('hidden');
+    }
+
+
+ // حساب خصم الدفعة بعد اختيار المستخدم
+   function calculatePaymentBatchDiscount() {
+    let selectedPaymentBatch = document.getElementById('paymentBatch').value;
+    let finalAmountWithBatch = baseCost * discount; // نبدأ بالمبلغ بعد الخصم الأساسي
+
+    // تطبيق خصم الدفعة بناءً على الاختيار
+    if (selectedPaymentBatch === "دفعة ذهبية") {
+        finalAmountWithBatch *= 0.60; // خصم 40% للدفعة الذهبية
+    } else if (selectedPaymentBatch === "دفعة جديدة") {
+        finalAmountWithBatch *= 0.70; // خصم 30% للدفعة الجديدة
+    }
+
+    // إضافة 10% من أساسي المرحلة الدراسية
+    let additionalAmount = baseCost * 0.10;  // 10% من أساسي المرحلة الدراسية
+    finalAmountWithBatch += additionalAmount;
+
+    // إذا كانت المرحلة الدراسية "ابتدائية (GR4 - GR6)" نضيف 15% من أساسي المرحلة
+    let selectedStage = document.getElementById('stageSelection').value;
+    if (selectedStage === "GR4_GR6") {
+        let extra15 = baseCost * 0.05; // 5% من أساسي المرحلة الدراسية
+        finalAmountWithBatch += extra15;
+    }
+
+    // عرض المبلغ النهائي بعد خصم الدفعة
+    document.getElementById('finalPaymentBatchAmount').innerText = `الإجمالي بعد خصم الدفعة: ${finalAmountWithBatch} جنيه`;
+    document.getElementById('paymentBatchAmount').classList.remove('hidden');
+}
+
+    // حساب الخصم بناءً على الاختيارات
+    // حساب الخصم بناءً على الاختيارات
+function calculateDiscount() {
+    let discountCriteria = document.getElementById('discountCriteria');
+    let selectedDiscounts = Array.from(discountCriteria.selectedOptions).map(option => option.value);
+    
+	  // التحقق من المرحلة التعليمية
+    let selectedStage = document.getElementById('stageSelection').value;
+
+    // منع اختيار "خصم الدفعة الذهبية" و "خصم الدفعة الفضية" إذا كانت المرحلة "رياض أطفال"
+    if (selectedStage === 'KG' || selectedStage === 'KG_BC') {
+		 if (selectedDiscounts.includes('خصم درجة التفوق')) {
+            alert("لا يمكن اختيار خصم درجة التفوق في مرحلة رياض اطفال .");
+            selectedDiscounts = selectedDiscounts.filter(discount => discount !== 'خصم درجة التفوق');
+        }
+		 if (selectedDiscounts.includes('خصم الامتياز')) {
+            alert("لا يمكن اختيار خصم الامتياز في مرحلة رياض الاطفال.");
+            selectedDiscounts = selectedDiscounts.filter(discount => discount !== 'خصم الامتياز');
+        }
+    }
+
+	 // منع اختيار "خصم التفوق والامتياز من kg0 الى G3"
+    if (selectedStage === 'KG2' || selectedStage === 'GR1_GR3') {
+		 if (selectedDiscounts.includes('خصم درجة التفوق')) {
+            alert("لا يمكن اختيار خصم درجة التفوق في مرحلة رياض اطفال  ومراحل (GR1,2,3).");
+            selectedDiscounts = selectedDiscounts.filter(discount => discount !== 'خصم درجة التفوق');
+        }
+		 if (selectedDiscounts.includes('خصم الامتياز')) {
+            alert("لا يمكن اختيار خصم الامتياز في مرحلة رياض الاطفال  ومراحل (GR1,2,3).");
+            selectedDiscounts = selectedDiscounts.filter(discount => discount !== 'خصم الامتياز');
+        }
+    }
+	
+    // التحقق من وجود "أبناء عاملين" ومنع اختيار أي خصم آخر
+    if (selectedDiscounts.includes('خصم ابناء العاملين')) {
+        selectedDiscounts = ['خصم ابناء العاملين']; // خصم واحد فقط إذا كان من أبناء العاملين
+        alert("لا يمكن اختيار اي خصم مع ابناء العاملين.");
+   }
+
+    // التحقق من وجود الخصومات المتضادة
+ 
+    if (selectedDiscounts.includes('خصم درجة التفوق') && selectedDiscounts.includes('خصم الامتياز')) {
+        alert("لا يمكن اختيار درجة التفوق مع الإمتياز.");
+        return;
+    }
+    if (selectedDiscounts.includes('خصم الدفع الكاش قبل 31 مايو') && selectedDiscounts.includes('خصم الدفع الكاش قبل 31 يوليو')) {
+        alert("لا يمكن اختيار السداد قبل 31/5 و 31/7 معًا.");
+        return;
+    }
+	if (selectedDiscounts.includes('خصم الحصول على بطولة جمهورية') && selectedDiscounts.includes('خصم الحصول على بطولة المحافظة')) {
+        alert("لا يمكن اختيار حاصل على بطولة الجمهورية والمحافظة.");
+        return;
+    }
+
+    // تعريف نسب الخصم بناءً على اختيار المستخدم
+    let discountFactors = {
+        'خصم الأخوة': 0.95,           // 5% خصم
+        'خصم درجة التفوق': 0.90,           // 10% خصم
+        'خصم الامتياز': 0.95,     // 5% خصم
+        'خصم ابناء العاملين': 0.75,     // 25% خصم
+        'خصم الدفع الكاش قبل 31 مايو': 0.90,    // 10% خصم
+        'خصم الدفع الكاش قبل 31 يوليو': 0.95,   // 5% خصم
+        'خصم الحصول على بطولة جمهورية': 0.90,       // 10% خصم
+        'خصم الحصول على بطولة المحافظة': 0.95          // 5% خصم
+    };
+
+    // نبدأ بمضاعفة الخصومات بناءً على اختيار المستخدم
+    let finalDiscount = 1; // نبدأ من 100% (مضاعفة لاحقاً)
+
+    selectedDiscounts.forEach(function(discount) {
+        if (discountFactors[discount]) {
+            finalDiscount *= discountFactors[discount];
+        }
+    });
+  // إظهار الخصومات المتوافقة
+        let selectedOptionsList = document.getElementById('selectedOptionsList');
+        selectedOptionsList.innerHTML = '';  // تفريغ القائمة قبل الإضافة
+        selectedDiscounts.forEach(function(discount) {
+            let listItem = document.createElement('li');
+            listItem.textContent = discount;
+            selectedOptionsList.appendChild(listItem);
+        });
+    // التأكد من أن الخصم لا يتجاوز 25% من المبلغ الأصلي
+  //  if (finalDiscount < 0.75) {
+   //     finalDiscount = 0.75; // الحد الأدنى 75% من المبلغ الأصلي
+   // }
+
+    // تطبيق الخصم النهائي على التكلفة
+    discount = finalDiscount;
+	document.getElementById('totalAmount').classList.remove('hidden');
+        
+	
+    document.getElementById('selectedOptions').classList.remove('hidden');
+    document.getElementById('Sign').classList.remove('hidden');
+
+
+   // إظهار أسئلة الباص والكتب مباشرة بعد تحديد الخصم
+        document.getElementById('busQuestion').classList.remove('hidden');
+if (selectedStage !== 'KG_BC') {
+    document.getElementById('addBooksCostQuestion').classList.remove('hidden');
+} else {
+    document.getElementById('addBooksCostQuestion').classList.add('hidden');
+}
+
+    
+    
+    // تحديث عرض الإجمالي مع الخصم
+    updateTotalCost();
+}
+
+
+    // تحديث الإجمالي مع الخصم
+    function updateTotalCost() {
+        let finalCost = finalAmountWithBatch * discount;
+        document.getElementById('finalAmount').innerText = `الإجمالي بعد الخصم: ${finalCost} جنيه`;
+
+        // إضافة الباص والكتب
+        let busSelection = document.getElementById('busSubscription').value;
+        let booksSelection = document.getElementById('addBooksSubscription').value;
+
+        let additionalCost = finalCost;
+        if (busSelection === 'yes') {
+            additionalCost += busCost;
+        }
+        if (booksSelection === 'yes') {
+            additionalCost += booksCost;
+        }
+
+        document.getElementById('finalCostWithBus').innerText = ` الإجمالي مع الباص والكتب حسب اختيارك: ${additionalCost} جنيه`;
+
+        document.getElementById('finalCostWithAdditions').classList.remove('hidden');
+    }
+	
+	
+       
+</script>
+
+</body>
+</html>
