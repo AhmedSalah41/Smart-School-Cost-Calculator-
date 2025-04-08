@@ -373,9 +373,9 @@ function calculateDiscount() {
             selectedOptionsList.appendChild(listItem);
         });
     // التأكد من أن الخصم لا يتجاوز 25% من المبلغ الأصلي
-    if (finalDiscount < 0.75) {
-        finalDiscount = 0.75; // الحد الأدنى 75% من المبلغ الأصلي
-    }
+  //  if (finalDiscount < 0.75) {
+   //     finalDiscount = 0.75; // الحد الأدنى 75% من المبلغ الأصلي
+   // }
 
     // تطبيق الخصم النهائي على التكلفة
     discount = finalDiscount;
@@ -403,7 +403,7 @@ if (selectedStage !== 'KG_BC') {
 
     // تحديث الإجمالي مع الخصم
     function updateTotalCost() {
-        let finalCost = baseCost * discount;
+        let finalCost = finalPaymentBatchAmount * discount;
         document.getElementById('finalAmount').innerText = `الإجمالي بعد الخصم: ${finalCost} جنيه`;
 
         // إضافة الباص والكتب
