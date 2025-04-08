@@ -398,8 +398,7 @@ if (selectedStage !== 'KG_BC') {
 
     
     
-    // تحديث عرض الإجمالي مع الخصم
-    updateTotalCost();
+  
 }
 
 
@@ -452,6 +451,9 @@ if (selectedStage !== 'KG_BC') {
     // عرض المبلغ النهائي بعد خصم الدفعة
     document.getElementById('finalPaymentBatchAmount').innerText = `الإجمالي بعد خصم الدفعة: ${finalAmountWithBatch} جنيه`;
     document.getElementById('paymentBatchAmount').classList.remove('hidden');
+	
+	  // تحديث عرض الإجمالي مع الخصم
+    updateTotalCost();
 }
 	
        
