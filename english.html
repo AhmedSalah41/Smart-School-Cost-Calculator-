@@ -137,8 +137,7 @@
             <option value="خصم الأخوة">الطالب لديه أخوه في المدرسة</option>
             <option value="خصم درجة التفوق">الطالب حاصل على درجة التفوق (100)</option>
             <option value="خصم الامتياز">الطالب حاصل على درجة الإمتياز (90)</option>
-            <option value="خصم الدفعة الذهبية">الدفعة الذهبية 23-24</option>
-            <option value="خصم الدفعة الفضية">الدفعة الفضية 24-25</option>
+           
             <option value="خصم ابناء العاملين">أبناء عاملين</option>
             <option value="خصم الدفع الكاش قبل 31 مايو">سداد المصاريف كاش قبل 31/5</option>
             <option value="خصم الدفع الكاش قبل 31 يوليو">سداد المصاريف كاش قبل 31/7</option>
@@ -295,7 +294,7 @@
         
         // إظهار قسم خصم الدفعات بعد اختيار المرحلة الدراسية
         document.getElementById('paymentBatchDiscountSection').classList.remove('hidden');
-    }
+  
 
     // حساب خصم الدفعة بعد اختيار المستخدم
     function calculatePaymentBatchDiscount() {
@@ -321,12 +320,9 @@ function calculateDiscount() {
     	  // التحقق من المرحلة التعليمية
     let selectedStage = document.getElementById('stageSelection').value;
 
-    // منع اختيار "خصم الدفعة الذهبية" و "خصم الدفعة الفضية" إذا كانت المرحلة "رياض أطفال"
+ 
     if (selectedStage === 'KG' || selectedStage === 'KG_BC') {
-        if (selectedDiscounts.includes('خصم الدفعة الذهبية')) {
-            alert("لا يمكن اختيار خصم الدفعة الذهبية في مرحلة رياض الأطفال.");
-            selectedDiscounts = selectedDiscounts.filter(discount => discount !== 'خصم الدفعة الذهبية');
-        }
+        
 		 if (selectedDiscounts.includes('خصم درجة التفوق')) {
             alert("لا يمكن اختيار خصم درجة التفوق في مرحلة رياض اطفال .");
             selectedDiscounts = selectedDiscounts.filter(discount => discount !== 'خصم درجة التفوق');
@@ -336,13 +332,8 @@ function calculateDiscount() {
             selectedDiscounts = selectedDiscounts.filter(discount => discount !== 'خصم الامتياز');
         }
     }
-	 // منع اختيار "خصم الدفعة الذهبية" و "خصم الدفعة الفضية" إذا كانت المرحلة "رياض أطفال"
-    if (selectedStage === 'KG_BC') {
-        if (selectedDiscounts.includes('خصم الدفعة الفضية')) {
-            alert("لا يمكن اختيار خصم الدفعة الفضية في مرحلة رياض الأطفال.");
-            selectedDiscounts = selectedDiscounts.filter(discount => discount !== 'خصم الدفعة الفضية');
-        }
-    }
+	
+   
 	 // منع اختيار "خصم التفوق والامتياز من kg0 الى G3"
     if (selectedStage === 'KG2' || selectedStage === 'GR1_GR3') {
 		 if (selectedDiscounts.includes('خصم درجة التفوق')) {
@@ -364,10 +355,7 @@ function calculateDiscount() {
    }
 
     // التحقق من وجود الخصومات المتضادة
-    if (selectedDiscounts.includes('خصم الدفعة الذهبية') && selectedDiscounts.includes('خصم الدفعة الفضية')) {
-        alert("لا يمكن اختيار الدفعة الذهبية والفضية معًا.");
-        return;
-    }
+   
     if (selectedDiscounts.includes('خصم درجة التفوق') && selectedDiscounts.includes('خصم الامتياز')) {
         alert("لا يمكن اختيار درجة التفوق مع الإمتياز.");
         return;
@@ -386,8 +374,7 @@ function calculateDiscount() {
         'خصم الأخوة': 0.95,           // 5% خصم
         'خصم درجة التفوق': 0.90,           // 10% خصم
         'خصم الامتياز': 0.95,     // 5% خصم
-        'خصم الدفعة الذهبية': 0.90,        // 10% خصم
-        'خصم الدفعة الفضية': 0.95,        // 5% خصم
+       
         'خصم ابناء العاملين': 0.75,     // 25% خصم
         'خصم الدفع الكاش قبل 31 مايو': 0.90,    // 10% خصم
         'خصم الدفع الكاش قبل 31 يوليو': 0.95,   // 5% خصم
