@@ -402,28 +402,7 @@ if (selectedStage !== 'KG_BC') {
 }
 
 
-    // تحديث الإجمالي مع الخصم
-    function updateTotalCost() {
-	    basecost2 = finalAmountWithBatch;
-        let finalCost = baseCost2 * discount;
-        document.getElementById('finalAmount').innerText = `الإجمالي بعد الخصم: ${finalCost} جنيه`;
-
-        // إضافة الباص والكتب
-        let busSelection = document.getElementById('busSubscription').value;
-        let booksSelection = document.getElementById('addBooksSubscription').value;
-
-        let additionalCost = finalCost;
-        if (busSelection === 'yes') {
-            additionalCost += busCost;
-        }
-        if (booksSelection === 'yes') {
-            additionalCost += booksCost;
-        }
-
-        document.getElementById('finalCostWithBus').innerText = ` الإجمالي مع الباص والكتب حسب اختيارك: ${additionalCost} جنيه`;
-
-        document.getElementById('finalCostWithAdditions').classList.remove('hidden');
-    }
+    
 	
  // حساب خصم الدفعة بعد اختيار المستخدم
    function calculatePaymentBatchDiscount() {
@@ -456,7 +435,27 @@ if (selectedStage !== 'KG_BC') {
     updateTotalCost();
 }
 	
-       
+    // تحديث الإجمالي مع الخصم
+    function updateTotalCost() {
+        let finalCost = finalAmountWithBatch * discount;
+        document.getElementById('finalAmount').innerText = `الإجمالي بعد الخصم: ${finalCost} جنيه`;
+
+        // إضافة الباص والكتب
+        let busSelection = document.getElementById('busSubscription').value;
+        let booksSelection = document.getElementById('addBooksSubscription').value;
+
+        let additionalCost = finalCost;
+        if (busSelection === 'yes') {
+            additionalCost += busCost;
+        }
+        if (booksSelection === 'yes') {
+            additionalCost += booksCost;
+        }
+
+        document.getElementById('finalCostWithBus').innerText = ` الإجمالي مع الباص والكتب حسب اختيارك: ${additionalCost} جنيه`;
+
+        document.getElementById('finalCostWithAdditions').classList.remove('hidden');
+    }   
 </script>
 
 </body>
