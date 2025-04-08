@@ -398,14 +398,13 @@ if (selectedStage !== 'KG_BC') {
 
     
       // تحديث عرض الإجمالي مع الخصم
-	  calculatePaymentBatchDiscount();
     updateTotalCost();
   
 }
 
  // تحديث الإجمالي مع الخصم
     function updateTotalCost() {
-        let finalCost = finalAmountWithBatch * discount;
+        let finalCost = baseCost * discount;
         document.getElementById('finalAmount').innerText = `الإجمالي بعد الخصم: ${finalCost} جنيه`;
 
         // إضافة الباص والكتب
