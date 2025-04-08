@@ -297,7 +297,7 @@
 function calculateDiscount() {
     let discountCriteria = document.getElementById('discountCriteria');
     let selectedDiscounts = Array.from(discountCriteria.selectedOptions).map(option => option.value);
-    	
+    
 	  // التحقق من المرحلة التعليمية
     let selectedStage = document.getElementById('stageSelection').value;
 
@@ -332,7 +332,8 @@ function calculateDiscount() {
    }
 
     // التحقق من وجود الخصومات المتضادة
-     if (selectedDiscounts.includes('خصم درجة التفوق') && selectedDiscounts.includes('خصم الامتياز')) {
+ 
+    if (selectedDiscounts.includes('خصم درجة التفوق') && selectedDiscounts.includes('خصم الامتياز')) {
         alert("لا يمكن اختيار درجة التفوق مع الإمتياز.");
         return;
     }
@@ -377,7 +378,34 @@ function calculateDiscount() {
   //  if (finalDiscount < 0.75) {
    //     finalDiscount = 0.75; // الحد الأدنى 75% من المبلغ الأصلي
    // }
-  let selectedPaymentBatch = document.getElementById('paymentBatch').value;
+
+    // تطبيق الخصم النهائي على التكلفة
+    discount = finalDiscount;
+	document.getElementById('totalAmount').classList.remove('hidden');
+        
+	
+    document.getElementById('selectedOptions').classList.remove('hidden');
+    document.getElementById('Sign').classList.remove('hidden');
+
+
+   // إظهار أسئلة الباص والكتب مباشرة بعد تحديد الخصم
+        document.getElementById('busQuestion').classList.remove('hidden');
+if (selectedStage !== 'KG_BC') {
+    document.getElementById('addBooksCostQuestion').classList.remove('hidden');
+} else {
+    document.getElementById('addBooksCostQuestion').classList.add('hidden');
+}
+
+    
+     // تحديث عرض الإجمالي مع الخصم
+    updateTotalCost();
+  
+}
+
+ // تحديث الإجمالي مع الخصم
+    function updateTotalCost() {
+	
+	let selectedPaymentBatch = document.getElementById('paymentBatch').value;
     let finalAmountWithBatch = baseCost * discount; // نبدأ بالمبلغ بعد الخصم الأساسي
 
     // تطبيق خصم الدفعة بناءً على الاختيار
@@ -401,7 +429,8 @@ function calculateDiscount() {
     // عرض المبلغ النهائي بعد خصم الدفعة
     document.getElementById('finalPaymentBatchAmount').innerText = `الإجمالي بعد خصم الدفعة: ${finalAmountWithBatch} جنيه`;
     document.getElementById('paymentBatchAmount').classList.remove('hidden');
-	 let finalCost = finalAmountWithBatch * discount;
+	
+        let finalCost = finalAmountWithBatch * discount;
         document.getElementById('finalAmount').innerText = `الإجمالي بعد الخصم: ${finalCost} جنيه`;
 
         // إضافة الباص والكتب
@@ -419,42 +448,16 @@ function calculateDiscount() {
         document.getElementById('finalCostWithBus').innerText = ` الإجمالي مع الباص والكتب حسب اختيارك: ${additionalCost} جنيه`;
 
         document.getElementById('finalCostWithAdditions').classList.remove('hidden');
-    // تطبيق الخصم النهائي على التكلفة
-    discount = finalDiscount;
-	document.getElementById('totalAmount').classList.remove('hidden');
-        
-	
-    document.getElementById('selectedOptions').classList.remove('hidden');
-    document.getElementById('Sign').classList.remove('hidden');
-
-
-   // إظهار أسئلة الباص والكتب مباشرة بعد تحديد الخصم
-        document.getElementById('busQuestion').classList.remove('hidden');
-if (selectedStage !== 'KG_BC') {
-    document.getElementById('addBooksCostQuestion').classList.remove('hidden');
-} else {
-    document.getElementById('addBooksCostQuestion').classList.add('hidden');
-}
-
-    
-    
-  
-}
-
-
+    }   
     
 	
  // حساب خصم الدفعة بعد اختيار المستخدم
-   function calculatePaymentBatchDiscount() {
-  
-	  // تحديث عرض الإجمالي مع الخصم
-    updateTotalCost();
-}
+  // function calculatePaymentBatchDiscount() {
+    
+		 
+// }
 	
-    // تحديث الإجمالي مع الخصم
-    function updateTotalCost() {
-       
-    }   
+   
 </script>
 
 </body>
