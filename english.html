@@ -130,6 +130,7 @@
 
     <!-- اختيار المرحلة الدراسية -->
     <div id="childrenStages" class="hidden"></div>
+
     <!-- اختيار نسبة الخصم -->
     <div id="discountCriteriaSection" class="form-group hidden">
         <label for="discountCriteria">برجاء اختيار ما يتطابق للحصول على الخصم:</label>
@@ -137,7 +138,8 @@
             <option value="خصم الأخوة">الطالب لديه أخوه في المدرسة</option>
             <option value="خصم درجة التفوق">الطالب حاصل على درجة التفوق (100)</option>
             <option value="خصم الامتياز">الطالب حاصل على درجة الإمتياز (90)</option>
-           
+            <option value="خصم الدفعة الذهبية">الدفعة الذهبية 23-24</option>
+            <option value="خصم الدفعة الفضية">الدفعة الفضية 24-25</option>
             <option value="خصم ابناء العاملين">أبناء عاملين</option>
             <option value="خصم الدفع الكاش قبل 31 مايو">سداد المصاريف كاش قبل 31/5</option>
             <option value="خصم الدفع الكاش قبل 31 يوليو">سداد المصاريف كاش قبل 31/7</option>
@@ -145,24 +147,7 @@
             <option value="خصم الحصول على بطولة المحافظة">حاصل على بطولة محافظة رياضي او علمي</option>
         </select>
     </div>
-     
-	 <!-- إضافة قسم خصم الدفعات بعد اختيار المرحلة الدراسية -->
-<div id="paymentBatchDiscountSection" class="hidden">
-    <div class="form-group">
-        <label for="paymentBatch">اختيار خصم الدفعة:</label>
-        <select id="paymentBatch" onchange="calculatePaymentBatchDiscount()">
-            <option value="" disabled selected>اختر خصم الدفعة</option>
-            <option value="دفعة ذهبية">الدفعة الذهبية (سنة 2023-2024)</option>
-            <option value="دفعة جديدة">الدفعة الجديدة (2025-2026)</option>
-        </select>
-    </div>
 
-	    <!-- عرض المبلغ بعد خصم الدفعة -->
-    <div id="paymentBatchAmount" class="cost-box hidden">
-        <div id="finalPaymentBatchAmount"></div>
-    </div>
-</div>
-	 
     <!-- عرض اجمالي المبلغ بعد الخصم -->
     <div id="totalAmount" class="cost-box hidden">
         <div id="finalAmount"></div>
@@ -289,29 +274,7 @@
         baseCost = stageCost;
         calculateDiscount();
     }
- baseCost = stageCost;
-        calculateDiscount();
-        
-        // إظهار قسم خصم الدفعات بعد اختيار المرحلة الدراسية
-        document.getElementById('paymentBatchDiscountSection').classList.remove('hidden');
-  
 
-    // حساب خصم الدفعة بعد اختيار المستخدم
-    function calculatePaymentBatchDiscount() {
-        let selectedPaymentBatch = document.getElementById('paymentBatch').value;
-        let finalAmountWithBatch = baseCost * discount; // نبدأ بالمبلغ بعد الخصم الأساسي
-
-        // تطبيق خصم الدفعة بناءً على الاختيار
-        if (selectedPaymentBatch === "دفعة ذهبية") {
-            finalAmountWithBatch *= 0.50; // خصم 10% للدفعة الذهبية
-        } else if (selectedPaymentBatch === "دفعة جديدة") {
-            finalAmountWithBatch *= 0.60; // خصم 5% للدفعة الجديدة
-        }
-
-        // عرض المبلغ النهائي بعد خصم الدفعة
-        document.getElementById('finalPaymentBatchAmount').innerText = `الإجمالي بعد خصم الدفعة: ${finalAmountWithBatch} جنيه`;
-        document.getElementById('paymentBatchAmount').classList.remove('hidden');
-    }
     // حساب الخصم بناءً على الاختيارات
     // حساب الخصم بناءً على الاختيارات
 function calculateDiscount() {
@@ -320,9 +283,12 @@ function calculateDiscount() {
     	  // التحقق من المرحلة التعليمية
     let selectedStage = document.getElementById('stageSelection').value;
 
- 
+    // منع اختيار "خصم الدفعة الذهبية" و "خصم الدفعة الفضية" إذا كانت المرحلة "رياض أطفال"
     if (selectedStage === 'KG' || selectedStage === 'KG_BC') {
-        
+        if (selectedDiscounts.includes('خصم الدفعة الذهبية')) {
+            alert("لا يمكن اختيار خصم الدفعة الذهبية في مرحلة رياض الأطفال.");
+            selectedDiscounts = selectedDiscounts.filter(discount => discount !== 'خصم الدفعة الذهبية');
+        }
 		 if (selectedDiscounts.includes('خصم درجة التفوق')) {
             alert("لا يمكن اختيار خصم درجة التفوق في مرحلة رياض اطفال .");
             selectedDiscounts = selectedDiscounts.filter(discount => discount !== 'خصم درجة التفوق');
@@ -332,8 +298,13 @@ function calculateDiscount() {
             selectedDiscounts = selectedDiscounts.filter(discount => discount !== 'خصم الامتياز');
         }
     }
-	
-   
+	 // منع اختيار "خصم الدفعة الذهبية" و "خصم الدفعة الفضية" إذا كانت المرحلة "رياض أطفال"
+    if (selectedStage === 'KG_BC') {
+        if (selectedDiscounts.includes('خصم الدفعة الفضية')) {
+            alert("لا يمكن اختيار خصم الدفعة الفضية في مرحلة رياض الأطفال.");
+            selectedDiscounts = selectedDiscounts.filter(discount => discount !== 'خصم الدفعة الفضية');
+        }
+    }
 	 // منع اختيار "خصم التفوق والامتياز من kg0 الى G3"
     if (selectedStage === 'KG2' || selectedStage === 'GR1_GR3') {
 		 if (selectedDiscounts.includes('خصم درجة التفوق')) {
@@ -355,7 +326,10 @@ function calculateDiscount() {
    }
 
     // التحقق من وجود الخصومات المتضادة
-   
+    if (selectedDiscounts.includes('خصم الدفعة الذهبية') && selectedDiscounts.includes('خصم الدفعة الفضية')) {
+        alert("لا يمكن اختيار الدفعة الذهبية والفضية معًا.");
+        return;
+    }
     if (selectedDiscounts.includes('خصم درجة التفوق') && selectedDiscounts.includes('خصم الامتياز')) {
         alert("لا يمكن اختيار درجة التفوق مع الإمتياز.");
         return;
@@ -374,7 +348,8 @@ function calculateDiscount() {
         'خصم الأخوة': 0.95,           // 5% خصم
         'خصم درجة التفوق': 0.90,           // 10% خصم
         'خصم الامتياز': 0.95,     // 5% خصم
-       
+        'خصم الدفعة الذهبية': 0.90,        // 10% خصم
+        'خصم الدفعة الفضية': 0.95,        // 5% خصم
         'خصم ابناء العاملين': 0.75,     // 25% خصم
         'خصم الدفع الكاش قبل 31 مايو': 0.90,    // 10% خصم
         'خصم الدفع الكاش قبل 31 يوليو': 0.95,   // 5% خصم
