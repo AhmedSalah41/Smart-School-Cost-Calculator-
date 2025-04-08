@@ -129,23 +129,6 @@
 
     <!-- اختيار المرحلة الدراسية -->
     <div id="childrenStages" class="hidden"></div>
-
-    <!-- اختيار نسبة الخصم -->
-    <div id="discountCriteriaSection" class="form-group hidden">
-        <label for="discountCriteria">برجاء اختيار ما يتطابق للحصول على الخصم:</label>
-        <select id="discountCriteria" multiple onchange="calculateDiscount()">
-            <option value="خصم الأخوة">الطالب لديه أخوه في المدرسة</option>
-            <option value="خصم درجة التفوق">الطالب حاصل على درجة التفوق (100)</option>
-            <option value="خصم الامتياز">الطالب حاصل على درجة الإمتياز (90)</option>
-            <option value="خصم الدفعة الذهبية">الدفعة الذهبية 23-24</option>
-            <option value="خصم الدفعة الفضية">الدفعة الفضية 24-25</option>
-            <option value="خصم ابناء العاملين">أبناء عاملين</option>
-            <option value="خصم الدفع الكاش قبل 31 مايو">سداد المصاريف كاش قبل 31/5</option>
-            <option value="خصم الدفع الكاش قبل 31 يوليو">سداد المصاريف كاش قبل 31/7</option>
-           <option value="خصم الحصول على بطولة جمهورية">حاصل على بطولة جمهورية رياضي او علمي</option>
-            <option value="خصم الحصول على بطولة المحافظة">حاصل على بطولة محافظة رياضي او علمي</option>
-        </select>
-    </div>
     <!-- إضافة قسم خصم الدفعات بعد اختيار المرحلة الدراسية -->
     <div id="paymentBatchDiscountSection" class="hidden">
     <div class="form-group">
@@ -162,6 +145,23 @@
         <div id="finalPaymentBatchAmount"></div>
     </div>
 </div>
+    <!-- اختيار نسبة الخصم -->
+    <div id="discountCriteriaSection" class="form-group hidden">
+        <label for="discountCriteria">برجاء اختيار ما يتطابق للحصول على الخصم:</label>
+        <select id="discountCriteria" multiple onchange="calculateDiscount()">
+            <option value="خصم الأخوة">الطالب لديه أخوه في المدرسة</option>
+            <option value="خصم درجة التفوق">الطالب حاصل على درجة التفوق (100)</option>
+            <option value="خصم الامتياز">الطالب حاصل على درجة الإمتياز (90)</option>
+            <option value="خصم الدفعة الذهبية">الدفعة الذهبية 23-24</option>
+            <option value="خصم الدفعة الفضية">الدفعة الفضية 24-25</option>
+            <option value="خصم ابناء العاملين">أبناء عاملين</option>
+            <option value="خصم الدفع الكاش قبل 31 مايو">سداد المصاريف كاش قبل 31/5</option>
+            <option value="خصم الدفع الكاش قبل 31 يوليو">سداد المصاريف كاش قبل 31/7</option>
+           <option value="خصم الحصول على بطولة جمهورية">حاصل على بطولة جمهورية رياضي او علمي</option>
+            <option value="خصم الحصول على بطولة المحافظة">حاصل على بطولة محافظة رياضي او علمي</option>
+        </select>
+    </div>
+
     <!-- عرض اجمالي المبلغ بعد الخصم -->
     <div id="totalAmount" class="cost-box hidden">
         <div id="finalAmount"></div>
