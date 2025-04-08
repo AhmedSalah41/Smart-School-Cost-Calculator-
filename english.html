@@ -291,33 +291,6 @@
     }
 
 
- // حساب خصم الدفعة بعد اختيار المستخدم
-   function calculatePaymentBatchDiscount() {
-    let selectedPaymentBatch = document.getElementById('paymentBatch').value;
-    let finalAmountWithBatch = baseCost * discount; // نبدأ بالمبلغ بعد الخصم الأساسي
-
-    // تطبيق خصم الدفعة بناءً على الاختيار
-    if (selectedPaymentBatch === "دفعة ذهبية") {
-        finalAmountWithBatch *= 0.60; // خصم 40% للدفعة الذهبية
-    } else if (selectedPaymentBatch === "دفعة جديدة") {
-        finalAmountWithBatch *= 0.70; // خصم 30% للدفعة الجديدة
-    }
-
-    // إضافة 10% من أساسي المرحلة الدراسية
-    let additionalAmount = baseCost * 0.10;  // 10% من أساسي المرحلة الدراسية
-    finalAmountWithBatch += additionalAmount;
-
-    // إذا كانت المرحلة الدراسية "ابتدائية (GR4 - GR6)" نضيف 15% من أساسي المرحلة
-    let selectedStage = document.getElementById('stageSelection').value;
-    if (selectedStage === "GR4_GR6") {
-        let extra15 = baseCost * 0.05; // 5% من أساسي المرحلة الدراسية
-        finalAmountWithBatch += extra15;
-    }
-
-    // عرض المبلغ النهائي بعد خصم الدفعة
-    document.getElementById('finalPaymentBatchAmount').innerText = `الإجمالي بعد خصم الدفعة: ${finalAmountWithBatch} جنيه`;
-    document.getElementById('paymentBatchAmount').classList.remove('hidden');
-}
 
     // حساب الخصم بناءً على الاختيارات
     // حساب الخصم بناءً على الاختيارات
@@ -452,6 +425,33 @@ if (selectedStage !== 'KG_BC') {
         document.getElementById('finalCostWithAdditions').classList.remove('hidden');
     }
 	
+ // حساب خصم الدفعة بعد اختيار المستخدم
+   function calculatePaymentBatchDiscount() {
+    let selectedPaymentBatch = document.getElementById('paymentBatch').value;
+    let finalAmountWithBatch = baseCost * discount; // نبدأ بالمبلغ بعد الخصم الأساسي
+
+    // تطبيق خصم الدفعة بناءً على الاختيار
+    if (selectedPaymentBatch === "دفعة ذهبية") {
+        finalAmountWithBatch *= 0.60; // خصم 40% للدفعة الذهبية
+    } else if (selectedPaymentBatch === "دفعة جديدة") {
+        finalAmountWithBatch *= 0.70; // خصم 30% للدفعة الجديدة
+    }
+
+    // إضافة 10% من أساسي المرحلة الدراسية
+    let additionalAmount = baseCost * 0.10;  // 10% من أساسي المرحلة الدراسية
+    finalAmountWithBatch += additionalAmount;
+
+    // إذا كانت المرحلة الدراسية "ابتدائية (GR4 - GR6)" نضيف 15% من أساسي المرحلة
+    let selectedStage = document.getElementById('stageSelection').value;
+    if (selectedStage === "GR4_GR6") {
+        let extra15 = baseCost * 0.05; // 5% من أساسي المرحلة الدراسية
+        finalAmountWithBatch += extra15;
+    }
+
+    // عرض المبلغ النهائي بعد خصم الدفعة
+    document.getElementById('finalPaymentBatchAmount').innerText = `الإجمالي بعد خصم الدفعة: ${finalAmountWithBatch} جنيه`;
+    document.getElementById('paymentBatchAmount').classList.remove('hidden');
+}
 	
        
 </script>
