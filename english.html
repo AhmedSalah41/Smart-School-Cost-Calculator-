@@ -430,14 +430,7 @@ if (selectedStage !== 'KG_BC') {
     // عرض المبلغ النهائي بعد خصم الدفعة
     document.getElementById('finalPaymentBatchAmount').innerText = `الإجمالي بعد خصم الدفعة: ${finalAmountWithBatch} جنيه`;
     document.getElementById('paymentBatchAmount').classList.remove('hidden');
-	
-	  // تحديث عرض الإجمالي مع الخصم
-    updateTotalCost();
-}
-	
-    // تحديث الإجمالي مع الخصم
-    function updateTotalCost() {
-        let finalCost = finalAmountWithBatch * discount;
+	 let finalCost = finalAmountWithBatch * discount;
         document.getElementById('finalAmount').innerText = `الإجمالي بعد الخصم: ${finalCost} جنيه`;
 
         // إضافة الباص والكتب
@@ -455,6 +448,13 @@ if (selectedStage !== 'KG_BC') {
         document.getElementById('finalCostWithBus').innerText = ` الإجمالي مع الباص والكتب حسب اختيارك: ${additionalCost} جنيه`;
 
         document.getElementById('finalCostWithAdditions').classList.remove('hidden');
+	  // تحديث عرض الإجمالي مع الخصم
+    updateTotalCost();
+}
+	
+    // تحديث الإجمالي مع الخصم
+    function updateTotalCost() {
+       
     }   
 </script>
 
