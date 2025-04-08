@@ -405,7 +405,7 @@ if (selectedStage !== 'KG_BC') {
 
     // تحديث الإجمالي مع الخصم
     function updateTotalCost() {
-        let finalCost = baseCost * discount;
+        let finalCost = finalAmountWithBatch * discount;
         document.getElementById('finalAmount').innerText = `الإجمالي بعد الخصم: ${finalCost} جنيه`;
 
         // إضافة الباص والكتب
