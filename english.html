@@ -11,7 +11,6 @@
             margin: 0;
             padding: 0;
             direction: rtl;
-            background-color: #f4f4f4;
         }
         .container {
             width: 80%;
@@ -143,7 +142,7 @@
             <option value="خصم ابناء العاملين">أبناء عاملين</option>
             <option value="خصم الدفع الكاش قبل 31 مايو">سداد المصاريف كاش قبل 31/5</option>
             <option value="خصم الدفع الكاش قبل 31 يوليو">سداد المصاريف كاش قبل 31/7</option>
-            <option value="خصم الحصول على بطولة جمهورية">حاصل على بطولة جمهورية رياضي او علمي</option>
+           <option value="خصم الحصول على بطولة جمهورية">حاصل على بطولة جمهورية رياضي او علمي</option>
             <option value="خصم الحصول على بطولة المحافظة">حاصل على بطولة محافظة رياضي او علمي</option>
         </select>
     </div>
@@ -174,7 +173,7 @@
     <!-- سؤال الكتب -->
     <div id="addBooksCostQuestion" class="hidden">
         <div class="form-group">
-            <label for="addBooksSubscription">هل ترغب في إضافة سعر الكتب والأنشطة؟</label>
+            <label for="addBooksSubscription">هل ترغب في إضافة سعر الكتب؟</label>
             <select id="addBooksSubscription" onchange="updateTotalCost()">
                 <option value="" disabled selected>اضغط هنا</option>
                 <option value="yes">نعم</option>
@@ -211,7 +210,7 @@
 <script>
     let baseCost = 0;
     let busCost = 10000; // سعر الباص
-    let booksCost = 3500; // تكلفة الكتب
+    let booksCost = 3000; // تكلفة الكتب
     let discount = 1; // ستكون النسب الآن من 1 (100%) كإجمالي المبلغ بدون خصم
     let stageCost = 0; // تكلفة المرحلة الدراسية
 
@@ -225,10 +224,10 @@
                 <label for="stageSelection">المرحلة الدراسية:</label>
                 <select id="stageSelection" onchange="updateStageCost()">
 				    <option value=" ">الرجاء اختيار المرحلة التعليمية</option>
-                    <option value="KG_BC">رياض أطفال (B.C)</option>
+					<option value="KG_BC">رياض أطفال (B.C)</option>
                     <option value="KG">رياض أطفال (KG1)</option>
-					<option value="KG2">رياض أطفال (KG2)</option>
-                    <option value="GR1_GR3">ابتدائية (من GR1 إلى GR3)</option>
+					<option value="KG2">رياض أطفال (KG2)</option>                    
+					<option value="GR1_GR3">ابتدائية (من GR1 إلى GR3)</option>
                     <option value="GR4_GR6">ابتدائية (من GR4 إلى GR6)</option>
                     <option value="GR7_GR9">إعدادية (من GR7 إلى GR9)</option>
                     <option value="GR10_GR12">ثانوية (من GR10 إلى GR12)</option>
@@ -252,22 +251,22 @@
                 stageCost = 23000;
                 break;
             case 'KG':
-                stageCost = 30000;
+                stageCost = 27000;
                 break;
 			case 'KG2':
-                stageCost = 30000;
+                stageCost = 27000;
                 break;	
             case 'GR1_GR3':
-                stageCost = 33000;
+                stageCost = 29700;
                 break;
             case 'GR4_GR6':
-                stageCost = 36000;
+                stageCost = 32400;
                 break;
             case 'GR7_GR9':
-                stageCost = 39000;
+                stageCost = 35100;
                 break;
             case 'GR10_GR12':
-                stageCost = 42000;
+                stageCost = 37800;
                 break;
         }
 
@@ -280,7 +279,8 @@
 function calculateDiscount() {
     let discountCriteria = document.getElementById('discountCriteria');
     let selectedDiscounts = Array.from(discountCriteria.selectedOptions).map(option => option.value);
-    	  // التحقق من المرحلة التعليمية
+    
+	  // التحقق من المرحلة التعليمية
     let selectedStage = document.getElementById('stageSelection').value;
 
     // منع اختيار "خصم الدفعة الذهبية" و "خصم الدفعة الفضية" إذا كانت المرحلة "رياض أطفال"
@@ -317,12 +317,10 @@ function calculateDiscount() {
         }
     }
 	
-	
     // التحقق من وجود "أبناء عاملين" ومنع اختيار أي خصم آخر
     if (selectedDiscounts.includes('خصم ابناء العاملين')) {
         selectedDiscounts = ['خصم ابناء العاملين']; // خصم واحد فقط إذا كان من أبناء العاملين
         alert("لا يمكن اختيار اي خصم مع ابناء العاملين.");
-       
    }
 
     // التحقق من وجود الخصومات المتضادة
@@ -338,7 +336,7 @@ function calculateDiscount() {
         alert("لا يمكن اختيار السداد قبل 31/5 و 31/7 معًا.");
         return;
     }
-	 if (selectedDiscounts.includes('خصم الحصول على بطولة جمهورية') && selectedDiscounts.includes('خصم الحصول على بطولة المحافظة')) {
+	if (selectedDiscounts.includes('خصم الحصول على بطولة جمهورية') && selectedDiscounts.includes('خصم الحصول على بطولة المحافظة')) {
         alert("لا يمكن اختيار حاصل على بطولة الجمهورية والمحافظة.");
         return;
     }
@@ -395,6 +393,7 @@ if (selectedStage !== 'KG_BC') {
     document.getElementById('addBooksCostQuestion').classList.add('hidden');
 }
 
+    
     
     // تحديث عرض الإجمالي مع الخصم
     updateTotalCost();
