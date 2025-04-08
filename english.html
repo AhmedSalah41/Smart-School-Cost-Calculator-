@@ -440,12 +440,7 @@ if (selectedStage !== 'KG_BC') {
     finalAmountWithBatch += additionalAmount;
 
     // إذا كانت المرحلة الدراسية "ابتدائية (GR4 - GR6)" نضيف 15% من أساسي المرحلة
-    let selectedStage = document.getElementById('stageSelection').value;
-    if (selectedStage === "GR4_GR6") {
-        let extra15 = baseCost * 0.05; // 5% من أساسي المرحلة الدراسية
-        finalAmountWithBatch += extra15;
-    }
-
+    
     // عرض المبلغ النهائي بعد خصم الدفعة
     document.getElementById('finalPaymentBatchAmount').innerText = `الإجمالي بعد خصم الدفعة: ${finalAmountWithBatch} جنيه`;
     document.getElementById('paymentBatchAmount').classList.remove('hidden');
