@@ -226,6 +226,8 @@
     let busCost = 10000; // سعر الباص
     let booksCost = 3000; // تكلفة الكتب
     let discount = 1; // ستكون النسب الآن من 1 (100%) كإجمالي المبلغ بدون خصم
+    let discount1 = 1; // ستكون النسب الآن من 1 (100%) كإجمالي المبلغ بدون خصم
+
     let stageCost = 0; // تكلفة المرحلة الدراسية
 
         showEducationalStage();
@@ -430,7 +432,7 @@ if (selectedStage !== 'KG_BC') {
  // حساب خصم الدفعة بعد اختيار المستخدم
    function calculatePaymentBatchDiscount() {
     let selectedPaymentBatch = document.getElementById('paymentBatch').value;
-     finalAmountWithBatch = baseCost * discount; // نبدأ بالمبلغ بعد الخصم الأساسي
+     finalAmountWithBatch = baseCost * discount1; // نبدأ بالمبلغ بعد الخصم الأساسي
 
     // تطبيق خصم الدفعة بناءً على الاختيار
     if (selectedPaymentBatch === "دفعة ذهبية") {
