@@ -150,26 +150,26 @@
         <label for="discountCriteria">برجاء اختيار ما يتطابق للحصول على الخصم:</label>
         <select id="discountCriteria" multiple onchange="calculateDiscount()">
             <option value="خصم الأخوة">الطالب لديه أخوه في المدرسة</option>
-            <option value="خصم درجة التفوق">الطالب حاصل على درجة التفوق (100)</option>
             <option value="خصم الامتياز">الطالب حاصل على درجة الإمتياز (90)</option>
-            <option value="خصم ابناء العاملين">أبناء عاملين</option>
+        
             <option value="خصم الدفع الكاش قبل 31 مايو">سداد المصاريف كاش قبل 31/5</option>
             <option value="خصم الدفع الكاش قبل 31 يوليو">سداد المصاريف كاش قبل 31/7</option>
            <option value="خصم الحصول على بطولة جمهورية">حاصل على بطولة جمهورية رياضي او علمي</option>
             <option value="خصم الحصول على بطولة المحافظة">حاصل على بطولة محافظة رياضي او علمي</option>
         </select>
     </div>
-
+  <!-- عرض الخصومات المتوافقة -->
+    <div id="selectedOptions" class="hidden">
+        <h3>الخصومات المتوافقة:</h3>
+        <ul id="selectedOptionsList"></ul>
+    </div>
+	
     <!-- عرض اجمالي المبلغ بعد الخصم -->
     <div id="totalAmount" class="cost-box hidden">
         <div id="finalAmount"></div>
     </div>
 
-    <!-- عرض الخصومات المتوافقة -->
-    <div id="selectedOptions" class="hidden">
-        <h3>الخصومات المتوافقة:</h3>
-        <ul id="selectedOptionsList"></ul>
-    </div>
+  
 
     <!-- سؤال الباص -->
     <div id="busQuestion" class="hidden">
@@ -186,11 +186,11 @@
     <!-- سؤال الكتب -->
     <div id="addBooksCostQuestion" class="hidden">
         <div class="form-group">
-            <label for="addBooksSubscription">هل ترغب في إضافة سعر الكتب؟</label>
+            <label for="addBooksSubscription">هل ترغب في إضافة </label>
             <select id="addBooksSubscription" onchange="updateTotalCost()">
                 <option value="" disabled selected>اضغط هنا</option>
-                <option value="yes">نعم</option>
-                <option value="no">لا</option>
+                <option value="yes">إضافة</option>
+               
             </select>
         </div>
     </div>
@@ -224,7 +224,7 @@
     let baseCost = 0;
     let finalAmountWithBatch = 0;
     let busCost = 10000; // سعر الباص
-    let booksCost = 3000; // تكلفة الكتب
+    let booksCost = 3500; // تكلفة الكتب
     let discount = 1; // ستكون النسب الآن من 1 (100%) كإجمالي المبلغ بدون خصم
     let discount1 = 1; // ستكون النسب الآن من 1 (100%) كإجمالي المبلغ بدون خصم
 
@@ -352,14 +352,14 @@ function calculateDiscount() {
 
     // تعريف نسب الخصم بناءً على اختيار المستخدم
     let discountFactors = {
-        'خصم الأخوة': 0.95,           // 5% خصم
+        'خصم الأخوة': 0.975,           // 5% خصم
         'خصم درجة التفوق': 0.90,           // 10% خصم
         'خصم الامتياز': 0.95,     // 5% خصم
         'خصم ابناء العاملين': 0.75,     // 25% خصم
-        'خصم الدفع الكاش قبل 31 مايو': 0.90,    // 10% خصم
-        'خصم الدفع الكاش قبل 31 يوليو': 0.95,   // 5% خصم
-        'خصم الحصول على بطولة جمهورية': 0.90,       // 10% خصم
-        'خصم الحصول على بطولة المحافظة': 0.95          // 5% خصم
+        'خصم الدفع الكاش قبل 31 مايو': 0.95,    // 10% خصم
+        'خصم الدفع الكاش قبل 31 يوليو': 0.975,   // 5% خصم
+        'خصم الحصول على بطولة جمهورية': 0.95,       // 10% خصم
+        'خصم الحصول على بطولة المحافظة': 0.975          // 5% خصم
     };
 
     // نبدأ بمضاعفة الخصومات بناءً على اختيار المستخدم
