@@ -294,6 +294,7 @@
     } else {
         // إظهار قسم خصم الدفعة إذا لم تكن المرحلة B.C
         document.getElementById('paymentBatchDiscountSection').classList.remove('hidden');
+		document.getElementById('paymentBatchAmount').classList.remove('hidden');
         // إعادة قيمة الكتب إلى 3500
         booksCost = 3500;
     }
@@ -467,7 +468,7 @@ if (selectedStage !== 'KG_BC') {
   // let finalAmountAfterDiscount = finalAmountWithBatch * discount;
     // عرض المبلغ النهائي بعد خصم الدفعة
     document.getElementById('finalPaymentBatchAmount').innerText = `الإجمالي بعد خصم الدفعة: ${finalAmountWithBatch} جنيه`;
-    document.getElementById('paymentBatchAmount').classList.remove('hidden');
+    
    // document.getElementById('finalAmount').innerText = `الإجمالي بعد الخصم: ${finalAmountAfterDiscount} جنيه`; // عرض الإجمالي النهائي بعد خصم الدفعة والخصم
 
 	
