@@ -289,6 +289,7 @@
     if (selectedStage === 'KG_BC') {
         // إخفاء قسم خصم الدفعة
         document.getElementById('paymentBatchDiscountSection').classList.add('hidden');
+		document.getElementById('paymentBatchAmount').classList.remove('hidden');
         // تغيير مصاريف الكتب إلى 2000
         booksCost = 2000;
     } else {
