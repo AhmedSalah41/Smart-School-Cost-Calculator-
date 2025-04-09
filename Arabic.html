@@ -145,6 +145,10 @@
         <div id="finalPaymentBatchAmount"></div>
     </div>
 </div>
+ <!-- عرض المبلغ بعد خصم الدفعة -->
+    <div id="paymentBatchAmount" class="cost-box hidden">
+        <div id="finalPaymentBatchAmount"></div>
+    </div>
     <!-- اختيار نسبة الخصم -->
     <div id="discountCriteriaSection" class="form-group hidden">
         <label for="discountCriteria">برجاء اختيار ما يتطابق للحصول على الخصم:</label>
@@ -186,7 +190,7 @@
     <!-- سؤال الكتب -->
     <div id="addBooksCostQuestion" class="hidden">
         <div class="form-group">
-            <label for="addBooksSubscription">هل ترغب في إضافة </label>
+            <label for="addBooksSubscription">إضافة الكتب والأنشطة </label>
             <select id="addBooksSubscription" onchange="updateTotalCost()">
                 <option value="" disabled selected>اضغط هنا</option>
                 <option value="yes">إضافة</option>
@@ -290,10 +294,7 @@
         // إخفاء قسم خصم الدفعة
         document.getElementById('paymentBatchDiscountSection').classList.add('hidden');
 		document.getElementById('paymentBatchAmount').classList.remove('hidden');
-		 <!-- عرض المبلغ بعد خصم الدفعة -->
-    <div id="paymentBatchAmount" class="cost-box">
-        <div id="finalPaymentBatchAmount"></div>
-    </div>
+		
         // تغيير مصاريف الكتب إلى 2000
         booksCost = 2000;
     } else {
