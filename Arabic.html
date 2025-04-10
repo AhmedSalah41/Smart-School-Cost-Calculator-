@@ -136,7 +136,7 @@
         <select id="paymentBatch" onchange="calculatePaymentBatchDiscount()">
             <option value="" disabled selected>اختر خصم الدفعة</option>
             <option value="دفعة ذهبية">الدفعة الذهبية (سنة 2023-2024)</option>
-            <option value="دفعة جديدة">الدفعة الجديدة (2025-2026)</option>
+            <option value="دفعة جديدة">الدفع من سنة 2024</option>
         </select>
     </div>
 
@@ -144,9 +144,7 @@
     <div id="paymentBatchAmount" class="cost-box hidden">
         <div id="finalPaymentBatchAmount"></div>
     </div>
-	
 </div>
- 
     <!-- اختيار نسبة الخصم -->
     <div id="discountCriteriaSection" class="form-group hidden">
         <label for="discountCriteria">برجاء اختيار ما يتطابق للحصول على الخصم:</label>
@@ -188,7 +186,7 @@
     <!-- سؤال الكتب -->
     <div id="addBooksCostQuestion" class="hidden">
         <div class="form-group">
-            <label for="addBooksSubscription">إضافة الكتب والأنشطة </label>
+            <label for="addBooksSubscription">هل ترغب في إضافة </label>
             <select id="addBooksSubscription" onchange="updateTotalCost()">
                 <option value="" disabled selected>اضغط هنا</option>
                 <option value="yes">إضافة</option>
@@ -257,6 +255,7 @@
 
         // إظهار باقي الحقول بعد اختيار المرحلة الدراسية
         document.getElementById('discountCriteriaSection').classList.remove('hidden');
+		calculatePaymentBatchDiscount();
     }
 
     // تحديث تكلفة المرحلة الدراسية عند اختيار المرحلة
@@ -287,26 +286,18 @@
                 stageCost = 47700;
                 break;
         }
-         // التحقق من اختيار B.C
-    if (selectedStage === 'KG_BC') {
-        // إخفاء قسم خصم الدفعة
-        document.getElementById('paymentBatchDiscountSection').classList.add('hidden');
-		document.getElementById('paymentBatchAmount').classList.remove('hidden');
-		
-        // تغيير مصاريف الكتب إلى 2000
-        booksCost = 2000;
-    } else {
-        // إظهار قسم خصم الدفعة إذا لم تكن المرحلة B.C
+  
+  
         document.getElementById('paymentBatchDiscountSection').classList.remove('hidden');
-        // إعادة قيمة الكتب إلى 3500
-        booksCost = 3500;
-    }
+        calculatePaymentBatchDiscount(); // طبق خصم الدفعة فقط إذا مش B.C
+    
+
         baseCost = stageCost;
         calculateDiscount();
         
         // إظهار قسم خصم الدفعات بعد اختيار المرحلة الدراسية
-       updateTotalCost();
-		calculatePaymentBatchDiscount();
+        updateTotalCost();
+		
     }
 
 
@@ -412,7 +403,7 @@ function calculateDiscount() {
 
     document.getElementById('addBooksCostQuestion').classList.remove('hidden');
 
-   
+
     
       // تحديث عرض الإجمالي مع الخصم
     updateTotalCost();
@@ -449,9 +440,9 @@ function calculateDiscount() {
 
     // تطبيق خصم الدفعة بناءً على الاختيار
     if (selectedPaymentBatch === "دفعة ذهبية") {
-        finalAmountWithBatch *= 0.50; // خصم 40% للدفعة الذهبية
+        finalAmountWithBatch *= 0.45; // خصم 40% للدفعة الذهبية
     } else if (selectedPaymentBatch === "دفعة جديدة") {
-        finalAmountWithBatch *= 0.40; // خصم 30% للدفعة الجديدة
+        finalAmountWithBatch *= 0.60; // خصم 30% للدفعة الجديدة
     }
 
     // إضافة 10% من أساسي المرحلة الدراسية
@@ -464,15 +455,25 @@ function calculateDiscount() {
         let extra15 = baseCost * 0.05; // 5% من أساسي المرحلة الدراسية
         finalAmountWithBatch += extra15;
     }
+ if (selectedStage !== 'KG_BC') {
 
-          // حساب الإجمالي بعد خصم الدفعة بناءً على نسب الخصم
-  // let finalAmountAfterDiscount = finalAmountWithBatch * discount;
+     // حساب الإجمالي بعد خصم الدفعة بناءً على نسب الخصم
+     // let finalAmountAfterDiscount = finalAmountWithBatch * discount;
     // عرض المبلغ النهائي بعد خصم الدفعة
     document.getElementById('finalPaymentBatchAmount').innerText = `الإجمالي بعد خصم الدفعة: ${finalAmountWithBatch} جنيه`;
     document.getElementById('paymentBatchAmount').classList.remove('hidden');
    // document.getElementById('finalAmount').innerText = `الإجمالي بعد الخصم: ${finalAmountAfterDiscount} جنيه`; // عرض الإجمالي النهائي بعد خصم الدفعة والخصم
-
-	
+}
+if (selectedStage == 'KG_BC') {
+      booksCost = 2000;
+     // حساب الإجمالي بعد خصم الدفعة بناءً على نسب الخصم
+     // let finalAmountAfterDiscount = finalAmountWithBatch * discount;
+    // عرض المبلغ النهائي بعد خصم الدفعة
+    document.getElementById('finalPaymentBatchAmount').innerText = `الإجمالي بعد خصم الدفعة: ${baseCost} جنيه`;
+    document.getElementById('paymentBatchAmount').classList.remove('hidden');
+   // document.getElementById('finalAmount').innerText = `الإجمالي بعد الخصم: ${finalAmountAfterDiscount} جنيه`; // عرض الإجمالي النهائي بعد خصم الدفعة والخصم
+}
+	updateTotalCost();
 }
 	
 
