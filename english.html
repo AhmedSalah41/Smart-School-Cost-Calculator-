@@ -287,7 +287,32 @@
                 break;
         }
   
-  
+         // إعادة ضبط كل الحقول عند تغيير المرحلة
+document.getElementById('paymentBatch').selectedIndex = 0;
+document.getElementById('discountCriteria').selectedIndex = -1;
+document.getElementById('busSubscription').selectedIndex = 0;
+document.getElementById('addBooksSubscription').selectedIndex = 0;
+
+// إخفاء العناصر المعروضة سابقًا
+document.getElementById('paymentBatchAmount').classList.add('hidden');
+document.getElementById('totalAmount').classList.add('hidden');
+document.getElementById('selectedOptions').classList.add('hidden');
+document.getElementById('finalCostWithAdditions').classList.add('hidden');
+document.getElementById('notes').classList.add('hidden');
+document.getElementById('Sign').classList.add('hidden');
+
+// إعادة تعيين النصوص
+document.getElementById('finalAmount').innerText = '';
+document.getElementById('finalCostWithBus').innerText = '';
+document.getElementById('finalCostWithBooks').innerText = '';
+document.getElementById('selectedOptionsList').innerHTML = '';
+
+// إعادة القيم الافتراضية
+discount = 1;
+discount1 = 1;
+finalAmountWithBatch = 0;
+		 
+		 
         document.getElementById('paymentBatchDiscountSection').classList.remove('hidden');
         calculatePaymentBatchDiscount(); // طبق خصم الدفعة فقط إذا مش B.C
     
@@ -297,6 +322,8 @@
         
         // إظهار قسم خصم الدفعات بعد اختيار المرحلة الدراسية
         updateTotalCost();
+		
+		
 		
     }
 
