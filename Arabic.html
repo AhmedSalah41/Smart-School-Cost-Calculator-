@@ -466,10 +466,11 @@ function calculateDiscount() {
 }
 if (selectedStage == 'KG_BC') {
       booksCost = 2000;
+	   finalAmountWithBatch = baseCost;
      // حساب الإجمالي بعد خصم الدفعة بناءً على نسب الخصم
      // let finalAmountAfterDiscount = finalAmountWithBatch * discount;
     // عرض المبلغ النهائي بعد خصم الدفعة
-    document.getElementById('finalPaymentBatchAmount').innerText = `الإجمالي بعد خصم الدفعة: ${baseCost} جنيه`;
+    document.getElementById('finalPaymentBatchAmount').innerText = `الإجمالي بعد خصم الدفعة: ${finalAmountWithBatch} جنيه`;
     document.getElementById('paymentBatchAmount').classList.remove('hidden');
    // document.getElementById('finalAmount').innerText = `الإجمالي بعد الخصم: ${finalAmountAfterDiscount} جنيه`; // عرض الإجمالي النهائي بعد خصم الدفعة والخصم
 }
