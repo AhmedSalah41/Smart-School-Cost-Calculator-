@@ -286,10 +286,10 @@
                 break;
         }
   
-   if (selectedStage !== 'KG_BC') {
+  
         document.getElementById('paymentBatchDiscountSection').classList.remove('hidden');
         calculatePaymentBatchDiscount(); // طبق خصم الدفعة فقط إذا مش B.C
-    }
+    
 
         baseCost = stageCost;
         calculateDiscount();
@@ -456,14 +456,24 @@ if (selectedStage !== 'KG_BC') {
         let extra15 = baseCost * 0.05; // 5% من أساسي المرحلة الدراسية
         finalAmountWithBatch += extra15;
     }
+ if (selectedStage !== 'KG_BC') {
 
-          // حساب الإجمالي بعد خصم الدفعة بناءً على نسب الخصم
-  // let finalAmountAfterDiscount = finalAmountWithBatch * discount;
+     // حساب الإجمالي بعد خصم الدفعة بناءً على نسب الخصم
+     // let finalAmountAfterDiscount = finalAmountWithBatch * discount;
     // عرض المبلغ النهائي بعد خصم الدفعة
     document.getElementById('finalPaymentBatchAmount').innerText = `الإجمالي بعد خصم الدفعة: ${finalAmountWithBatch} جنيه`;
     document.getElementById('paymentBatchAmount').classList.remove('hidden');
    // document.getElementById('finalAmount').innerText = `الإجمالي بعد الخصم: ${finalAmountAfterDiscount} جنيه`; // عرض الإجمالي النهائي بعد خصم الدفعة والخصم
+}
+if (selectedStage == 'KG_BC') {
 
+     // حساب الإجمالي بعد خصم الدفعة بناءً على نسب الخصم
+     // let finalAmountAfterDiscount = finalAmountWithBatch * discount;
+    // عرض المبلغ النهائي بعد خصم الدفعة
+    document.getElementById('finalPaymentBatchAmount').innerText = `الإجمالي بعد خصم الدفعة: ${baseCost} جنيه`;
+    document.getElementById('paymentBatchAmount').classList.remove('hidden');
+   // document.getElementById('finalAmount').innerText = `الإجمالي بعد الخصم: ${finalAmountAfterDiscount} جنيه`; // عرض الإجمالي النهائي بعد خصم الدفعة والخصم
+}
 	
 }
 	
