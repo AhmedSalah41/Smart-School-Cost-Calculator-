@@ -136,7 +136,7 @@
         <select id="paymentBatch" onchange="calculatePaymentBatchDiscount()">
             <option value="" disabled selected>اختر خصم الدفعة</option>
             <option value="دفعة ذهبية">الدفعة الذهبية (سنة 2023-2024)</option>
-            <option value="دفعة جديدة">الدفع من سنة 2024</option>
+            <option value="دفعة جديدة">الدفع الجديدة (من سنة 2024-2025)</option>
         </select>
     </div>
 
@@ -186,7 +186,7 @@
     <!-- سؤال الكتب -->
     <div id="addBooksCostQuestion" class="hidden">
         <div class="form-group">
-            <label for="addBooksSubscription">هل ترغب في إضافة </label>
+           <label for="addBooksSubscription">إضافة مصاريف الكتب والأنشطة: </label>
             <select id="addBooksSubscription" onchange="updateTotalCost()">
                 <option value="" disabled selected>اضغط هنا</option>
                 <option value="yes">إضافة</option>
@@ -237,7 +237,7 @@
     function showEducationalStage() {
         let childStageHtml = ` 
             <div class="form-group">
-                <label for="stageSelection">المرحلة الدراسية:</label>
+                 <label for="stageSelection">الصف الدراسي:</label>
                 <select id="stageSelection" onchange="updateStageCost()">
 				    <option value=" ">الرجاء اختيار المرحلة التعليمية</option>
 					<option value="KG_BC">رياض أطفال (B.C)</option>
