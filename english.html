@@ -136,7 +136,7 @@
         <select id="paymentBatch" onchange="calculatePaymentBatchDiscount()">
             <option value="" disabled selected>اختر خصم الدفعة</option>
             <option value="دفعة ذهبية">الدفعة الذهبية (سنة 2023-2024)</option>
-            <option value="دفعة جديدة">الدفعة الجديدة (2025-2026)</option>
+            <option value="دفعة جديدة">الدفع من سنة 2024</option>
         </select>
     </div>
 
@@ -286,26 +286,17 @@
                 break;
         }
   
-  
-         // التحقق من اختيار B.C
-    if (selectedStage === 'KG_BC') {
-        // إخفاء قسم خصم الدفعة
-        document.getElementById('paymentBatchDiscountSection').classList.add('hidden');
-		document.getElementById('paymentBatchAmount').classList.remove('hidden');
-        // تغيير مصاريف الكتب إلى 2000
-        booksCost = 2000;
-    } else {
-        // إظهار قسم خصم الدفعة إذا لم تكن المرحلة B.C
+   if (selectedStage !== 'KG_BC') {
         document.getElementById('paymentBatchDiscountSection').classList.remove('hidden');
-        // إعادة قيمة الكتب إلى 3500
-        booksCost = 3500;
+        calculatePaymentBatchDiscount(); // طبق خصم الدفعة فقط إذا مش B.C
     }
+
         baseCost = stageCost;
         calculateDiscount();
         
         // إظهار قسم خصم الدفعات بعد اختيار المرحلة الدراسية
-     
-		calculatePaymentBatchDiscount()
+        updateTotalCost();
+		
     }
 
 
