@@ -466,7 +466,7 @@ document.getElementById('finalCostWithBus').innerText = ` الإجمالي مع 
      finalAmountWithBatch = baseCost * discount1; // نبدأ بالمبلغ بعد الخصم الأساسي
 
 
- if (selectedStage == 'KG1' || selectedStage === 'KG2') {
+ if (selectedStage == 'KG1' || selectedStage == 'KG2') {
          // تطبيق خصم الدفعة بناءً على الاختيار
     if (selectedPaymentBatch === "دفعة ذهبية") {
         finalAmountWithBatch *= 0.62; // خصم 40% للدفعة الذهبية
