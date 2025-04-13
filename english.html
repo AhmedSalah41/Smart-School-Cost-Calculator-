@@ -464,10 +464,31 @@ document.getElementById('finalCostWithBus').innerText = ` الإجمالي مع 
    function calculatePaymentBatchDiscount() {
     let selectedPaymentBatch = document.getElementById('paymentBatch').value;
      finalAmountWithBatch = baseCost * discount1; // نبدأ بالمبلغ بعد الخصم الأساسي
+let selectedStage = document.getElementById('stageSelection').value;
 
+ if (selectedStage == 'KG1' || selectedStage == 'KG2') {
+         // تطبيق خصم الدفعة بناءً على الاختيار
+    if (selectedPaymentBatch === "دفعة ذهبية") {
+        finalAmountWithBatch *= 0.62; // خصم 40% للدفعة الذهبية
+    } else if (selectedPaymentBatch === "دفعة جديدة") {
+        finalAmountWithBatch *= 0.69; // خصم 30% للدفعة الجديدة
+    }
 
- 
- if (selectedStage == 'GR1_GR3') {
+    // إضافة 10% من أساسي المرحلة الدراسية
+    let additionalAmount = baseCost * 0.10;  // 10% من أساسي المرحلة الدراسية
+    finalAmountWithBatch += additionalAmount;
+
+    // إذا كانت المرحلة الدراسية "ابتدائية (GR4 - GR6)" نضيف 15% من أساسي المرحلة
+    let selectedStage = document.getElementById('stageSelection').value;
+   
+     // حساب الإجمالي بعد خصم الدفعة بناءً على نسب الخصم
+     // let finalAmountAfterDiscount = finalAmountWithBatch * discount;
+    // عرض المبلغ النهائي بعد خصم الدفعة
+    document.getElementById('finalPaymentBatchAmount').innerText = `الإجمالي بعد خصم الدفعة: ${Math.round(finalAmountWithBatch)} جنيه`;
+    document.getElementById('paymentBatchAmount').classList.remove('hidden');
+   // document.getElementById('finalAmount').innerText = `الإجمالي بعد الخصم: ${finalAmountAfterDiscount} جنيه`; // عرض الإجمالي النهائي بعد خصم الدفعة والخصم
+}
+ elseif (selectedStage == 'GR1_GR3') {
          // تطبيق خصم الدفعة بناءً على الاختيار
     if (selectedPaymentBatch === "دفعة ذهبية") {
         finalAmountWithBatch *= 0.56; // خصم 40% للدفعة الذهبية
