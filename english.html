@@ -488,7 +488,7 @@ let selectedStage = document.getElementById('stageSelection').value;
     document.getElementById('paymentBatchAmount').classList.remove('hidden');
    // document.getElementById('finalAmount').innerText = `الإجمالي بعد الخصم: ${finalAmountAfterDiscount} جنيه`; // عرض الإجمالي النهائي بعد خصم الدفعة والخصم
 }
- elseif (selectedStage == 'GR1_GR3') {
+ if (selectedStage == 'GR1_GR3') {
          // تطبيق خصم الدفعة بناءً على الاختيار
     if (selectedPaymentBatch === "دفعة ذهبية") {
         finalAmountWithBatch *= 0.56; // خصم 40% للدفعة الذهبية
