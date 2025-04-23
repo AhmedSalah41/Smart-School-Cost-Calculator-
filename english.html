@@ -467,6 +467,8 @@ document.getElementById('finalCostWithBus').innerText = ` الإجمالي مع 
 let selectedStage = document.getElementById('stageSelection').value;
 
  if (selectedStage == 'KG2') {
+ document.getElementById('discountCriteriaSection').classList.remove('hidden');
+	   document.getElementById('selectedOptions').classList.remove('hidden');
          // تطبيق خصم الدفعة بناءً على الاختيار
     if (selectedPaymentBatch === "دفعة ذهبية") {
         finalAmountWithBatch *= 0.62; // خصم 40% للدفعة الذهبية
@@ -489,6 +491,8 @@ let selectedStage = document.getElementById('stageSelection').value;
    // document.getElementById('finalAmount').innerText = `الإجمالي بعد الخصم: ${finalAmountAfterDiscount} جنيه`; // عرض الإجمالي النهائي بعد خصم الدفعة والخصم
 }
 if (selectedStage == 'KG') {
+document.getElementById('discountCriteriaSection').classList.remove('hidden');
+	   document.getElementById('selectedOptions').classList.remove('hidden');
          // تطبيق خصم الدفعة بناءً على الاختيار
     if (selectedPaymentBatch === "دفعة ذهبية") {
         finalAmountWithBatch *= 0.62; // خصم 40% للدفعة الذهبية
@@ -511,6 +515,8 @@ if (selectedStage == 'KG') {
    // document.getElementById('finalAmount').innerText = `الإجمالي بعد الخصم: ${finalAmountAfterDiscount} جنيه`; // عرض الإجمالي النهائي بعد خصم الدفعة والخصم
 }
  if (selectedStage == 'GR1_GR3') {
+ document.getElementById('discountCriteriaSection').classList.remove('hidden');
+	   document.getElementById('selectedOptions').classList.remove('hidden');
          // تطبيق خصم الدفعة بناءً على الاختيار
     if (selectedPaymentBatch === "دفعة ذهبية") {
         finalAmountWithBatch *= 0.56; // خصم 40% للدفعة الذهبية
@@ -533,6 +539,8 @@ document.getElementById('finalPaymentBatchAmount').innerText = `الإجمالي
    // document.getElementById('finalAmount').innerText = `الإجمالي بعد الخصم: ${finalAmountAfterDiscount} جنيه`; // عرض الإجمالي النهائي بعد خصم الدفعة والخصم
 }
 if (selectedStage == 'GR4_GR6') {
+document.getElementById('discountCriteriaSection').classList.remove('hidden');
+	   document.getElementById('selectedOptions').classList.remove('hidden');
          // تطبيق خصم الدفعة بناءً على الاختيار
     if (selectedPaymentBatch === "دفعة ذهبية") {
         finalAmountWithBatch *= 0.55; // خصم 40% للدفعة الذهبية
@@ -558,6 +566,8 @@ document.getElementById('finalPaymentBatchAmount').innerText = `الإجمالي
    // document.getElementById('finalAmount').innerText = `الإجمالي بعد الخصم: ${finalAmountAfterDiscount} جنيه`; // عرض الإجمالي النهائي بعد خصم الدفعة والخصم
 }
 if (selectedStage == 'GR7_GR9') {
+document.getElementById('discountCriteriaSection').classList.remove('hidden');
+	   document.getElementById('selectedOptions').classList.remove('hidden');
          // تطبيق خصم الدفعة بناءً على الاختيار
     if (selectedPaymentBatch === "دفعة ذهبية") {
         finalAmountWithBatch *= 0.54; // خصم 40% للدفعة الذهبية
@@ -610,6 +620,8 @@ document.getElementById('finalPaymentBatchAmount').innerText = `الإجمالي
    // document.getElementById('finalAmount').innerText = `الإجمالي بعد الخصم: ${finalAmountAfterDiscount} جنيه`; // عرض الإجمالي النهائي بعد خصم الدفعة والخصم
 }
 if (selectedStage == 'KG_BC') {
+document.getElementById('discountCriteriaSection').classList.remove('hidden');
+	   document.getElementById('selectedOptions').classList.remove('hidden');
       booksCost = 2000;
 	   finalAmountWithBatch = baseCost;
      // حساب الإجمالي بعد خصم الدفعة بناءً على نسب الخصم
