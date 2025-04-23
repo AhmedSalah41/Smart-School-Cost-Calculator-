@@ -582,7 +582,8 @@ document.getElementById('finalPaymentBatchAmount').innerText = `الإجمالي
    // document.getElementById('finalAmount').innerText = `الإجمالي بعد الخصم: ${finalAmountAfterDiscount} جنيه`; // عرض الإجمالي النهائي بعد خصم الدفعة والخصم
 }
 if (selectedStage == 'GR10_GR12') {
-       document.getElementById('discountCriteriaSection').classList.('hidden');
+       document.getElementById('discountCriteriaSection').classList.add('hidden');
+	   document.getElementById('selectedOptions').classList.add('hidden');
       booksCost = 6000;
 
 	  // تطبيق خصم الدفعة بناءً على الاختيار
