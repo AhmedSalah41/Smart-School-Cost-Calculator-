@@ -450,20 +450,29 @@ function calculateDiscount() {
  // تحديث الإجمالي مع الخصم
     function updateTotalCost() {
        let finalCost = finalAmountWithBatch * discount;
-document.getElementById('finalAmount').innerText = `الإجمالي بعد الخصم: ${Math.round(finalCost)} جنيه`;
+		document.getElementById('finalAmount').innerText = `الإجمالي بعد الخصم: ${Math.round(finalCost)} جنيه`;
         // إضافة الباص والكتب
         let busSelection = document.getElementById('busSubscription').value;
         let booksSelection = document.getElementById('addBooksSubscription').value;
-
+		 if (busSelection === 'yes') {
+        document.getElementById('busAreaSelection').classList.remove('hidden');
+		} else {
+			document.getElementById('busAreaSelection').classList.add('hidden');
+		}
         let additionalCost = finalCost;
         if (busSelection === 'yes') {
-            additionalCost += busCost;
+        let selectedBusArea = document.getElementById('busArea').value;
+        if (selectedBusArea) {
+            additionalCost += parseInt(selectedBusArea);
         }
-        if (booksSelection === 'yes') {
-            additionalCost += booksCost;
-        }
+		}
 
-document.getElementById('finalCostWithBus').innerText = ` الإجمالي مع الباص والكتب حسب اختيارك: ${Math.round(additionalCost)} جنيه`;
+		if (booksSelection === 'yes') {
+			additionalCost += booksCost;
+		}
+
+
+		document.getElementById('finalCostWithBus').innerText = ` الإجمالي مع الباص والكتب حسب اختيارك: ${Math.round(additionalCost)} جنيه`;
 
         document.getElementById('finalCostWithAdditions').classList.remove('hidden');
 		//calculatePaymentBatchDiscount();
