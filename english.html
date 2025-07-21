@@ -457,8 +457,7 @@ document.getElementById('finalAmount').innerText = `الإجمالي بعد ال
 
         let additionalCost = finalCost;
         if (busSelection === 'yes') {
-		    document.getElementById('busAreaSelection').classList.remove('hidden');
-
+		
              let selectedBusArea = document.getElementById('busArea').value;
 			if (selectedBusArea) {
 				additionalCost += parseInt(selectedBusArea);
