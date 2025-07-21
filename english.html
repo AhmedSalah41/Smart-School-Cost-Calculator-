@@ -182,7 +182,17 @@
             </select>
         </div>
     </div>
-
+	<!-- اختيار منطقة الباص -->
+	<div id="busAreaSelection" class="form-group hidden">
+		<label for="busArea">برجاء اختيار منطقة السكن:</label>
+		<select id="busArea" onchange="updateTotalCost()">
+			<option value="" disabled selected>اختر منطقتك</option>
+			<option value="10000">مج 18-32 (10,000 جنيه)</option>
+			<option value="11000">باقي المجاورات (11,000 جنيه)</option>
+			<option value="12000">الأحياء (12,000 جنيه)</option>
+			<option value="15000">الشروق (15,000 جنيه)</option>
+		</select>
+	</div>
     <!-- سؤال الكتب -->
     <div id="addBooksCostQuestion" class="hidden">
         <div class="form-group">
@@ -447,8 +457,12 @@ document.getElementById('finalAmount').innerText = `الإجمالي بعد ال
 
         let additionalCost = finalCost;
         if (busSelection === 'yes') {
-            additionalCost += busCost;
-        }
+		    document.getElementById('busAreaSelection').classList.remove('hidden');
+
+             let selectedBusArea = document.getElementById('busArea').value;
+			if (selectedBusArea) {
+				additionalCost += parseInt(selectedBusArea);
+			}
         if (booksSelection === 'yes') {
             additionalCost += booksCost;
         }
