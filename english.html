@@ -457,21 +457,11 @@ document.getElementById('finalAmount').innerText = `الإجمالي بعد ال
 
         let additionalCost = finalCost;
         if (busSelection === 'yes') {
-		
-             let selectedBusArea = document.getElementById('busArea').value;
-			if (selectedBusArea) {
-				additionalCost += parseInt(selectedBusArea);
-			}
+            additionalCost += busCost;
+        }
         if (booksSelection === 'yes') {
             additionalCost += booksCost;
         }
-		// إظهار / إخفاء اختيار منطقة الباص
-		if (busSelection === 'yes') {
-			document.getElementById('busAreaSelection').classList.remove('hidden');
-		} else {
-			document.getElementById('busAreaSelection').classList.add('hidden');
-		}
-
 
 document.getElementById('finalCostWithBus').innerText = ` الإجمالي مع الباص والكتب حسب اختيارك: ${Math.round(additionalCost)} جنيه`;
 
