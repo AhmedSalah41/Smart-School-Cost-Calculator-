@@ -465,6 +465,13 @@ document.getElementById('finalAmount').innerText = `الإجمالي بعد ال
         if (booksSelection === 'yes') {
             additionalCost += booksCost;
         }
+		// إظهار / إخفاء اختيار منطقة الباص
+		if (busSelection === 'yes') {
+			document.getElementById('busAreaSelection').classList.remove('hidden');
+		} else {
+			document.getElementById('busAreaSelection').classList.add('hidden');
+		}
+
 
 document.getElementById('finalCostWithBus').innerText = ` الإجمالي مع الباص والكتب حسب اختيارك: ${Math.round(additionalCost)} جنيه`;
 
