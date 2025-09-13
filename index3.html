@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>استعلام طالب — أدخل الرقم القومي</title>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg1: #071a52;
+      --bg2: #0b64d6;
+      --card: #ffffff;
+      --muted: #7b8a9a;
+      --accent: #ffd166;
+      --glass: rgba(255,255,255,0.06);
+    }
+    *{box-sizing:border-box;font-family:'Cairo',system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial}
+    html,body{height:100%;margin:0;background:linear-gradient(135deg,var(--bg1),#0f3b8f);color:#0b2a66}
+    .wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:28px}
+    .card{
+      width:100%;
+      max-width:920px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+      border-radius:14px;
+      padding:26px;
+      box-shadow:0 10px 30px rgba(2,6,23,0.45);
+      display:grid;
+      grid-template-columns: 420px 1fr;
+      gap:20px;
+      backdrop-filter: blur(6px);
+      border:1px solid rgba(255,255,255,0.06);
+    }
+
+    /* left panel */
+    .panel-left{padding:18px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));}
+    .logo{display:flex;gap:12px;align-items:center;margin-bottom:8px}
+    .logo .mark{width:60px;height:60px;border-radius:12px;background:linear-gradient(135deg,var(--bg2),#3aa0ff);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:20px;box-shadow:0 6px 18px rgba(11,100,214,0.18)}
+    h1{margin:6px 0 4px;font-size:20px;color:#fff}
+    p.lead{margin:0;color:var(--muted);font-size:13px}
+
+    label{display:block;font-weight:600;color:#eaf2ff;margin-top:14px;margin-bottom:6px}
+    input[type="text"]{
+      width:100%;
+      padding:12px 14px;border-radius:10px;border:0;background:rgba(255,255,255,0.06);color:#fff;font-size:15px;
+      outline:none;box-shadow:inset 0 1px 0 rgba(255,255,255,0.02);
+    }
+    .row{display:flex;gap:10px;margin-top:12px}
+    .btn{
+      padding:12px 14px;border-radius:10px;border:0;cursor:pointer;font-weight:700;
+      background:linear-gradient(90deg,var(--bg2),#1a9cff);color:#fff;box-shadow:0 8px 18px rgba(11,100,214,0.18)
+    }
+    .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:#eaf2ff}
+
+    /* right panel */
+    .panel-right{padding:18px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));display:flex;flex-direction:column;gap:12px}
+    .result-box{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:10px;padding:14px;border:1px dashed rgba(255,255,255,0.04);min-height:180px;color:#eaf2ff}
+    .r-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px dashed rgba(255,255,255,0.02)}
+    .r-row:last-child{border-bottom:0}
+    .r-label{color:var(--muted);font-size:13px}
+    .r-value{font-weight:700;font-size:15px;color:#fff}
+    .hint{font-size:13px;color:var(--muted);margin-top:6px}
+
+    .small{font-size:12px;color:var(--muted)}
+    .copy-btn{padding:8px 10px;border-radius:8px;border:0;background:var(--accent);font-weight:700;color:#06223a;cursor:pointer}
+
+    /* animations */
+    .pulse{animation:pulse 1.6s ease-in-out infinite}
+    @keyframes pulse{0%{transform:translateY(0)}50%{transform:translateY(-4px)}100%{transform:translateY(0)}}
+
+    /* responsive */
+    @media (max-width:880px){
+      .card{grid-template-columns:1fr;max-width:520px}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card" role="main" aria-label="Student lookup card">
+      <div class="panel-left">
+        <div class="logo">
+          <div class="mark">SS</div>
+          <div>
+            <h1>استعلام حساب الطالب</h1>
+            <p class="lead">ادخل الرقم القومي لإظهار بيانات الحساب — سريع وآمن.</p>
+          </div>
+        </div>
+
+        <label for="nid">الرقم القومي</label>
+        <input id="nid" type="text" inputmode="numeric" placeholder="مثال: 12345678901234" maxlength="14" />
+
+        <div class="row" style="margin-top:14px">
+          <button class="btn" id="lookupBtn">عرض الحساب</button>
+          <button class="btn ghost" id="clearBtn" title="مسح الحقول">مسح</button>
+        </div>
+
+        <div style="margin-top:16px" class="small">ملاحظة: تأكد أن رقم الطالب موجود في قاعدة البيانات. لحماية البيانات يمكنك لاحقًا تقييد وصول الـ API أو إضافة توكن.</div>
+
+      </div>
+
+      <div class="panel-right">
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <div>
+            <div style="font-size:14px;color:var(--muted)">النتيجة</div>
+            <div style="font-size:11px;color:var(--muted)">سيظهر هنا اسم الطالب وبيانات الحساب</div>
+          </div>
+          <div class="pulse" title="واجهة أنيقة">✨</div>
+        </div>
+
+        <div class="result-box" id="result">
+          <div class="r-row"><div class="r-label">الاسم</div><div class="r-value" id="r-name">—</div></div>
+          <div class="r-row"><div class="r-label">المرحلة</div><div class="r-value" id="r-stage">—</div></div>
+          <div class="r-row"><div class="r-label">اسم المستخدم</div><div class="r-value" id="r-username">—</div></div>
+          <div class="r-row"><div class="r-label">كلمة المرور</div>
+            <div style="display:flex;gap:8px;align-items:center">
+              <div class="r-value" id="r-password">—</div>
+              <button class="copy-btn" id="copyPass" title="نسخ كلمة المرور">نسخ</button>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:10px;align-items:center;justify-content:space-between">
+          <div class="hint">جاري الاتصال بـ API عند الضغط على زر "عرض الحساب".</div>
+          <div style="text-align:left">
+            <button id="testExample" class="btn ghost">اختبار برقم مثال</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ====== ضع هنا رابط Web App URL اللي نُشر به Google Apps Script ======
+    const APP_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzsPl-8PzJZKnk_ifT3LhC0Yy2r4TurRUULIVqG53_UDXFxri5Kk09HMcaZW7KHYEfc/exec';
+
+    const nidInput = document.getElementById('nid');
+    const lookupBtn = document.getElementById('lookupBtn');
+    const clearBtn = document.getElementById('clearBtn');
+    const resultBox = document.getElementById('result');
+    const rName = document.getElementById('r-name');
+    const rStage = document.getElementById('r-stage');
+    const rUser = document.getElementById('r-username');
+    const rPass = document.getElementById('r-password');
+    const copyBtn = document.getElementById('copyPass');
+    const testBtn = document.getElementById('testExample');
+
+    function setLoading(state){
+      lookupBtn.disabled = state;
+      lookupBtn.textContent = state ? 'جاري البحث...' : 'عرض الحساب';
+      if(state) lookupBtn.style.opacity = 0.8; else lookupBtn.style.opacity = 1;
+    }
+
+    function showNotFound(){
+      rName.textContent = '—';
+      rStage.textContent = '—';
+      rUser.textContent = '—';
+      rPass.textContent = 'غير موجود';
+    }
+
+    async function lookup(nid){
+      if(!APP_SCRIPT_URL || APP_SCRIPT_URL.includes('PUT_YOUR_WEB_APP_URL')){
+        alert('لازم تستبدل APP_SCRIPT_URL برابط الـ Web App من Google Apps Script.');
+        return;
+      }
+      setLoading(true);
+      try{
+        const resp = await fetch(`${APP_SCRIPT_URL}?action=lookup&id=${encodeURIComponent(nid)}`);
+        const data = await resp.json();
+        if(data && data.found && data.account){
+          const acc = data.account;
+          rName.textContent = acc.name || '-';
+          rStage.textContent = acc.stage || '-';
+          rUser.textContent = acc.username || '-';
+          rPass.textContent = acc.password || '-';
+        } else {
+          showNotFound();
+          alert('لا يوجد طالب بهذا الرقم القومي');
+        }
+      }catch(err){
+        console.error(err);
+        alert('حصل خطأ في الاتصال بالـ API. افتح Console للمزيد.');
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    lookupBtn.addEventListener('click', ()=>{
+      const nid = nidInput.value.trim();
+      if(!nid){ alert('ادخل الرقم القومي'); return; }
+      if(nid.length < 14){ if(!confirm('الرقم يبدو أقصر من 14 خانة. تكمل؟')) return; }
+      lookup(nid);
+    });
+
+    clearBtn.addEventListener('click', ()=>{
+      nidInput.value = '';
+      showNotFound();
+    });
+
+    copyBtn.addEventListener('click', ()=>{
+      const text = rPass.textContent;
+      if(!text || text === '—' || text === 'غير موجود'){ alert('لا يوجد كلمة مرور للنسخ'); return; }
+      navigator.clipboard.writeText(text).then(()=>alert('تم نسخ كلمة المرور'));
+    });
+
+    // زر اختبار: يضع رقم المثال ويجري البحث (مثال افتراضي: استبدله برقم من شيتك)
+    testBtn.addEventListener('click', ()=>{
+      nidInput.value = '12345678901234';
+      lookup('12345678901234');
+    });
+
+    // init
+    showNotFound();
+  </script>
+</body>
+</html>
