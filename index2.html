@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart School</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            text-align: right;
+            margin: 0;
+            padding: 0;
+            direction: rtl;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 80%;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .logo {
+            width: 150px;
+            display: block;
+            margin: 0 auto 20px;
+        }
+        h1 {
+            text-align: center;
+            font-size: 30px;
+            color: #3498db;
+        }
+        .btn-container {
+            display: flex;
+            justify-content: space-evenly;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        .btn {
+            background-color: #3498db;
+            color: #fff;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            width: 200px;
+            margin: 5px;
+        }
+        .btn:hover {
+            background-color: #2980b9;
+        }
+        .hidden {
+            display: none;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            font-size: 18px;
+            display: block;
+            margin-bottom: 10px;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid #3498db;
+            border-radius: 5px;
+        }
+        select {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+        }
+        select:focus {
+            background-color: #f9f9f9;
+            border-color: #2980b9;
+        }
+        .cost-box {
+            margin: 20px 0;
+            padding: 10px;
+            background-color: #ecf0f1;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .cost-box div {
+            margin: 5px 0;
+        }
+        .criteria {
+            margin: 20px 0;
+            text-align: center;
+        }
+        .selected-options {
+            margin: 20px 0;
+            font-size: 16px;
+            color: #2980b9;
+        }
+        .notes {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f9e79f;
+            border-radius: 8px;
+            font-size: 16px;
+            color: #d35400;
+        }
+        .notes ul {
+            list-style-type: disc;
+            margin-left: 20px;
+        }
+        @media (max-width: 768px) {
+            .btn-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            .btn {
+                width: 80%;
+                margin: 10px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <img src="Smart.png" alt="Smart School Logo" class="logo">
+    <h1>مدرسة سمارت</h1>
+
+    <!-- اختيارات نوع التعليم -->
+    <div id="schoolSelection" class="btn-container">
+        <button class="btn" onclick="selectSchool('arabic')">مصاريف (قسم العربي)</button>
+        <button class="btn" onclick="selectSchool('foreign')">مصاريف (قسم اللغات )</button>
+		<button class="btn" onclick="selectSchool('American')">مصاريف (القسم الدولي American )</button>
+
+    </div>
+	<!-- زر الانتقال إلى Google Forms -->
+	<div id="Sign" class="notes" style="text-align: center; margin-top: 20px;">
+		<a href="https://docs.google.com/forms/d/1n_xhexUdp7Y5j5tvazjdvWpoLSZR6lzt2WhjSqkOyGo/viewform" target="_blank">
+			<button class="btn"> الرجاء الضغط هنا لإتمام عملية الدفع</button>
+		</a>
+	</div>
+   
+
+
+<script>
+   // اختيار نوع المدرسة
+function selectSchool(type) {
+    // إخفاء قسم الاختيارات
+    document.getElementById('schoolSelection').classList.add('hidden');
+
+    // تحديد الرابط بناءً على النوع المختار
+    if (type === 'arabic') {
+        // إذا تم اختيار قسم العربي، يتم نقلك إلى هذه الصفحة
+        window.location.href = "Arabic.html"; // المسار النسبي للصفحة العربية
+    } else if (type === 'foreign') {
+        // إذا تم اختيار قسم اللغات، يتم نقلك إلى هذه الصفحة
+        window.location.href = "english.html"; // المسار النسبي للصفحة الأجنبية
+    }
+	  else if (type === 'American') {
+        // إذا تم اختيار قسم اللغات،الدزلي قلك إلى هذه الصفحة
+        window.location.href = "American.html"; // المسار النسبي للصفحة الأجنبية
+    }
+}
+
+</script>
+
+</body>
+</html>
