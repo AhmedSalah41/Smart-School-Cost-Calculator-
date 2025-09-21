@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>استعلام طالب — أدخل الرقم القومي</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg1: #071a52; --bg2: #0b64d6; --muted: #7b8a9a; --accent: #ffd166;
+    }
+    *{box-sizing:border-box;font-family:'Cairo',sans-serif}
+    body{margin:0;background:linear-gradient(135deg,var(--bg1),#0f3b8f);color:#fff;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+    .card{width:100%;max-width:960px;background:rgba(255,255,255,0.05);border-radius:14px;padding:26px;display:grid;grid-template-columns:420px 1fr;gap:20px;backdrop-filter:blur(6px)}
+    .panel-left,.panel-right{background:rgba(255,255,255,0.02);padding:20px;border-radius:12px}
+    label{display:block;margin:12px 0 6px}
+    input{width:100%;padding:10px;border-radius:8px;border:none;background:rgba(255,255,255,0.1);color:#fff}
+    .btn{margin-top:10px;padding:10px 16px;border:none;border-radius:8px;background:linear-gradient(90deg,var(--bg2),#1a9cff);color:#fff;cursor:pointer}
+    .result-box{margin-top:10px}
+    .r-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed rgba(255,255,255,0.1)}
+    .r-label{color:var(--muted);font-size:13px}
+    .r-value{font-weight:700}
+    @media(max-width:880px){.card{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="panel-left">
+      <h2>استعلام حساب الطالب</h2>
+      <label for="nid">الرقم القومي</label>
+      <input id="nid" type="text" maxlength="14" placeholder="مثال: 12345678901234">
+      <button class="btn" id="lookupBtn">عرض الحساب</button>
+    </div>
+
+    <div class="panel-right">
+      <h3>النتيجة</h3>
+      <div class="result-box" id="result">
+        <div class="r-row"><div class="r-label">اسم الطالب</div><div class="r-value" id="r-name">—</div></div>
+        <div class="r-row"><div class="r-label">المرحلة الدراسية</div><div class="r-value" id="r-stage">—</div></div>
+        <div class="r-row"><div class="r-label">إجمالي المصروفات</div><div class="r-value" id="r-total">—</div></div>
+        <div class="r-row"><div class="r-label">المبلغ المدفوع</div><div class="r-value" id="r-paid">—</div></div>
+        <div class="r-row"><div class="r-label">المتبقي</div><div class="r-value" id="r-remaining">—</div></div>
+        <div class="r-row"><div class="r-label">نظام الدفع</div><div class="r-value" id="r-plan">—</div></div>
+        <div class="r-row"><div class="r-label">المعاد القادم للدفع</div><div class="r-value" id="r-next">—</div></div>
+        <div class="r-row"><div class="r-label">ملاحظات</div><div class="r-value" id="r-notes">—</div></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const APP_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxqrFBxidJ6-LmXFiDl5BkiAf8cYA2B8wtr9wJeKj2mu0z-8_ge63P8ZZdX3cNGwTDYWg/exec"; 
+
+    const lookupBtn = document.getElementById("lookupBtn");
+    const rName = document.getElementById("r-name");
+    const rStage = document.getElementById("r-stage");
+    const rTotal = document.getElementById("r-total");
+    const rPaid = document.getElementById("r-paid");
+    const rRemaining = document.getElementById("r-remaining");
+    const rPlan = document.getElementById("r-plan");
+    const rNext = document.getElementById("r-next");
+    const rNotes = document.getElementById("r-notes");
+
+    function showNotFound(){
+      [rName,rStage,rTotal,rPaid,rRemaining,rPlan,rNext,rNotes].forEach(el=>el.textContent="—");
+    }
+
+    async function lookup(){
+      const nid = document.getElementById("nid").value.trim();
+      if(!nid) return alert("ادخل الرقم القومي");
+
+      try{
+        const resp = await fetch(`${APP_SCRIPT_URL}?action=lookup&id=${encodeURIComponent(nid)}`);
+        const data = await resp.json();
+
+        if(data && data.found && data.account){
+          const acc = data.account;
+          rName.textContent = acc.name || "—";
+          rStage.textContent = acc.stage || "—";
+          rTotal.textContent = acc.total || "—";
+          rPaid.textContent = acc.paid || "—";
+          rRemaining.textContent = acc.remaining || "—";
+          rPlan.textContent = acc.paymentPlan || "—";
+          rNext.textContent = acc.nextPayment || "—";
+          rNotes.textContent = acc.notes || "—";
+        } else {
+          showNotFound();
+          alert("❌ الطالب غير موجود");
+        }
+      } catch(err){
+        console.error(err);
+        alert("⚠ خطأ في الاتصال بالـ API");
+      }
+    }
+
+    lookupBtn.addEventListener("click", lookup);
+    showNotFound();
+  </script>
+</body>
+</html>
