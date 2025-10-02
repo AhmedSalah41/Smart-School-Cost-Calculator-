@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>شكاوى أولياء الأمور</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Cairo', sans-serif;
+      background: linear-gradient(135deg, #4facfe, #00f2fe);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      text-align: center;
+      color: #fff;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+    }
+
+    /* شكل الظرف */
+    .envelope {
+      width: 180px;
+      height: 120px;
+      background: #fff;
+      margin: 0 auto;
+      position: relative;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+    .envelope:hover {
+      transform: scale(1.05);
+    }
+    .envelope:before, .envelope:after {
+      content: "";
+      position: absolute;
+      width: 0;
+      height: 0;
+      border-style: solid;
+    }
+    .envelope:before {
+      top: 0;
+      left: 0;
+      border-width: 0 90px 60px 90px;
+      border-color: transparent transparent #f1f1f1 transparent;
+    }
+    .envelope:after {
+      bottom: 0;
+      left: 0;
+      border-width: 60px 90px 0 90px;
+      border-color: #f1f1f1 transparent transparent transparent;
+    }
+
+    /* الفورم */
+    #formContainer {
+      display: none;
+      margin-top: 20px;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      color: #333;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    input, textarea, button {
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-family: inherit;
+    }
+
+    button {
+      background: #4facfe;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #007bff;
+    }
+
+    .success {
+      display: none;
+      font-size: 1.2em;
+      color: #00ff88;
+      margin-top: 20px;
+      font-weight: bold;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px);}
+      to { opacity: 1; transform: translateY(0);}
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>📩 شكاوى أولياء الأمور</h1>
+    <div class="envelope" id="envelope"></div>
+
+    <div id="formContainer">
+      <form id="complaintForm">
+        <input type="text" name="parentName" placeholder="اسم ولي الأمر" required>
+        <input type="text" name="studentName" placeholder="اسم الطالب" required>
+        <input type="text" name="grade" placeholder="الصف الدراسي" required>
+        <textarea name="complaint" placeholder="اكتب شكواك هنا..." rows="4" required></textarea>
+        <input type="email" name="email" placeholder="البريد الإلكتروني للتواصل (اختياري)">
+        <button type="submit">إرسال</button>
+      </form>
+    </div>
+
+    <div class="success" id="successMsg">✔️ تم استلام شكواك.. شكرًا لمشاركتك</div>
+  </div>
+
+  <script>
+    const envelope = document.getElementById('envelope');
+    const formContainer = document.getElementById('formContainer');
+    const form = document.getElementById('complaintForm');
+    const successMsg = document.getElementById('successMsg');
+
+    // فتح الظرف وإظهار الفورم
+    envelope.addEventListener('click', () => {
+      envelope.style.display = 'none';
+      formContainer.style.display = 'block';
+    });
+
+    // عند الإرسال
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      formContainer.style.display = 'none';
+      successMsg.style.display = 'block';
+    });
+  </script>
+</body>
+</html>
