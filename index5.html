@@ -1,174 +1,95 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>شكاوى أولياء الأمور - Smart School</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>شكاوى أولياء الأمور</title>
   <style>
-    body {
-      font-family: "Cairo", sans-serif;
-      background: linear-gradient(135deg, #0d47a1, #1976d2);
-      color: #fff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      margin: 0;
-      padding: 20px;
-    }
-
-    .container {
-      background: #fff;
-      color: #333;
-      border-radius: 20px;
-      box-shadow: 0 4px 30px rgba(0,0,0,0.2);
-      padding: 30px 40px;
-      width: 100%;
-      max-width: 450px;
-      text-align: center;
-      transition: 0.3s;
-    }
-
-    h2 {
-      color: #0d47a1;
-      margin-bottom: 25px;
-    }
-
-    label {
-      display: block;
-      text-align: right;
-      margin: 10px 0 5px;
-      font-weight: bold;
-    }
-
-    input, textarea, select {
-      width: 100%;
-      padding: 10px;
-      border-radius: 10px;
-      border: 1px solid #ccc;
-      font-size: 16px;
-      transition: 0.3s;
-    }
-
-    input:focus, textarea:focus, select:focus {
-      border-color: #1976d2;
-      outline: none;
-    }
-
-    button {
-      background: #0d47a1;
-      color: #fff;
-      border: none;
-      padding: 12px 20px;
-      font-size: 18px;
-      border-radius: 10px;
-      cursor: pointer;
-      margin-top: 15px;
-      transition: 0.3s;
-      width: 100%;
-    }
-
-    button:hover {
-      background: #1976d2;
-      transform: scale(1.03);
-    }
-
-    .success {
-      display: none;
-      background: #e8f5e9;
-      color: #2e7d32;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-      animation: fadeIn 0.6s ease-in-out;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+    body{font-family: 'Cairo', sans-serif;background:linear-gradient(135deg,#0d47a1,#1976d2);color:#fff;min-height:100vh;display:flex;align-items:center;justify-content:center;margin:0;padding:20px}
+    .card{background:#fff;color:#222;border-radius:14px;padding:20px;max-width:480px;width:100%;box-shadow:0 10px 30px rgba(0,0,0,0.2)}
+    h2{text-align:center;color:#0d47a1;margin-top:0}
+    label{display:block;margin:10px 0 6px;font-weight:700;text-align:right}
+    input,textarea,select,button{width:100%;padding:10px;border-radius:8px;border:1px solid #ddd;font-size:15px}
+    textarea{resize:vertical}
+    button{background:#0d47a1;color:#fff;border:0;margin-top:12px;cursor:pointer}
+    .success{display:none;padding:14px;background:#e8f5e9;color:#2e7d32;border-radius:8px;text-align:center;margin-top:12px}
+    .envelope{width:120px;height:80px;background:#fff;margin:0 auto 12px;border-radius:6px;cursor:pointer;display:block}
+    .hint{font-size:13px;color:#666;text-align:center;margin-top:8px}
   </style>
 </head>
 <body>
 
-  <div class="container" id="formContainer">
-    <h2>نموذج شكاوى أولياء الأمور</h2>
-    <form id="complaintForm">
-      <label for="parentName">اسم ولي الأمر:</label>
-      <input type="text" id="parentName" name="parentName" required>
+  <div class="card">
+    <div class="envelope" id="envelope" title="اضغط لفتح النموذج"></div>
 
-      <label for="studentName">اسم الطالب:</label>
-      <input type="text" id="studentName" name="studentName" required>
+    <div id="formWrap" style="display:none">
+      <!-- ضع رابط الـ Web App في action هنا -->
+      <form id="complaintForm" action="https://script.google.com/macros/s/AKfycbzg061GG5GimMAmvz4xiEkdMh0AH0uRTI4Jvx3hyw/dev" method="post" target="hidden_iframe">
+        <label for="parentName">اسم ولي الأمر</label>
+        <input id="parentName" name="parentName" type="text" required>
 
-      <label for="grade">الصف الدراسي:</label>
-      <select id="grade" name="grade" required>
-        <option value="">اختر الصف...</option>
-        <option value="KG1">KG1</option>
-        <option value="KG2">KG2</option>
-        <option value="Primary">ابتدائي</option>
-        <option value="Preparatory">إعدادي</option>
-        <option value="Secondary">ثانوي</option>
-      </select>
+        <label for="studentName">اسم الطالب</label>
+        <input id="studentName" name="studentName" type="text" required>
 
-      <label for="phone">رقم الهاتف:</label>
-     <input type="tel" name="phone" placeholder="رقم الهاتف للتواصل" required>
+        <label for="grade">الصف الدراسي</label>
+        <select id="grade" name="grade" required>
+          <option value="">اختر...</option>
+          <option>KG1</option>
+          <option>KG2</option>
+          <option>Primary</option>
+          <option>Preparatory</option>
+          <option>Secondary</option>
+        </select>
 
-      <label for="complaint">نص الشكوى:</label>
-      <textarea id="complaint" name="complaint" rows="4" required></textarea>
+        <label for="phone">رقم الهاتف</label>
+        <input id="phone" name="phone" type="tel" inputmode="numeric" pattern="[0-9+ ]*" maxlength="15" placeholder="مثال: 01012345678" required>
 
-      <button type="submit">إرسال الشكوى</button>
-    </form>
+        <label for="complaint">نص الشكوى</label>
+        <textarea id="complaint" name="complaint" rows="4" required></textarea>
+
+        <button id="submitBtn" type="submit">إرسال الشكوى</button>
+      </form>
+      <div class="hint">ستُرسل الشكوى آمنًا إلى إدارة المدرسة.</div>
+    </div>
+
+    <div class="success" id="successMsg">
+      <h3>✔️ تم إرسال الشكوى بنجاح</h3>
+      <p>شكراً لتواصلك — سنقوم بالرد في أقرب وقت.</p>
+    </div>
   </div>
 
-  <div class="container success" id="successMsg">
-    <h2>✅ تم إرسال الشكوى بنجاح</h2>
-    <p>شكرًا لتواصلك معنا، سيتم مراجعة الشكوى والرد في أقرب وقت.</p>
-  </div>
+  <!-- iframe مخفي لاستقبال رد السيرفر بدون إعادة تحميل الصفحة -->
+  <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
 
- <script>
-  const envelope = document.getElementById('envelope');
-  const formContainer = document.getElementById('formContainer');
-  const form = document.getElementById('complaintForm');
-  const successMsg = document.getElementById('successMsg');
+  <script>
+    const envelope = document.getElementById('envelope');
+    const formWrap = document.getElementById('formWrap');
+    const form = document.getElementById('complaintForm');
+    const successMsg = document.getElementById('successMsg');
+    const submitBtn = document.getElementById('submitBtn');
+    const iframe = document.getElementById('hidden_iframe');
 
-  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzg061GG5GimMAmvz4xiEkdMh0AH0uRTI4Jvx3hyw/dev";
+    envelope.addEventListener('click', ()=> {
+      envelope.style.display = 'none';
+      formWrap.style.display = 'block';
+    });
 
-  envelope.addEventListener('click', () => {
-    envelope.style.display = 'none';
-    formContainer.style.display = 'block';
-  });
+    form.addEventListener('submit', ()=> {
+      // Disable زر وإظهار نص انتظار بسيط
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'جاري الإرسال...';
+    });
 
-  form.addEventListener('submit', async function(e) {
-    e.preventDefault();
-    
-    const formData = {
-      parentName: form.parentName.value,
-      studentName: form.studentName.value,
-      grade: form.grade.value,
-      phone: form.phone.value,
-      complaint: form.complaint.value
-    };
-
-    try {
-      const res = await fetch(SCRIPT_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
-      });
-
-      const result = await res.json();
-      if (result.result === "success") {
-        formContainer.style.display = 'none';
-        successMsg.style.display = 'block';
-      } else {
-        alert("❌ حصل خطأ في الإرسال: " + result.message);
-      }
-    } catch (err) {
-      alert("⚠️ لم يتم الاتصال بالسيرفر. تحقق من الرابط أو الإذن.");
-      console.error(err);
-    }
-  });
-</script>
-
+    // عندما يُحمّل الـ iframe (يعني السيرفر ردّ) نعرض رسالة النجاح
+    iframe.addEventListener('load', ()=> {
+      // قد يتكرر onload عند التحميل الأول (قبل إرسال). نتأكد أن زر الإرسال كان معطلًا.
+      if (!submitBtn.disabled) return;
+      formWrap.style.display = 'none';
+      successMsg.style.display = 'block';
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'إرسال الشكوى';
+      form.reset();
+    });
+  </script>
 </body>
 </html>
