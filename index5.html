@@ -111,7 +111,7 @@
       </select>
 
       <label for="phone">رقم الهاتف:</label>
-      <input type="text" id="phone" name="phone" inputmode="numeric" maxlength="11" placeholder="01XXXXXXXXX" required>
+     <input type="tel" name="phone" placeholder="رقم الهاتف للتواصل" required>
 
       <label for="complaint">نص الشكوى:</label>
       <textarea id="complaint" name="complaint" rows="4" required></textarea>
@@ -125,42 +125,50 @@
     <p>شكرًا لتواصلك معنا، سيتم مراجعة الشكوى والرد في أقرب وقت.</p>
   </div>
 
-  <script>
-    const form = document.getElementById('complaintForm');
-    const formContainer = document.getElementById('formContainer');
-    const successMsg = document.getElementById('successMsg');
+ <script>
+  const envelope = document.getElementById('envelope');
+  const formContainer = document.getElementById('formContainer');
+  const form = document.getElementById('complaintForm');
+  const successMsg = document.getElementById('successMsg');
 
-    form.addEventListener('submit', async function(e) {
-      e.preventDefault();
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxawyHQf_99nnel32tvavsO4pfU3x1Xb0upq84qA7MOBYRHBopImbsGr5uaNE79XcA/exec";
 
-      const formData = {
-        parentName: form.parentName.value.trim(),
-        studentName: form.studentName.value.trim(),
-        grade: form.grade.value.trim(),
-        phone: form.phone.value.trim(),
-        complaint: form.complaint.value.trim()
-      };
+  envelope.addEventListener('click', () => {
+    envelope.style.display = 'none';
+    formContainer.style.display = 'block';
+  });
 
-      if (!/^[0-9]+$/.test(formData.phone)) {
-        alert("من فضلك أدخل رقم هاتف صحيح (أرقام فقط).");
-        return;
-      }
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const formData = {
+      parentName: form.parentName.value,
+      studentName: form.studentName.value,
+      grade: form.grade.value,
+      phone: form.phone.value,
+      complaint: form.complaint.value
+    };
 
-      try {
-        await fetch('https://script.google.com/macros/library/d/1wrGWjzvTim-BAek6BZGLDvE_7891zU21p0FJCEbbrESTWNXpHoUIJP6v/1', {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(formData)
-        });
+    try {
+      const res = await fetch(SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
 
+      const result = await res.json();
+      if (result.result === "success") {
         formContainer.style.display = 'none';
         successMsg.style.display = 'block';
-      } catch (err) {
-        alert('حدث خطأ أثناء الإرسال، حاول مرة أخرى.');
-        console.error(err);
+      } else {
+        alert("❌ حصل خطأ في الإرسال: " + result.message);
       }
-    });
-  </script>
+    } catch (err) {
+      alert("⚠️ لم يتم الاتصال بالسيرفر. تحقق من الرابط أو الإذن.");
+      console.error(err);
+    }
+  });
+</script>
+
 </body>
 </html>
