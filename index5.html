@@ -3,146 +3,163 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>شكاوى أولياء الأمور</title>
+  <title>شكاوى أولياء الأمور - Smart School</title>
   <style>
     body {
-      margin: 0;
-      font-family: 'Cairo', sans-serif;
-      background: linear-gradient(135deg, #4facfe, #00f2fe);
+      font-family: "Cairo", sans-serif;
+      background: linear-gradient(135deg, #0d47a1, #1976d2);
+      color: #fff;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
     }
 
     .container {
-      text-align: center;
-      color: #fff;
-    }
-
-    h1 {
-      margin-bottom: 20px;
-    }
-
-    /* شكل الظرف */
-    .envelope {
-      width: 180px;
-      height: 120px;
       background: #fff;
-      margin: 0 auto;
-      position: relative;
-      cursor: pointer;
-      transition: transform 0.3s;
-    }
-    .envelope:hover {
-      transform: scale(1.05);
-    }
-    .envelope:before, .envelope:after {
-      content: "";
-      position: absolute;
-      width: 0;
-      height: 0;
-      border-style: solid;
-    }
-    .envelope:before {
-      top: 0;
-      left: 0;
-      border-width: 0 90px 60px 90px;
-      border-color: transparent transparent #f1f1f1 transparent;
-    }
-    .envelope:after {
-      bottom: 0;
-      left: 0;
-      border-width: 60px 90px 0 90px;
-      border-color: #f1f1f1 transparent transparent transparent;
-    }
-
-    /* الفورم */
-    #formContainer {
-      display: none;
-      margin-top: 20px;
-      background: #fff;
-      padding: 20px;
-      border-radius: 10px;
       color: #333;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      border-radius: 20px;
+      box-shadow: 0 4px 30px rgba(0,0,0,0.2);
+      padding: 30px 40px;
+      width: 100%;
+      max-width: 450px;
+      text-align: center;
+      transition: 0.3s;
     }
 
-    input, textarea, button {
+    h2 {
+      color: #0d47a1;
+      margin-bottom: 25px;
+    }
+
+    label {
+      display: block;
+      text-align: right;
+      margin: 10px 0 5px;
+      font-weight: bold;
+    }
+
+    input, textarea, select {
       width: 100%;
-      margin: 10px 0;
       padding: 10px;
+      border-radius: 10px;
       border: 1px solid #ccc;
-      border-radius: 6px;
-      font-family: inherit;
+      font-size: 16px;
+      transition: 0.3s;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: #1976d2;
+      outline: none;
     }
 
     button {
-      background: #4facfe;
+      background: #0d47a1;
       color: #fff;
-      font-weight: bold;
+      border: none;
+      padding: 12px 20px;
+      font-size: 18px;
+      border-radius: 10px;
       cursor: pointer;
+      margin-top: 15px;
       transition: 0.3s;
+      width: 100%;
     }
+
     button:hover {
-      background: #007bff;
+      background: #1976d2;
+      transform: scale(1.03);
     }
 
     .success {
       display: none;
-      font-size: 1.2em;
-      color: #00ff88;
-      margin-top: 20px;
-      font-weight: bold;
-      animation: fadeIn 1s ease-in-out;
+      background: #e8f5e9;
+      color: #2e7d32;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      animation: fadeIn 0.6s ease-in-out;
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px);}
-      to { opacity: 1; transform: translateY(0);}
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
 <body>
 
-  <div class="container">
-    <h1>📩 شكاوى أولياء الأمور</h1>
-    <div class="envelope" id="envelope"></div>
+  <div class="container" id="formContainer">
+    <h2>نموذج شكاوى أولياء الأمور</h2>
+    <form id="complaintForm">
+      <label for="parentName">اسم ولي الأمر:</label>
+      <input type="text" id="parentName" name="parentName" required>
 
-    <div id="formContainer">
-      <form id="complaintForm">
-        <input type="text" name="parentName" placeholder="اسم ولي الأمر" required>
-        <input type="text" name="studentName" placeholder="اسم الطالب" required>
-        <input type="text" name="grade" placeholder="الصف الدراسي" required>
-        <textarea name="complaint" placeholder="اكتب شكواك هنا..." rows="4" required></textarea>
+      <label for="studentName">اسم الطالب:</label>
+      <input type="text" id="studentName" name="studentName" required>
 
-        <!-- ✅ تم التبديل من البريد الإلكتروني إلى رقم الهاتف -->
-        <input type="tel" name="phone" placeholder="رقم الهاتف للتواصل (" pattern="[0-9+ ]*">
+      <label for="grade">الصف الدراسي:</label>
+      <select id="grade" name="grade" required>
+        <option value="">اختر الصف...</option>
+        <option value="KG1">KG1</option>
+        <option value="KG2">KG2</option>
+        <option value="Primary">ابتدائي</option>
+        <option value="Preparatory">إعدادي</option>
+        <option value="Secondary">ثانوي</option>
+      </select>
 
-        <button type="submit">إرسال</button>
-      </form>
-    </div>
+      <label for="phone">رقم الهاتف:</label>
+      <input type="text" id="phone" name="phone" inputmode="numeric" maxlength="11" placeholder="01XXXXXXXXX" required>
 
-    <div class="success" id="successMsg">✔️ تم استلام شكواك.. شكرًا لمشاركتك</div>
+      <label for="complaint">نص الشكوى:</label>
+      <textarea id="complaint" name="complaint" rows="4" required></textarea>
+
+      <button type="submit">إرسال الشكوى</button>
+    </form>
+  </div>
+
+  <div class="container success" id="successMsg">
+    <h2>✅ تم إرسال الشكوى بنجاح</h2>
+    <p>شكرًا لتواصلك معنا، سيتم مراجعة الشكوى والرد في أقرب وقت.</p>
   </div>
 
   <script>
-    const envelope = document.getElementById('envelope');
-    const formContainer = document.getElementById('formContainer');
     const form = document.getElementById('complaintForm');
+    const formContainer = document.getElementById('formContainer');
     const successMsg = document.getElementById('successMsg');
 
-    // فتح الظرف وإظهار الفورم
-    envelope.addEventListener('click', () => {
-      envelope.style.display = 'none';
-      formContainer.style.display = 'block';
-    });
-
-    // عند الإرسال
-    form.addEventListener('submit', function(e) {
+    form.addEventListener('submit', async function(e) {
       e.preventDefault();
-      formContainer.style.display = 'none';
-      successMsg.style.display = 'block';
+
+      const formData = {
+        parentName: form.parentName.value.trim(),
+        studentName: form.studentName.value.trim(),
+        grade: form.grade.value.trim(),
+        phone: form.phone.value.trim(),
+        complaint: form.complaint.value.trim()
+      };
+
+      if (!/^[0-9]+$/.test(formData.phone)) {
+        alert("من فضلك أدخل رقم هاتف صحيح (أرقام فقط).");
+        return;
+      }
+
+      try {
+        await fetch('https://script.google.com/macros/s/AKfycbxawyHQf_99nnel32tvavsO4pfU3x1Xb0upq84qA7MOBYRHBopImbsGr5uaNE79XcA/exec', {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData)
+        });
+
+        formContainer.style.display = 'none';
+        successMsg.style.display = 'block';
+      } catch (err) {
+        alert('حدث خطأ أثناء الإرسال، حاول مرة أخرى.');
+        console.error(err);
+      }
     });
   </script>
 </body>
