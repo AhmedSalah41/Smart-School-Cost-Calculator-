@@ -5,16 +5,93 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>شكاوى أولياء الأمور</title>
   <style>
-    body{font-family: 'Cairo', sans-serif;background:linear-gradient(135deg,#0d47a1,#1976d2);color:#fff;min-height:100vh;display:flex;align-items:center;justify-content:center;margin:0;padding:20px}
-    .card{background:#fff;color:#222;border-radius:14px;padding:20px;max-width:480px;width:100%;box-shadow:0 10px 30px rgba(0,0,0,0.2)}
-    h2{text-align:center;color:#0d47a1;margin-top:0}
-    label{display:block;margin:10px 0 6px;font-weight:700;text-align:right}
-    input,textarea,select,button{width:100%;padding:10px;border-radius:8px;border:1px solid #ddd;font-size:15px}
-    textarea{resize:vertical}
-    button{background:#0d47a1;color:#fff;border:0;margin-top:12px;cursor:pointer}
-    .success{display:none;padding:14px;background:#e8f5e9;color:#2e7d32;border-radius:8px;text-align:center;margin-top:12px}
-    .envelope{width:120px;height:80px;background:#fff;margin:0 auto 12px;border-radius:6px;cursor:pointer;display:block}
-    .hint{font-size:13px;color:#666;text-align:center;margin-top:8px}
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: linear-gradient(135deg, #0d47a1, #1976d2);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0;
+      padding: 20px;
+    }
+    .card {
+      background: #fff;
+      color: #222;
+      border-radius: 14px;
+      padding: 25px;
+      max-width: 480px;
+      width: 100%;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+    h2 {
+      text-align: center;
+      color: #0d47a1;
+      margin-top: 0;
+    }
+    label {
+      display: block;
+      margin: 10px 0 6px;
+      font-weight: 700;
+      text-align: right;
+    }
+    input, textarea, select, button {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      font-size: 15px;
+      box-sizing: border-box;
+    }
+    textarea { resize: vertical; }
+    button {
+      background: #0d47a1;
+      color: #fff;
+      border: 0;
+      margin-top: 12px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    button:hover { background: #1565c0; }
+    .success {
+      display: none;
+      padding: 14px;
+      background: #e8f5e9;
+      color: #2e7d32;
+      border-radius: 8px;
+      text-align: center;
+      margin-top: 12px;
+    }
+    .envelope {
+      width: 120px;
+      height: 80px;
+      background: #fff;
+      margin: 0 auto 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      display: block;
+      position: relative;
+    }
+    .envelope::before, .envelope::after {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 50%;
+      left: 0;
+      background: #0d47a1;
+      transition: transform 0.5s ease;
+    }
+    .envelope::before { top: 0; transform-origin: top; }
+    .envelope::after { bottom: 0; transform-origin: bottom; }
+    .envelope.open::before { transform: rotateX(180deg); }
+    .envelope.open::after { transform: rotateX(-180deg); }
+    .hint {
+      font-size: 13px;
+      color: #666;
+      text-align: center;
+      margin-top: 8px;
+    }
   </style>
 </head>
 <body>
@@ -23,8 +100,10 @@
     <div class="envelope" id="envelope" title="اضغط لفتح النموذج"></div>
 
     <div id="formWrap" style="display:none">
-      <!-- ضع رابط الـ Web App في action هنا -->
-      <form id="complaintForm" action="https://script.google.com/macros/s/AKfycbzg061GG5GimMAmvz4xiEkdMh0AH0uRTI4Jvx3hyw/dev" method="post" target="hidden_iframe">
+      <!-- ضع هنا رابط Web App الخاص بك -->
+      <form id="complaintForm" action="https://script.google.com/macros/s/AKfycbxawyHQf_99nnel32tvavsO4pfU3x1Xb0upq84qA7MOBYRHBopImbsGr5uaNE79XcA/exec" method="post" target="hidden_iframe">
+        <h2>نموذج شكاوى أولياء الأمور</h2>
+
         <label for="parentName">اسم ولي الأمر</label>
         <input id="parentName" name="parentName" type="text" required>
 
@@ -49,16 +128,16 @@
 
         <button id="submitBtn" type="submit">إرسال الشكوى</button>
       </form>
-      <div class="hint">ستُرسل الشكوى آمنًا إلى إدارة المدرسة.</div>
+      <div class="hint">ستُرسل الشكوى مباشرة إلى إدارة المدرسة.</div>
     </div>
 
     <div class="success" id="successMsg">
       <h3>✔️ تم إرسال الشكوى بنجاح</h3>
-      <p>شكراً لتواصلك — سنقوم بالرد في أقرب وقت.</p>
+      <p>شكرًا لتواصلك — سنراجع الشكوى قريبًا.</p>
     </div>
   </div>
 
-  <!-- iframe مخفي لاستقبال رد السيرفر بدون إعادة تحميل الصفحة -->
+  <!-- iframe مخفي لإرسال البيانات دون إعادة تحميل الصفحة -->
   <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
 
   <script>
@@ -69,21 +148,24 @@
     const submitBtn = document.getElementById('submitBtn');
     const iframe = document.getElementById('hidden_iframe');
 
-    envelope.addEventListener('click', ()=> {
-      envelope.style.display = 'none';
-      formWrap.style.display = 'block';
+    // عند الضغط على الظرف
+    envelope.addEventListener('click', () => {
+      envelope.classList.add('open');
+      setTimeout(() => {
+        envelope.style.display = 'none';
+        formWrap.style.display = 'block';
+      }, 400);
     });
 
-    form.addEventListener('submit', ()=> {
-      // Disable زر وإظهار نص انتظار بسيط
+    // عند إرسال النموذج
+    form.addEventListener('submit', () => {
       submitBtn.disabled = true;
       submitBtn.textContent = 'جاري الإرسال...';
     });
 
-    // عندما يُحمّل الـ iframe (يعني السيرفر ردّ) نعرض رسالة النجاح
-    iframe.addEventListener('load', ()=> {
-      // قد يتكرر onload عند التحميل الأول (قبل إرسال). نتأكد أن زر الإرسال كان معطلًا.
-      if (!submitBtn.disabled) return;
+    // عند انتهاء التحميل داخل iframe (تم الإرسال)
+    iframe.addEventListener('load', () => {
+      if (!submitBtn.disabled) return; // تجاهل أول تحميل
       formWrap.style.display = 'none';
       successMsg.style.display = 'block';
       submitBtn.disabled = false;
