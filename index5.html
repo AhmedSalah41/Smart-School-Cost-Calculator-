@@ -115,7 +115,10 @@
         <input type="text" name="studentName" placeholder="اسم الطالب" required>
         <input type="text" name="grade" placeholder="الصف الدراسي" required>
         <textarea name="complaint" placeholder="اكتب شكواك هنا..." rows="4" required></textarea>
-        <input type="email" name="email" placeholder="البريد الإلكتروني للتواصل (اختياري)">
+
+        <!-- ✅ تم التبديل من البريد الإلكتروني إلى رقم الهاتف -->
+        <input type="tel" name="phone" placeholder="رقم الهاتف للتواصل (" pattern="[0-9+ ]*">
+
         <button type="submit">إرسال</button>
       </form>
     </div>
