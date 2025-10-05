@@ -1,175 +1,165 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>شكاوى أولياء الأمور</title>
   <style>
     body {
-      font-family: 'Cairo', sans-serif;
-      background: linear-gradient(135deg, #0d47a1, #1976d2);
-      color: #fff;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       margin: 0;
-      padding: 20px;
+      font-family: 'Cairo', sans-serif;
+      background: linear-gradient(135deg, #4facfe, #00f2fe);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
     }
-    .card {
-      background: #fff;
-      color: #222;
-      border-radius: 14px;
-      padding: 25px;
-      max-width: 480px;
-      width: 100%;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-    }
-    h2 {
+
+    .container {
       text-align: center;
-      color: #0d47a1;
-      margin-top: 0;
-    }
-    label {
-      display: block;
-      margin: 10px 0 6px;
-      font-weight: 700;
-      text-align: right;
-    }
-    input, textarea, select, button {
-      width: 100%;
-      padding: 10px;
-      border-radius: 8px;
-      border: 1px solid #ddd;
-      font-size: 15px;
-      box-sizing: border-box;
-    }
-    textarea { resize: vertical; }
-    button {
-      background: #0d47a1;
       color: #fff;
-      border: 0;
-      margin-top: 12px;
-      cursor: pointer;
-      transition: background 0.3s;
     }
-    button:hover { background: #1565c0; }
-    .success {
-      display: none;
-      padding: 14px;
-      background: #e8f5e9;
-      color: #2e7d32;
-      border-radius: 8px;
-      text-align: center;
-      margin-top: 12px;
+
+    h1 {
+      margin-bottom: 20px;
     }
+
+    /* شكل الظرف */
     .envelope {
-      width: 120px;
-      height: 80px;
+      width: 180px;
+      height: 120px;
       background: #fff;
-      margin: 0 auto 12px;
-      border-radius: 6px;
-      cursor: pointer;
-      display: block;
+      margin: 0 auto;
       position: relative;
+      cursor: pointer;
+      transition: transform 0.3s;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      border-radius: 6px;
     }
-    .envelope::before, .envelope::after {
+    .envelope:hover {
+      transform: scale(1.05);
+    }
+    .envelope:before, .envelope:after {
       content: "";
       position: absolute;
-      width: 100%;
-      height: 50%;
-      left: 0;
-      background: #0d47a1;
-      transition: transform 0.5s ease;
+      width: 0;
+      height: 0;
+      border-style: solid;
     }
-    .envelope::before { top: 0; transform-origin: top; }
-    .envelope::after { bottom: 0; transform-origin: bottom; }
-    .envelope.open::before { transform: rotateX(180deg); }
-    .envelope.open::after { transform: rotateX(-180deg); }
-    .hint {
-      font-size: 13px;
-      color: #666;
-      text-align: center;
-      margin-top: 8px;
+    .envelope:before {
+      top: 0;
+      left: 0;
+      border-width: 0 90px 60px 90px;
+      border-color: transparent transparent #f1f1f1 transparent;
+    }
+    .envelope:after {
+      bottom: 0;
+      left: 0;
+      border-width: 60px 90px 0 90px;
+      border-color: #f1f1f1 transparent transparent transparent;
+    }
+
+    /* الفورم */
+    #formContainer {
+      display: none;
+      margin-top: 20px;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      color: #333;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      animation: fadeIn 0.8s ease-in-out;
+    }
+
+    input, textarea, button {
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 14px;
+    }
+
+    button {
+      background: #4facfe;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #007bff;
+    }
+
+    .success {
+      display: none;
+      font-size: 1.2em;
+      color: #00ff88;
+      margin-top: 20px;
+      font-weight: bold;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px);}
+      to { opacity: 1; transform: translateY(0);}
     }
   </style>
 </head>
 <body>
 
-  <div class="card">
-    <div class="envelope" id="envelope" title="اضغط لفتح النموذج"></div>
+  <div class="container">
+    <h1>📩 شكاوى أولياء الأمور</h1>
+    <div class="envelope" id="envelope" title="اضغط لتقديم شكوى"></div>
 
-    <div id="formWrap" style="display:none">
-      <!-- ضع هنا رابط Web App الخاص بك -->"https://script.google.com/macros/s/AKfycbxawyHQf_99nnel32tvavsO4pfU3x1Xb0upq84qA7MOBYRHBopImbsGr5uaNE79XcA/exec" method="post" target="hidden_iframe">
-        <h2>نموذج شكاوى أولياء الأمور</h2>
-
-        <label for="parentName">اسم ولي الأمر</label>
-        <input id="parentName" name="parentName" type="text" required>
-
-        <label for="studentName">اسم الطالب</label>
-        <input id="studentName" name="studentName" type="text" required>
-
-        <label for="grade">الصف الدراسي</label>
-        <select id="grade" name="grade" required>
-          <option value="">اختر...</option>
-          <option>KG1</option>
-          <option>KG2</option>
-          <option>Primary</option>
-          <option>Preparatory</option>
-          <option>Secondary</option>
-        </select>
-
-        <label for="phone">رقم الهاتف</label>
-        <input id="phone" name="phone" type="tel" inputmode="numeric" pattern="[0-9+ ]*" maxlength="15" placeholder="مثال: 01012345678" required>
-
-        <label for="complaint">نص الشكوى</label>
-        <textarea id="complaint" name="complaint" rows="4" required></textarea>
-
-        <button id="submitBtn" type="submit">إرسال الشكوى</button>
+    <div id="formContainer">
+      <form id="complaintForm">
+        <input type="text" name="parentName" placeholder="اسم ولي الأمر" required>
+        <input type="text" name="studentName" placeholder="اسم الطالب" required>
+        <input type="text" name="grade" placeholder="المرحلة الدراسية" required>
+        <input type="tel" name="phone" placeholder="رقم الهاتف للتواصل" required>
+        <textarea name="complaint" placeholder="اكتب الشكوى هنا..." rows="4" required></textarea>
+        <button type="submit">إرسال</button>
       </form>
-      <div class="hint">ستُرسل الشكوى مباشرة إلى إدارة المدرسة.</div>
     </div>
 
-    <div class="success" id="successMsg">
-      <h3>✔️ تم إرسال الشكوى بنجاح</h3>
-      <p>شكرًا لتواصلك — سنراجع الشكوى قريبًا.</p>
-    </div>
+    <div class="success" id="successMsg">✔️ تم استلام شكواك.. شكرًا لمشاركتك</div>
   </div>
-
-  <!-- iframe مخفي لإرسال البيانات دون إعادة تحميل الصفحة -->
-  <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
 
   <script>
     const envelope = document.getElementById('envelope');
-    const formWrap = document.getElementById('formWrap');
+    const formContainer = document.getElementById('formContainer');
     const form = document.getElementById('complaintForm');
     const successMsg = document.getElementById('successMsg');
-    const submitBtn = document.getElementById('submitBtn');
-    const iframe = document.getElementById('hidden_iframe');
 
-    // عند الضغط على الظرف
+    // 🔗 رابط Google Apps Script
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxawyHQf_99nnel32tvavsO4pfU3x1Xb0upq84qA7MOBYRHBopImbsGr5uaNE79XcA/exec";
+
+    // فتح الظرف
     envelope.addEventListener('click', () => {
-      envelope.classList.add('open');
-      setTimeout(() => {
-        envelope.style.display = 'none';
-        formWrap.style.display = 'block';
-      }, 400);
+      envelope.style.display = 'none';
+      formContainer.style.display = 'block';
     });
 
-    // عند إرسال النموذج
-    form.addEventListener('submit', () => {
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'جاري الإرسال...';
-    });
+    // عند الإرسال
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
 
-    // عند انتهاء التحميل داخل iframe (تم الإرسال)
-    iframe.addEventListener('load', () => {
-      if (!submitBtn.disabled) return; // تجاهل أول تحميل
-      formWrap.style.display = 'none';
-      successMsg.style.display = 'block';
-      submitBtn.disabled = false;
-      submitBtn.textContent = 'إرسال الشكوى';
-      form.reset();
+      const formData = new FormData(form);
+
+      try {
+        const response = await fetch(SCRIPT_URL, { method: 'POST', body: formData });
+        const result = await response.text();
+
+        console.log("✅ Response:", result);
+        form.reset();
+        formContainer.style.display = 'none';
+        successMsg.style.display = 'block';
+      } catch (err) {
+        alert("حدث خطأ أثناء الإرسال: " + err.message);
+        console.error("❌ Error:", err);
+      }
     });
   </script>
 </body>
