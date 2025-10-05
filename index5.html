@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>شكاوى أولياء الأمور</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600&display=swap');
+
     body {
       margin: 0;
       font-family: 'Cairo', sans-serif;
@@ -13,15 +15,19 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
+      padding: 10px;
     }
 
     .container {
       text-align: center;
       color: #fff;
+      width: 100%;
+      max-width: 400px;
     }
 
     h1 {
       margin-bottom: 20px;
+      font-size: 22px;
     }
 
     /* شكل الظرف */
@@ -33,12 +39,12 @@
       position: relative;
       cursor: pointer;
       transition: transform 0.3s;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-      border-radius: 6px;
     }
+
     .envelope:hover {
       transform: scale(1.05);
     }
+
     .envelope:before, .envelope:after {
       content: "";
       position: absolute;
@@ -46,12 +52,14 @@
       height: 0;
       border-style: solid;
     }
+
     .envelope:before {
       top: 0;
       left: 0;
       border-width: 0 90px 60px 90px;
       border-color: transparent transparent #f1f1f1 transparent;
     }
+
     .envelope:after {
       bottom: 0;
       left: 0;
@@ -68,7 +76,6 @@
       border-radius: 10px;
       color: #333;
       box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-      animation: fadeIn 0.8s ease-in-out;
     }
 
     input, textarea, button {
@@ -78,7 +85,11 @@
       border: 1px solid #ccc;
       border-radius: 6px;
       font-family: inherit;
-      font-size: 14px;
+      font-size: 15px;
+    }
+
+    textarea {
+      resize: none;
     }
 
     button {
@@ -87,7 +98,9 @@
       font-weight: bold;
       cursor: pointer;
       transition: 0.3s;
+      border: none;
     }
+
     button:hover {
       background: #007bff;
     }
@@ -105,21 +118,42 @@
       from { opacity: 0; transform: translateY(10px);}
       to { opacity: 1; transform: translateY(0);}
     }
+
+    /* تحسين للموبايل */
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 20px;
+      }
+
+      .envelope {
+        width: 150px;
+        height: 100px;
+      }
+
+      #formContainer {
+        padding: 15px;
+      }
+
+      input, textarea, button {
+        font-size: 14px;
+        padding: 8px;
+      }
+    }
   </style>
 </head>
 <body>
 
   <div class="container">
     <h1>📩 شكاوى أولياء الأمور</h1>
-    <div class="envelope" id="envelope" title="اضغط لتقديم شكوى"></div>
+    <div class="envelope" id="envelope"></div>
 
     <div id="formContainer">
       <form id="complaintForm">
         <input type="text" name="parentName" placeholder="اسم ولي الأمر" required>
         <input type="text" name="studentName" placeholder="اسم الطالب" required>
-        <input type="text" name="grade" placeholder="المرحلة الدراسية" required>
-        <input type="tel" name="phone" placeholder="رقم الهاتف للتواصل" required>
-        <textarea name="complaint" placeholder="اكتب الشكوى هنا..." rows="4" required></textarea>
+        <input type="text" name="grade" placeholder="الصف الدراسي" required>
+        <input type="tel" name="phone" placeholder="رقم الهاتف للتواصل (اختياري)">
+        <textarea name="complaint" placeholder="اكتب شكواك هنا..." rows="4" required></textarea>
         <button type="submit">إرسال</button>
       </form>
     </div>
@@ -133,32 +167,36 @@
     const form = document.getElementById('complaintForm');
     const successMsg = document.getElementById('successMsg');
 
-    // 🔗 رابط Google Apps Script
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyfCkx5vuBKKi22TWhCAh0pX7INYgHHLM3-sqBH59kZChdvKaMD0b56n8CCYod_Cio/exec";
-
-    // فتح الظرف
+    // فتح الظرف وإظهار الفورم
     envelope.addEventListener('click', () => {
       envelope.style.display = 'none';
       formContainer.style.display = 'block';
     });
 
     // عند الإرسال
-    form.addEventListener('submit', async (e) => {
+    form.addEventListener('submit', async function(e) {
       e.preventDefault();
 
-      const formData = new FormData(form);
+      const data = {
+        parentName: form.parentName.value,
+        studentName: form.studentName.value,
+        grade: form.grade.value,
+        phone: form.phone.value,
+        complaint: form.complaint.value
+      };
 
       try {
-        const response = await fetch(SCRIPT_URL, { method: 'POST', body: formData });
-        const result = await response.text();
+        await fetch("https://script.google.com/macros/s/AKfycbyfCkx5vuBKKi22TWhCAh0pX7INYgHHLM3-sqBH59kZChdvKaMD0b56n8CCYod_Cio/exec", {
+          method: "POST",
+          mode: "no-cors",
+          body: JSON.stringify(data),
+          headers: { "Content-Type": "application/json" }
+        });
 
-        console.log("✅ Response:", result);
-        form.reset();
         formContainer.style.display = 'none';
         successMsg.style.display = 'block';
       } catch (err) {
-        alert("حدث خطأ أثناء الإرسال: " + err.message);
-        console.error("❌ Error:", err);
+        alert("حدث خطأ أثناء الإرسال، حاول مرة أخرى.");
       }
     });
   </script>
